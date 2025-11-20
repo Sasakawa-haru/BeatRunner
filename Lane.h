@@ -1,17 +1,21 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include"Engine/Model.h"
 
 //◆◆◆を管理するクラス
-class Stage : public GameObject
+class Lane : public GameObject
 {
-    int hStageModel_ ;
+    int hLaneModel_;
+    static int sNextLaneIndex_;
+    int laneIndex_;
 
 public:
+
     //コンストラクタ
-    Stage(GameObject* parent);
+    Lane(GameObject* parent);
 
     //デストラクタ
-    ~Stage();
+    ~Lane();
 
     //初期化
     void Initialize() override;
@@ -25,5 +29,7 @@ public:
     //開放
     void Release() override;
 
-    int GetModelHandle() { return hStageModel_; }
+	static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
+	int GetLaneIndex() { return laneIndex_; }
+
 };
