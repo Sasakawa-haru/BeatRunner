@@ -41,7 +41,7 @@ void Stage::Draw()
     Model::SetTransform(hStageModel_, transform_);
     Model::Draw(hStageModel_);
 
-    Camera::SetPosition(XMFLOAT3(0, 8, -10));
+    Camera::SetPosition(XMFLOAT3(0, 5, -15));
 
     Camera::SetTarget(XMFLOAT3(0, 1, 0));
 }

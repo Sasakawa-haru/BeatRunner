@@ -30,6 +30,6 @@ public:
     void Release() override;
 
 	static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
-	int GetLaneIndex() { return laneIndex_; }
+	int GetLaneHandle() { return laneIndex_; }
 
 };
