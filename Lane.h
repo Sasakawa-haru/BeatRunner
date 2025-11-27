@@ -2,12 +2,17 @@
 #include "Engine/GameObject.h"
 #include"Engine/Model.h"
 
-//ŸŸŸ‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+enum class LaneType {
+    Lane1,
+    Lane2,
+    Lane3,
+    Lane4,
+    Lane5,
+    Unknown
+};
+
 class Lane : public GameObject
 {
-    int hLaneModel_;
-    static int sNextLaneIndex_;
-    int laneIndex_;
 
 public:
 
@@ -29,7 +34,17 @@ public:
     //ŠJ•ú
     void Release() override;
 
+    XMFLOAT3 GetCenterPosition()const;
+    LaneType GetLaneType()const;
+
 	static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
 	int GetLaneHandle() { return laneIndex_; }
+
+private:
+    int hLaneModel_;
+    static int sNextLaneIndex_;
+    int laneIndex_;
+    LaneType laneType_;
+
 
 };

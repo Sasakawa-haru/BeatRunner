@@ -24,5 +24,11 @@ public:
 	void Release()override;
 
 	XMFLOAT3  playerPosition;
+
+private:
+	bool isJumping_ = false;
+	float jumpVelocity_ = 0.0f;
+	const float gravity_ = -0.5f;
+	const float jumpV0 = 8.0f;
 };
 
