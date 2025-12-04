@@ -1,6 +1,7 @@
 #include "Lane.h"
 #include"Engine/Model.h"
 #include"Engine/Camera.h"
+#include"Player.h"
 
 int Lane::sNextLaneIndex_ = 0;
 const int laneCount = 5;
@@ -33,7 +34,7 @@ void Lane::Initialize()
     assert(hLaneModel_ >= 0);
     float offset = (laneIndex_ - (laneCount - 1) * 0.5f) * laneWidth;
     transform_.position_.x = offset;
-    transform_.position_.y = 0.0f;
+    transform_.position_.y = -1.0f;
 	transform_.position_.z = 0.0f;
 }
 

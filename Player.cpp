@@ -1,9 +1,9 @@
 #include "Player.h"
-#include"Stage.h"
 #include"Lane.h"
 #include"Engine/Model.h"
 #include"Engine/Input.h"
 #include"Engine/SphereCollider.h"
+#include"Engine/Camera.h"
 
 
 
@@ -18,84 +18,107 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	Lane* centerLane = nullptr;
-	transform_.position_= XMFLOAT3(0.0f, 3.0f, 0.0f);
-	playerPosition = XMFLOAT3(0.0f, 3.0f, 0.0f);
-	hPlayerModel_ = Model::Load("Models/Player.fbx");
-	assert(hPlayerModel_ >= 0);
-	SphereCollider* collision = new SphereCollider(playerPosition, 3.0f);
-	AddCollider(collision);
-}
+    Lane* lane = (Lane*)FindObject("Lane");
+    assert(lane);
 
+    XMFLOAT3 lanePos = lane->GetCenterPosition();
+    float laneTopY = lanePos.y;            // モデルの原点が床ならそのまま
+    float centerY = laneTopY + radius_;   // 足が床に乗る高さ
+
+    transform_.position_ = XMFLOAT3(lanePos.x, centerY, lanePos.z - 20.0f);
+
+    hPlayerModel_ = Model::Load("Models/Player.fbx");
+    assert(hPlayerModel_ >= 0);
+
+    collider_ = new SphereCollider(transform_.position_, radius_);
+    AddCollider(collider_);
+
+    isJumping_ = false;
+    jumpVelocity_ = 0.0f;
+}
 void Player::Update()
 {
-	Stage* stage = (Stage*)FindObject("Stage");
-	int hStageModel = stage->GetModelHandle();
+    Lane* lane = (Lane*)FindObject("Lane");
+    assert(lane);
+    int hLaneModel = lane->GetLaneHandle();
 
-	Lane* lane = (Lane*)FindObject("Lane");
-	int hLaneModel = lane->GetLaneHandle();
+    if (Input::IsKeyDown(DIK_A))
+    {
+        transform_.position_.x -= 2.0f;
+    }
+    if (Input::IsKeyDown(DIK_D))
+    {
+        transform_.position_.x += 2.0f;
+    }
 
-	RayCastData rayData;
-	rayData.start = transform_.position_;
-	rayData.start.y = 0;
-	rayData.dir = XMFLOAT3(0, -1, 0);
+    // --- ジャンプ開始 ---
+    if (!isJumping_ && Input::IsKeyDown(DIK_SPACE))
+    {
+        isJumping_ = true;
+        jumpVelocity_ = jumpV0;
+    }
 
-	Model::RayCast(hLaneModel, &rayData);
-	if (rayData.hit)
-	{
-		transform_.position_.y = -rayData.dist;
-	}
+    // --- 重力・縦移動 ---
+    if (isJumping_)
+    {
+        jumpVelocity_ += gravity;
+        transform_.position_.y += jumpVelocity_; 
+        if (Input::IsKeyDown(DIK_SPACE)) {
+            transform_.position_.y=
+        }
+    }
 
-	if(Input::IsKeyDown(DIK_A))
-	{
-		transform_.position_.x-=2.0f;
-	}
-	if (Input::IsKeyDown(DIK_D))
-	{
-		transform_.position_.x += 2.0f;
-	}
-	if (Input::IsKeyDown(DIK_SPACE)&&!isJumping_)
-	{
-		isJumping_ = true;
-		jumpVelocity_ = jumpV0;
-	}
-	if (!isJumping_ && Input::IsKeyDown(DIK_SPACE)) {
-		isJumping_ = true;
-		jumpVelocity_ = jumpV0;
-	}
+    // --- 足元の地面を RayCast で取得 ---
+    {
+        // プレイヤーのちょっと上から真下に向けてレイを飛ばす
+        XMFLOAT3 start(transform_.position_.x,
+            transform_.position_.y + 100.0f,  // かなり上から
+            transform_.position_.z);
+        XMFLOAT3 dir(0.0f, -1.0f, 0.0f);
 
-	// ジャンプ中の処理
-	if (isJumping_) {
-		jumpVelocity_ += gravity_;
-		transform_.position_.y += jumpVelocity_ * 0.1f; // 0.1fはフレーム調整用
+        RayCastData rayData{};
+        rayData.start = start;
+        rayData.dir = dir;
 
-		// 地面判定（raycastで地面に着いたらジャンプ終了）
-		RayCastData rayData;
-		rayData.start = transform_.position_;
-		rayData.start.y = 0;
-		rayData.dir = XMFLOAT3(0, -1, 0);
+        Model::RayCast(hLaneModel, &rayData);
 
-		Model::RayCast(hLaneModel, &rayData);
-		if (rayData.hit && transform_.position_.y <= -rayData.dist) {
-			transform_.position_.y = -rayData.dist;
-			isJumping_ = false;
-			jumpVelocity_ = 0.0f;
-		}
-	}
-	else {
-		// 地面にいるときのY座標補正
-		RayCastData rayData;
-		rayData.start = transform_.position_;
-		rayData.start.y = 0;
-		rayData.dir = XMFLOAT3(0, -1, 0);
+        if (rayData.hit)
+        {
+            // レーン表面の高さ
+            float hitY = start.y + dir.y * rayData.dist; // dir.y=-1なので start.y - dist
 
-		Model::RayCast(hLaneModel, &rayData);
-		if (rayData.hit) {
-			transform_.position_.y = -rayData.dist;
-		}
-	}
+            // プレイヤーの足の高さ
+            float footY = transform_.position_.y - radius_;
+
+            // 足が地面より下に行っていたら「乗せる」
+            if (footY <= hitY)
+            {
+                float diff = hitY - footY;
+                transform_.position_.y += diff;   // 足をちょうど地面にくっつける
+
+                // 落下完了
+                isJumping_ = false;
+                jumpVelocity_ = 0.0f;
+            }
+        }
+
+        XMFLOAT3 p = transform_.position_;
+
+        XMFLOAT3 camPos(
+            p.x,
+            p.y + 2.0f,
+            p.z - 5.0f
+        );
+        Camera::SetPosition(camPos);
+        Camera::SetTarget(p);
+    }
+
+    // --- コライダーの中心を更新 ---
+    if (collider_)
+    {
+        collider_->SetCenter(transform_.position_);
+    }
 }
-
 void Player::Draw()
 {
 	Model::SetTransform(hPlayerModel_, transform_);
@@ -105,3 +128,4 @@ void Player::Draw()
 void Player::Release()
 {
 }
+

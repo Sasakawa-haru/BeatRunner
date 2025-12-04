@@ -96,9 +96,9 @@
       <Filter>01Engine\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Lane.cpp" />
+    <ClCompile Include="Obstacles.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -171,9 +171,9 @@
       <Filter>01Engine\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="Stage.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Lane.h" />
+    <ClInclude Include="Obstacles.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

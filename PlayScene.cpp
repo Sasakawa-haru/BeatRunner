@@ -1,6 +1,8 @@
 #include "PlayScene.h"
-#include"Stage.h"
 #include"Player.h"
+#include"Lane.h"
+
+const int LaneCount = 5;
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
@@ -11,7 +13,12 @@ PlayScene::PlayScene(GameObject* parent)
 //初期化
 void PlayScene::Initialize()
 {
-	Instantiate<Stage>(this);
+	Lane::ResetLaneIndex();
+
+	for (int i = 0; i < LaneCount; i++) {
+		Instantiate<Lane>(this);
+	}
+
 	Instantiate<Player>(this);
 }
 

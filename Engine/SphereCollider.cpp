@@ -28,3 +28,4 @@ bool SphereCollider::IsHit(Collider* target)
 	else
 		return IsHitCircleVsCircle((SphereCollider*)target, this);
 }
+

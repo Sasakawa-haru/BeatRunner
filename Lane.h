@@ -38,7 +38,7 @@ public:
     LaneType GetLaneType()const;
 
 	static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
-	int GetLaneHandle() { return laneIndex_; }
+    int GetLaneHandle() { return hLaneModel_; }
 
 private:
     int hLaneModel_;

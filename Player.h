@@ -1,8 +1,8 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include"Engine/SphereCollider.h"
 class Player:public GameObject
 {
-	int hPlayerModel_;
 
 public:
 	//コンストラクタ
@@ -26,9 +26,15 @@ public:
 	XMFLOAT3  playerPosition;
 
 private:
+	int hPlayerModel_;
+	float radius_=3.0f;
+
 	bool isJumping_ = false;
-	float jumpVelocity_ = 0.0f;
-	const float gravity_ = -0.5f;
-	const float jumpV0 = 8.0f;
+	float jumpVelocity_= 0.0f;
+	const float gravity = -0.3f;
+	const float jumpV0 = 3.0f;
+	float groundY_ = 0.0f;
+
+	SphereCollider* collider_ = nullptr;
 };
 
