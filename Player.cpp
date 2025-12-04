@@ -63,9 +63,9 @@ void Player::Update()
     {
         jumpVelocity_ += gravity;
         transform_.position_.y += jumpVelocity_; 
-        if (Input::IsKeyDown(DIK_SPACE)) {
-            transform_.position_.y=
-        }
+        //if (Input::IsKeyDown(DIK_SPACE)) {
+        //    transform_.position_.y=
+        //}
     }
 
     // --- ‘«Œ³‚Ì’n–Ê‚ð RayCast ‚ÅŽæ“¾ ---

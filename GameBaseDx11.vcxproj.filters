@@ -24,6 +24,9 @@
       <UniqueIdentifier>{47a6a3f5-8cfd-436b-8d58-beccd108f3f3}</UniqueIdentifier>
       <Extensions>hlsl</Extensions>
     </Filter>
+    <Filter Include="Notes">
+      <UniqueIdentifier>{cf5fc5ac-15e7-44fc-b824-1894115707ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\BoxCollider.cpp">
@@ -98,7 +101,15 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Lane.cpp" />
-    <ClCompile Include="Obstacles.cpp" />
+    <ClCompile Include="Notes.cpp">
+      <Filter>Notes</Filter>
+    </ClCompile>
+    <ClCompile Include="BesideBeam.cpp">
+      <Filter>Notes</Filter>
+    </ClCompile>
+    <ClCompile Include="VerticalBeam.cpp">
+      <Filter>Notes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -173,7 +184,15 @@
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Lane.h" />
-    <ClInclude Include="Obstacles.h" />
+    <ClInclude Include="Notes.h">
+      <Filter>Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="BesideBeam.h">
+      <Filter>Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="VerticalBeam.h">
+      <Filter>Notes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">
