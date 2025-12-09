@@ -18,6 +18,7 @@
 #include "Input.h"
 #include "Audio.h"
 #include "VFX.h"
+#include"Time.h"
 
 #pragma comment(lib,"Winmm.lib")
 
@@ -48,7 +49,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 
-
 	//ウィンドウを作成
 	HWND hWnd = InitApp(hInstance, screenWidth, screenHeight, nCmdShow);
 
@@ -63,6 +63,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//オーディオ（効果音）の準備
 	Audio::Initialize();
+
+	Time::Init();
 
 
 	//ルートオブジェクト準備
@@ -86,6 +88,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//メッセージなし（ここでゲームの処理）
 		else
 		{
+			Time::Refresh();
 			//時間計測
 			timeBeginPeriod(1);	//時間計測の制度を上げる
 			static int FPS = 0;								//画面更新回数のカウンタ

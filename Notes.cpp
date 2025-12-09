@@ -6,7 +6,7 @@
 
 
 Notes::Notes(GameObject* parent)
-	:GameObject(parent,"Notes"), hVerticalBeamModel_(-1)
+	:GameObject(parent,"Notes")
 {
 }
 

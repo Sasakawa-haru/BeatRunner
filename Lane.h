@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include"Engine/Model.h"
+#include "Engine/Model.h"
+#include <string>
 
 enum class LaneType {
     Lane1,
@@ -13,38 +14,30 @@ enum class LaneType {
 
 class Lane : public GameObject
 {
-
 public:
+    static const int laneCount = 5;
 
-    //コンストラクタ
     Lane(GameObject* parent);
-
-    //デストラクタ
     ~Lane();
 
-    //初期化
     void Initialize() override;
-
-    //更新
     void Update() override;
-
-    //描画
     void Draw() override;
-
-    //開放
     void Release() override;
 
-    XMFLOAT3 GetCenterPosition()const;
-    LaneType GetLaneType()const;
+    XMFLOAT3 GetCenterPosition() const;
+    LaneType GetLaneType() const;
 
-	static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
-    int GetLaneHandle() { return hLaneModel_; }
+    static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
+
+    int  GetLaneHandle() const { return hLaneModel_; }
+    int  GetLaneIndex()  const { return laneIndex_; }
 
 private:
-    int hLaneModel_;
-    static int sNextLaneIndex_;
-    int laneIndex_;
-    LaneType laneType_;
+    int         hLaneModel_;
+    static int  sNextLaneIndex_;
+    int         laneIndex_;
+    LaneType    laneType_;
 
-
+    static std::string MakeLaneName(int index);   // ★ 追加
 };

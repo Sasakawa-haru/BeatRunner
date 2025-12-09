@@ -1,40 +1,34 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include"Engine/SphereCollider.h"
-class Player:public GameObject
+#include <DirectXMath.h>
+#include <vector>
+#include <string>
+
+class Lane;
+class SphereCollider;
+
+class Player : public GameObject
 {
-
 public:
-	//コンストラクタ
-	Player(GameObject* parent);
+    Player(GameObject* parent);
+    ~Player();
 
-	//デストラクタ
-	~Player();
-
-	//初期化
-	void Initialize()override;
-
-	//更新
-	void Update()override;
-
-	//描画
-	void Draw()override;
-
-	//関数
-	void Release()override;
-
-	XMFLOAT3  playerPosition;
+    void Initialize() override;
+    void Update() override;
+    void Draw() override;
+    void Release() override;
 
 private:
-	int hPlayerModel_;
-	float radius_=3.0f;
+    int   hPlayerModel_;
+    float radius_ = 3.0f;   // プレイヤーの足元判定用半径
+    float jumpVelocity_;
+    bool  isJumping_ = false;
 
-	bool isJumping_ = false;
-	float jumpVelocity_= 0.0f;
-	const float gravity = -0.3f;
-	const float jumpV0 = 3.0f;
-	float groundY_ = 0.0f;
+    float jumpHeight;
+    float upGravity;
+    float downGravity;
+    float jumpSpeed;
 
-	SphereCollider* collider_ = nullptr;
+    SphereCollider* collider_ = nullptr;
+    std::vector<Lane*>   lanes_;      // 全レーンへのポインタ
 };
-
