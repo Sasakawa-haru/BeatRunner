@@ -15,25 +15,15 @@ enum class LaneType {
 
 class Lane : public GameObject
 {
-
 public:
+    static const int laneCount = 5;
 
-    //コンストラクタ
     Lane(GameObject* parent);
-
-    //デストラクタ
     ~Lane();
 
-    //初期化
     void Initialize() override;
-
-    //更新
     void Update() override;
-
-    //描画
     void Draw() override;
-
-    //開放
     void Release() override;
 
     XMFLOAT3 GetCenterPosition()const;
@@ -43,8 +33,10 @@ public:
     
    
 
-	static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
-    int GetLaneHandle() { return hLaneModel_; }
+    static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
+
+    int  GetLaneHandle() const { return hLaneModel_; }
+    int  GetLaneIndex()  const { return laneIndex_; }
 
 private:
     int hLaneModel_;
@@ -56,4 +48,5 @@ private:
     static std::_In_place_key_extract_map < std::string, Lane*>sLaneTable_;
 
 
+    static std::string MakeLaneName(int index);   // ★ 追加
 };

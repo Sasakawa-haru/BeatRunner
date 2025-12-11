@@ -23,6 +23,6 @@ public:
 	void Release();
 
 private:
-	int hVerticalBeamModel_;
+
 };
 

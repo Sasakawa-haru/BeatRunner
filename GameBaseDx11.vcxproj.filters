@@ -110,6 +110,12 @@
     <ClCompile Include="VerticalBeam.cpp">
       <Filter>Notes</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameCsvReader.cpp">
+      <Filter>01Engine\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Time.cpp">
+      <Filter>01Engine\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -192,6 +198,12 @@
     </ClInclude>
     <ClInclude Include="VerticalBeam.h">
       <Filter>Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameCsvReader.h">
+      <Filter>01Engine\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Time.h">
+      <Filter>01Engine\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
