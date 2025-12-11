@@ -2,11 +2,15 @@
 #include"Engine/Model.h"
 #include"Engine/Camera.h"
 #include"Player.h"
+#include<cassert>
+#include<map>
 
 int Lane::sNextLaneIndex_ = 0;
 const int laneCount = 5;
 const float laneWidth = 2.0f;
 
+int Lane::sNextLaneIndex_ = 0;
+std::map<std::string, Lane*> Lane::sLaneTable_;
 //コンストラクタ
 Lane::Lane(GameObject* parent)
     :GameObject(parent, "Lane"),hLaneModel_(-1),laneType_(LaneType::Unknown)
@@ -20,11 +24,15 @@ Lane::Lane(GameObject* parent)
     case 4: laneType_ = LaneType::Lane5; break;
     default:laneType_ = LaneType::Unknown; break;
     }
+
+    laneName_ = "lane" + std::to_string(laneIndex_ + 1);
+    sLaneTable_[laneName_] = this;
 }
 
 //デストラクタ
 Lane::~Lane()
 {
+    sLaneTable_.erase(laneName_)
 }
 
 //初期化
@@ -65,4 +73,18 @@ XMFLOAT3 Lane::GetCenterPosition() const
 LaneType Lane::GetLaneType() const
 {
     return laneType_;
+}
+XMFLOAT3 Lane::GetCenterPosition() const
+{
+    return transform_.position_;
+}
+
+// ★ 追加：名前から Lane を取得
+Lane* Lane::FindByName(const std::string& name)
+{
+    auto it = sLaneTable_.find(name);
+    if (it != sLaneTable_.end()) {
+        return it->second;
+    }
+    return nullptr;
 }

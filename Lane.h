@@ -1,5 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include<string>
+#include<map>
 #include"Engine/Model.h"
 
 enum class LaneType {
@@ -35,7 +37,11 @@ public:
     void Release() override;
 
     XMFLOAT3 GetCenterPosition()const;
-    LaneType GetLaneType()const;
+    LaneType GetLaneType() const { return laneType_; }
+    const std::string& GetLaneName()const {return laneName_;}
+    static Lane* FindByName(const std::string& name);
+    
+   
 
 	static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
     int GetLaneHandle() { return hLaneModel_; }
@@ -45,6 +51,9 @@ private:
     static int sNextLaneIndex_;
     int laneIndex_;
     LaneType laneType_;
+
+    std::string laneName_;
+    static std::_In_place_key_extract_map < std::string, Lane*>sLaneTable_;
 
 
 };
