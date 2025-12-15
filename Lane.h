@@ -1,22 +1,27 @@
 #pragma once
-#include "Engine/GameObject.h"
-#include<string>
-#include<map>
-#include"Engine/Model.h"
 
-enum class LaneType {
+#include "Engine/GameObject.h"
+#include "Engine/Model.h"      
+#include <string>
+#include <map>
+
+
+// レーン種類
+enum class LaneType
+{
     Lane1,
     Lane2,
     Lane3,
     Lane4,
     Lane5,
-    Unknown
+    Unknown,
 };
 
 class Lane : public GameObject
 {
 public:
-    static const int laneCount = 5;
+    static const int laneCount;
+    static const float laneWidth;
 
     Lane(GameObject* parent);
     ~Lane();
@@ -26,27 +31,35 @@ public:
     void Draw() override;
     void Release() override;
 
-    XMFLOAT3 GetCenterPosition()const;
+    static void ResetLaneIndex();
+
+
+    // レーン中心（= Lane の transform_.position_）
+    XMFLOAT3 GetCenterPosition() const;
+
+    // モデルハンドル（PlayerのRayCast用に必要なら）
+    int GetLaneHandle() const { return hLaneModel_; }
+
+    // レーン種別
     LaneType GetLaneType() const { return laneType_; }
-    const std::string& GetLaneName()const {return laneName_;}
+
+    // ★ lane1/lane2... の名前
+    const std::string& GetLaneName() const { return laneName_; }
+
+    // ★ "lane2" みたいな名前でレーンを取得
     static Lane* FindByName(const std::string& name);
-    
-   
-
-    static void ResetLaneIndex() { sNextLaneIndex_ = 0; }
-
-    int  GetLaneHandle() const { return hLaneModel_; }
-    int  GetLaneIndex()  const { return laneIndex_; }
 
 private:
-    int hLaneModel_;
+    // 次に作られる Lane の index を決める（0,1,2,...）
     static int sNextLaneIndex_;
-    int laneIndex_;
-    LaneType laneType_;
+
+    // ★ 名前→Lane* の辞書
+    static std::map<std::string, Lane*> sLaneTable_;
+
+    int laneIndex_ = 0;
+    LaneType laneType_ = LaneType::Unknown;
+
+    int hLaneModel_ = -1;
 
     std::string laneName_;
-    static std::_In_place_key_extract_map < std::string, Lane*>sLaneTable_;
-
-
-    static std::string MakeLaneName(int index);   // ★ 追加
 };

@@ -41,12 +41,11 @@ void Player::Initialize()
 
     for (int i = 0; i < Lane::laneCount; ++i)
     {
-        std::string name = "Lane" + std::to_string(i);
-        Lane* lane = (Lane*)FindObject(name);
-        assert(lane);               // 見つからなければここで止まってくれる
+        std::string lname = "lane" + std::to_string(i + 1); 
+        Lane* lane = Lane::FindByName(lname);
+        assert(lane);
         lanes_[i] = lane;
     }
-
     // 真ん中のレーンを初期位置に使う
     int centerIndex = Lane::laneCount / 2;   
     Lane* centerLane = lanes_[centerIndex];
@@ -91,7 +90,7 @@ void Player::Update()
     }
 
     // --- ジャンプ開始 ---
-    if (!isJumping_ && Input::IsKeyDown(DIK_SPACE))
+    if (isJumping_==false && Input::IsKeyDown(DIK_SPACE))
     {
         isJumping_ = true;
         jumpVelocity_ = jumpSpeed;

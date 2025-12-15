@@ -4,10 +4,11 @@
 #include <map>
 
 int Lane::sNextLaneIndex_ = 0;
+const int Lane::laneCount = 5;
+const float Lane::laneWidth = 2.0f;
+
 std::map<std::string, Lane*> Lane::sLaneTable_;
 
-const int laneCount = 5;
-const float laneWidth = 2.0f;
 
 Lane::Lane(GameObject* parent)
     : GameObject(parent, "Lane")
@@ -25,16 +26,13 @@ Lane::Lane(GameObject* parent)
     default: laneType_ = LaneType::Unknown; break;
     }
 
-    // ★ lane1 / lane2 / lane3 … という名前を付ける（1始まり）
     laneName_ = "lane" + std::to_string(laneIndex_ + 1);
 
-    // ★ 静的テーブルに登録
     sLaneTable_[laneName_] = this;
 }
 
 Lane::~Lane()
 {
-    // ★ 破棄時はテーブルから消す
     sLaneTable_.erase(laneName_);
 }
 
@@ -63,12 +61,18 @@ void Lane::Release()
 {
 }
 
+
+void Lane::ResetLaneIndex()
+{
+    sNextLaneIndex_ = 0;
+    sLaneTable_.clear();
+}
+
 XMFLOAT3 Lane::GetCenterPosition() const
 {
     return transform_.position_;
 }
 
-// ★ 追加：名前から Lane を取得
 Lane* Lane::FindByName(const std::string& name)
 {
     auto it = sLaneTable_.find(name);

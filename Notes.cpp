@@ -17,6 +17,7 @@ Notes::~Notes()
 void Notes::Initialize()
 {
 	Instantiate<VerticalBeam>;
+	Instantiate<BesideBeam>;
 }
 
 void Notes::Update()
