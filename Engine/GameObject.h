@@ -184,6 +184,8 @@ T* Instantiate(GameObject* pParent)
 	{
 		pParent->PushBackChild(pNewObject);
 	}
+	pNewObject->Enter();
+	pNewObject->Visible();
 	pNewObject->Initialize();
 	return pNewObject;
 }

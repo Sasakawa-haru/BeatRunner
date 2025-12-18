@@ -1,5 +1,6 @@
 #pragma once
 #include"Engine/GameObject.h"
+#include"BeatmapJsonLoader.h"
 
 class Notes:public GameObject
 {
@@ -21,6 +22,10 @@ public:
 
 	//ä÷êî
 	void Release();
+
+	BeatMap map_;
+	size_t nextIndex_ = 0;
+	double nowSec_ = 0.0;
 
 private:
 

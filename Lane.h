@@ -14,6 +14,8 @@ enum class LaneType
     Lane3,
     Lane4,
     Lane5,
+    Lane6,
+    Lane7,
     Unknown,
 };
 
@@ -43,17 +45,17 @@ public:
     // レーン種別
     LaneType GetLaneType() const { return laneType_; }
 
-    // ★ lane1/lane2... の名前
+    //lane1/lane2... の名前
     const std::string& GetLaneName() const { return laneName_; }
 
-    // ★ "lane2" みたいな名前でレーンを取得
+    // 名前でレーンを取得
     static Lane* FindByName(const std::string& name);
 
 private:
     // 次に作られる Lane の index を決める（0,1,2,...）
     static int sNextLaneIndex_;
 
-    // ★ 名前→Lane* の辞書
+    // 名前→Lane* の辞書
     static std::map<std::string, Lane*> sLaneTable_;
 
     int laneIndex_ = 0;

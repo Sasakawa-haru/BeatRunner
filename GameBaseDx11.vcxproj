@@ -133,6 +133,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BeatmapCatalog.cpp">
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdcpp17</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdcpp17</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
+    </ClCompile>
     <ClCompile Include="BeatmapJsonLoader.cpp" />
     <ClCompile Include="BesideBeam.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
@@ -168,7 +174,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BeatMap.h" />
+    <ClInclude Include="BeatmapCatalog.h" />
     <ClInclude Include="BeatmapJsonLoader.h" />
+    <ClInclude Include="BeatmapMeta.h" />
     <ClInclude Include="BesideBeam.h" />
     <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\BillBoard.h" />

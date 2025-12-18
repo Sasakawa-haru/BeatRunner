@@ -88,7 +88,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//メッセージなし（ここでゲームの処理）
 		else
 		{
-			Time::Refresh();
 			//時間計測
 			timeBeginPeriod(1);	//時間計測の制度を上げる
 			static int FPS = 0;								//画面更新回数のカウンタ
@@ -116,6 +115,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			if ((nowTime - lastUpdateTime) * fpsLimit > 1000.0f)
 			{
 				//時間計測関連
+				Time::Refresh();
+
 				lastUpdateTime = nowTime;	//現在の時間（最後に画面を更新した時間）を覚えておく
 				FPS++;						//画面更新回数をカウントする
 

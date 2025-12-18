@@ -20,7 +20,7 @@ public:
 
 private:
     int   hPlayerModel_;
-    float radius_ = 3.0f;   // プレイヤーの足元判定用半径
+    float radius_ = 0.0f;   // プレイヤーの足元判定用半径
     float jumpVelocity_;
     bool  isJumping_ = false;
 

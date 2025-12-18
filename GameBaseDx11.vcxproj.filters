@@ -116,7 +116,12 @@
     <ClCompile Include="Engine\Time.cpp">
       <Filter>01Engine\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="BeatmapJsonLoader.cpp" />
+    <ClCompile Include="BeatmapJsonLoader.cpp">
+      <Filter>Notes</Filter>
+    </ClCompile>
+    <ClCompile Include="BeatmapCatalog.cpp">
+      <Filter>Notes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -206,9 +211,19 @@
     <ClInclude Include="Engine\Time.h">
       <Filter>01Engine\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="BeatMap.h" />
-    <ClInclude Include="BeatmapJsonLoader.h" />
     <ClInclude Include="Engine\nlohmann\json.hpp">
+      <Filter>Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="BeatmapMeta.h">
+      <Filter>Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="BeatMap.h">
+      <Filter>Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="BeatmapJsonLoader.h">
+      <Filter>Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="BeatmapCatalog.h">
       <Filter>Notes</Filter>
     </ClInclude>
   </ItemGroup>

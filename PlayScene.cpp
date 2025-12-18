@@ -1,8 +1,8 @@
 #include "PlayScene.h"
 #include"Player.h"
 #include"Lane.h"
+#include"Engine/Time.h"
 
-const int LaneCount = 5;
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
@@ -15,7 +15,7 @@ void PlayScene::Initialize()
 {
 	Lane::ResetLaneIndex();
 
-	for (int i = 0; i < LaneCount; i++) {
+	for (int i = 0; i < Lane::laneCount; i++) {
 		Instantiate<Lane>(this);
 	}
 
@@ -25,6 +25,9 @@ void PlayScene::Initialize()
 //更新
 void PlayScene::Update()
 {
+	char buf[64];
+	sprintf_s(buf, "dt=%.6f\n", Time::DeltaTime());
+	OutputDebugStringA(buf);
 }
 
 //描画

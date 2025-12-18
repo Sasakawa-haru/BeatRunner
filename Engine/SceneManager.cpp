@@ -4,6 +4,7 @@
 #include "Model.h"
 #include "Image.h"
 #include "Audio.h"
+#include "Time.h"
 
 
 //コンストラクタ

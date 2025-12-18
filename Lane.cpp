@@ -1,5 +1,6 @@
 #include "Lane.h"
 #include "Engine/Model.h"
+#include "Notes.h"
 #include <cassert>
 #include <map>
 
@@ -23,6 +24,8 @@ Lane::Lane(GameObject* parent)
     case 2: laneType_ = LaneType::Lane3; break;
     case 3: laneType_ = LaneType::Lane4; break;
     case 4: laneType_ = LaneType::Lane5; break;
+    case 5: laneType_ = LaneType::Lane6; break;
+    case 6: laneType_ = LaneType::Lane7; break;
     default: laneType_ = LaneType::Unknown; break;
     }
 
@@ -41,10 +44,12 @@ void Lane::Initialize()
     hLaneModel_ = Model::Load("Models/Lane.fbx");
     assert(hLaneModel_ >= 0);
 
-    float offset = (laneIndex_ - (laneCount - 1) * 0.5f) * laneWidth;
+    float offset = (laneIndex_ - (laneCount) * 0.5f) * laneWidth;
     transform_.position_.x = offset;
     transform_.position_.y = -1.0f;
     transform_.position_.z = 0.0f;
+
+    Instantiate<Notes>(this);
 }
 
 void Lane::Update()
