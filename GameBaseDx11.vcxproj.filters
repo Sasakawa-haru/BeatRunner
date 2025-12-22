@@ -122,6 +122,7 @@
     <ClCompile Include="BeatmapCatalog.cpp">
       <Filter>Notes</Filter>
     </ClCompile>
+    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -226,6 +227,7 @@
     <ClInclude Include="BeatmapCatalog.h">
       <Filter>Notes</Filter>
     </ClInclude>
+    <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

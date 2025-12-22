@@ -57,7 +57,7 @@ void Player::Initialize()
     float centerY = laneTopY + radius_;
 
     transform_.position_ = XMFLOAT3(
-        lanePos.x,
+        lanePos.x+Lane::laneWidth/2,
         centerY,
         lanePos.z - 10.0f
     );

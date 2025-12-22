@@ -58,6 +58,8 @@ void Lane::Update()
 
 void Lane::Draw()
 {
+    Transform t = transform_;
+    t.position_.x=laneWidth/2;
     Model::SetTransform(hLaneModel_, transform_);
     Model::Draw(hLaneModel_);
 }
@@ -75,7 +77,9 @@ void Lane::ResetLaneIndex()
 
 XMFLOAT3 Lane::GetCenterPosition() const
 {
-    return transform_.position_;
+    XMFLOAT3 p = transform_.position_;
+    p.x += laneWidth / 2;
+    return p;
 }
 
 Lane* Lane::FindByName(const std::string& name)
