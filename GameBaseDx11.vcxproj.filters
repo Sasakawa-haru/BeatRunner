@@ -123,6 +123,7 @@
       <Filter>Notes</Filter>
     </ClCompile>
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="JsonToCsvConverter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -228,6 +229,7 @@
       <Filter>Notes</Filter>
     </ClInclude>
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="JsonToCsvConverter.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">
