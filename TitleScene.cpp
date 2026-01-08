@@ -20,8 +20,8 @@ void TitleScene::Update()
 		SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
 		pSceneManager->ChangeScene(SCENE_ID_PLAY);
 	}
-	if (Input::IsKeyDown(DIK_N)) {
-		ConvertAllJsonInDir_IfJsonNewer("Assets/Json");
+	if (Input::IsKeyDown(DIK_0)){
+		ConvertAllJsonInDir_IfJsonNewer("Json");
 	}
 }
 

@@ -106,10 +106,10 @@ void Player::Update()
 
     XMFLOAT3 rayStart(
         transform_.position_.x,
-        transform_.position_.y + 100.0f,   // 頭上かなり上から
+        transform_.position_.y + 100.0f,   
         transform_.position_.z
     );
-    XMFLOAT3 rayDir(0.0f, -1.0f, 0.0f);   // 真下方向
+    XMFLOAT3 rayDir(0.0f, -1.0f, 0.0f);   
 
     bool  anyHit = false;
     float bestDist = 0.0f;

@@ -14,7 +14,7 @@ namespace fs = std::filesystem;
 
 static void WriteUtf8Bom(std::ofstream& ofs)
 {
-    ofs << "\xEF\xBB\xBF"; // Excel対策（任意）
+    ofs << "\xEF\xBB\xBF";
 }
 
 static std::string CsvEscape(const std::string& s)
@@ -150,8 +150,8 @@ void ConvertAllJsonInDir_IfJsonNewer(const std::string& inDir)
     if (!fs::exists(inputDir)) return;
 
     // ★ 出力先フォルダ（指定通り）
-    const fs::path outMetaDir = fs::path("Assets") / "Csv" / "Meta";
-    const fs::path outNotesDir = fs::path("Assets") / "Csv" / "Notes";
+    const fs::path outMetaDir = fs::path("Csv")/"Meta";
+    const fs::path outNotesDir = fs::path("Csv") / "Notes";
 
     // 無ければ作る
     fs::create_directories(outMetaDir);

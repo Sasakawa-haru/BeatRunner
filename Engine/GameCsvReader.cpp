@@ -106,3 +106,12 @@ float GameCsvReader::GetFloat(int line, int column)
 	}
 	return std::stof(str);
 }
+
+double GameCsvReader::GetDouble(int line, int column)
+{
+	std::string str = GetString(line, column);
+	if (str == "") {
+		return 0;
+	}
+	return std::stod(str);
+}

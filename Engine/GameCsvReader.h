@@ -59,6 +59,8 @@ public:
 	/// <param name="column">—ñ”Ô†</param>
 	/// <returns>¬”’l</returns>
 	float GetFloat(int line, int column);
+
+	double GetDouble(int line, int column);
 private:
 	struct LINEREC {
 		std::vector<std::string> record;
