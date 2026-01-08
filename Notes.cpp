@@ -7,6 +7,7 @@
 #include <cassert>
 #include <string>
 #include<algorithm>
+#include"Engine\GameCsvReader.h"
 
 
 namespace
@@ -55,6 +56,13 @@ namespace
 Notes::Notes(GameObject* parent)
     : GameObject(parent, "Notes")
 {
+    GameCsvReader* noteParam = new GameCsvReader("Csv/Meta/01 - Chartreuse Green_meta.csv");
+    for (int i; i < noteParam->GetLines(); i++) {
+        std::string paramTag = noteParam->GetString(i, 0);
+        if (paramTag == "BPM") {
+
+        }
+    }
 }
 
 Notes::~Notes() {}
