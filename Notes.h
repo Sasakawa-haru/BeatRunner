@@ -1,6 +1,9 @@
 #pragma once
 #include"Engine/GameObject.h"
 #include"BeatmapJsonLoader.h"
+#include<memory>
+
+class GameCsvReader;
 
 class Notes:public GameObject
 {
@@ -28,6 +31,9 @@ public:
 	double nowSec_ = 0.0;
 
 private:
-
+	std::unique_ptr<GameCsvReader> notesCsv_;
+	int nextLine_ = 1;
+	int laneCount_ = 0;
+	double nowSec_ = 0.0;
 };
 

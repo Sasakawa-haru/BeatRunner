@@ -1,138 +1,71 @@
 #include "Notes.h"
-#include "VerticalBeam.h"
-#include "BesideBeam.h"
-#include "Lane.h"
-#include "BeatmapJsonLoader.h"
-#include"Engine/Time.h"
-#include <cassert>
-#include <string>
-#include<algorithm>
-#include"Engine\GameCsvReader.h"
 
+#include "Engine/Time.h"
+#include "Engine/GameCsvReader.h"
+#include "Lane.h"
+#include "VerticalBeam.h"
+
+#include <memory>
+#include <string>
 
 namespace
 {
-    static float TimeToZ(float sec)
-    {
-        const float speed = 6.0f;   // 調整用
-        return sec * speed;
-    }
-
-    static float CalcNoteSec(int num, int lpb, int bpm, int offsetMs)
-    {
-        const double beatSec = 60.0 / (double)bpm;
-        const double stepSec = beatSec / (double)lpb;
-        const double t = (double)offsetMs / 1000.0 + (double)num * stepSec;
-        return (float)t;
-    }
-
-    constexpr float SplitY = 0.7f; // 上下の間隔（見た目で調整）
-
-    struct LanePlace {
-        int laneIndex;   // 0..4
-        float yOffset;   // 上下
-        bool useBeside;  // BesideBeamにするか
-    };
-
-    // block 0..6 を 5レーン+上下 に割り当て
-    // 0..2: lane1..3 通常（縦）
-    // 3,4 : lane4 上/下（横）
-    // 5,6 : lane5 上/下（横）
-    static LanePlace DecodeBlock(int block)
-    {
-        if (block <= 2) return { block, 0.0f, false };           // lane1-3
-        if (block == 3) return { 3, +SplitY, true };            // lane4 upper
-        if (block == 4) return { 3, -SplitY, true };            // lane4 lower
-        if (block == 5) return { 4, +SplitY, true };            // lane5 upper
-        return              { 4, -SplitY, true };               // lane5 lower
-    }
-
-    constexpr float kJudgeZ = 0.0f;
-    constexpr float kSpawnZ = 40.0f;
-    constexpr float kScrollSpeed = 10.0f;
+    constexpr float  kJudgeZ = 0.0f;
+    constexpr float  kSpawnZ = 40.0f;
+    constexpr float  kScrollSpeed = 10.0f;
     constexpr double kLeadTimeSec = (kSpawnZ - kJudgeZ) / kScrollSpeed;
 }
 
 Notes::Notes(GameObject* parent)
     : GameObject(parent, "Notes")
 {
-    GameCsvReader* noteParam = new GameCsvReader("Csv/Meta/01 - Chartreuse Green_meta.csv");
-    for (int i; i < noteParam->GetLines(); i++) {
-        std::string paramTag = noteParam->GetString(i, 0);
-        if (paramTag == "BPM") {
-
-        }
-    }
 }
 
 Notes::~Notes() {}
 
 void Notes::Initialize()
 {
-    std::string err;
-
-    const std::string path = "Json/01 - Chartreuse Green.json";
-
-    if (!BeatmapJsonLoader::LoadFromFile(path, map_, &err)) {
-        assert(false);
-        return;
-    }
-    char buf[256];
-    sprintf_s(buf, "loaded notes = %zu\n", map_.notes.size());
-    OutputDebugStringA(buf);
-
-    nextIndex_ = 0;
+    notesCsv_ = std::make_unique<GameCsvReader>("Csv/Notes/01 - Chartreuse Green_notes.csv");
     nowSec_ = 0.0;
+    nextLine_ = 1; 
 
-    // 念のため num順（=時刻順）に並べる
-    std::sort(map_.notes.begin(), map_.notes.end(),
-        [](const auto& a, const auto& b) { return a.num < b.num; });
+    laneCount_ = 0;
+    if (notesCsv_ && notesCsv_->GetLines() > 0) {
+        laneCount_ = notesCsv_->GetColumns(0) - 1; // time列を除く
+        if (laneCount_ < 0) laneCount_ = 0;
+    }
 }
 
 void Notes::Update()
 {
-    // ★曲の再生時間が取れない場合：dtを積算
-    // エンジンに Time::DeltaTime() があるならそれを使うのが普通
     nowSec_ += Time::DeltaTime();
+    if (!notesCsv_) return;
 
-    // まだ譜面が無い or もう全部出し切った
-    if (map_.notes.empty() || nextIndex_ >= map_.notes.size()) return;
-
-    // 先読みして生成（同フレームで複数生成されるので while）
-    while (nextIndex_ < map_.notes.size())
+    const int lines = notesCsv_->GetLines();
+    while (nextLine_ < lines)
     {
-        const auto& e = map_.notes[nextIndex_];
+        const float hitTimeSec = notesCsv_->GetFloat(nextLine_, 0);
 
-        const double hitSec = CalcNoteSec(e.num, e.lpb, map_.bpm, map_.offset);
+        if (nowSec_ < hitTimeSec - kLeadTimeSec) break;
 
-        // 叩く leadTimeSec 秒前になったら生成
-        if (nowSec_ < hitSec - kLeadTimeSec) break;
-
-        // --- ここから生成処理 ---
-        int laneIndex = e.block; // 0..4想定（上下分けなどするならここで変換）
-
-        Lane* lane = Lane::FindByName("lane" + std::to_string(laneIndex + 1));
-        if (lane)
+        for (int lane = 0; lane < laneCount_; lane++)
         {
-            XMFLOAT3 pos = lane->GetCenterPosition();
+            if (notesCsv_->GetInt(nextLine_, 1 + lane) != 1) continue;
+
+            Lane* ln = Lane::FindByName("lane" + std::to_string(lane + 1));
+            if (!ln) continue;
+
+            XMFLOAT3 pos = ln->GetCenterPosition();
             pos.z = kSpawnZ;
 
-            // 例：上下分けやBesideBeam判定があるならここで pos.y や種類を変える
-            // const auto place = DecodeBlock(e.block);
-            // pos.y += place.yOffset;
-
-            if (e.type == 2) {
-                auto* b = Instantiate<BesideBeam>(this);
-                b->SetPosition(pos);
-            }
-            else {
-                auto* v = Instantiate<VerticalBeam>(this);
-                v->SetPosition(pos);
-                // v->SetLaneIndex(laneIndex); // 必要なら
-            }
+            auto* note = Instantiate<VerticalBeam>(this);
+            note->SetPosition(pos);
+            // note->SetHitTime(hitTimeSec); // 判定を時間でやるなら保持
         }
 
-        ++nextIndex_;
+        nextLine_++;
     }
-}void Notes::Draw() {}
+}
+
+void Notes::Draw() {}
 void Notes::Release() {}

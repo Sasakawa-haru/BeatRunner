@@ -149,11 +149,10 @@ void ConvertAllJsonInDir_IfJsonNewer(const std::string& inDir)
     fs::path inputDir(inDir);
     if (!fs::exists(inputDir)) return;
 
-    // ★ 出力先フォルダ（指定通り）
+    // ★ 出力先フォルダ
     const fs::path outMetaDir = fs::path("Csv")/"Meta";
     const fs::path outNotesDir = fs::path("Csv") / "Notes";
 
-    // 無ければ作る
     fs::create_directories(outMetaDir);
     fs::create_directories(outNotesDir);
 
@@ -163,10 +162,9 @@ void ConvertAllJsonInDir_IfJsonNewer(const std::string& inDir)
         const fs::path jsonPath = entry.path();
         if (jsonPath.extension() != ".json") continue;
 
-        // JSONファイル名（拡張子なし）
         const std::string stem = jsonPath.stem().string();
 
-        // ★ 出力先：Assets/Csv/Meta と Assets/Csv/Notes
+        //  出力先：Assets/Csv/Meta と Assets/Csv/Notes
         const fs::path metaCsv = outMetaDir / (stem + "_meta.csv");
         const fs::path notesCsv = outNotesDir / (stem + "_notes.csv");
 
@@ -175,6 +173,5 @@ void ConvertAllJsonInDir_IfJsonNewer(const std::string& inDir)
 
         std::string err;
         ConvertBeatmapJsonToCsvSeparated(jsonPath.string(), metaCsv.string(), notesCsv.string(), &err);
-        // 必要なら err をログ/MessageBoxに出す
     }
 }
