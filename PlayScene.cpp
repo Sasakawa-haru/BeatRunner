@@ -1,6 +1,8 @@
 #include "PlayScene.h"
 #include"Player.h"
 #include"Lane.h"
+#include"Engine/Input.h"
+#include"Engine/Audio.h"
 #include"Engine/Time.h"
 
 
@@ -28,6 +30,8 @@ void PlayScene::Update()
 	char buf[64];
 	sprintf_s(buf, "dt=%.6f\n", Time::DeltaTime());
 	OutputDebugStringA(buf);
+	if (Input::IsKeyDown(DIK_ESCAPE)) {
+	}
 }
 
 //•`‰æ

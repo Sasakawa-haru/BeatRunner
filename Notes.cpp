@@ -60,7 +60,6 @@ void Notes::Update()
 
             auto* note = Instantiate<VerticalBeam>(this);
             note->SetPosition(pos);
-            // note->SetHitTime(hitTimeSec); // ”»’è‚ğŠÔ‚Å‚â‚é‚È‚ç•Û
         }
 
         nextLine_++;

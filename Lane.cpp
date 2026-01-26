@@ -1,6 +1,7 @@
 #include "Lane.h"
 #include "Engine/Model.h"
 #include "Notes.h"
+#include"Music.h"
 #include <cassert>
 #include <map>
 
@@ -50,6 +51,8 @@ void Lane::Initialize()
     transform_.position_.z = 0.0f;
 
     Instantiate<Notes>(this);
+    Instantiate<Music>(this);
+
 }
 
 void Lane::Update()

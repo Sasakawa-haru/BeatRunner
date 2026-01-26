@@ -124,6 +124,7 @@
     </ClCompile>
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="JsonToCsvConverter.cpp" />
+    <ClCompile Include="Music.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -230,6 +231,7 @@
     </ClInclude>
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="JsonToCsvConverter.h" />
+    <ClInclude Include="Music.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">
