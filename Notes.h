@@ -28,7 +28,6 @@ public:
 
 	BeatMap map_;
 	size_t nextIndex_ = 0;
-	double nowSec_ = 0.0;
 
 private:
 	std::unique_ptr<GameCsvReader> notesCsv_;
