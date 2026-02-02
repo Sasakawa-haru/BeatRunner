@@ -2,6 +2,7 @@
 #include"Engine/GameObject.h"
 #include"BeatmapJsonLoader.h"
 #include<memory>
+#include<vector>
 
 class GameCsvReader;
 
@@ -31,8 +32,12 @@ public:
 
 private:
 	std::unique_ptr<GameCsvReader> notesCsv_;
+	std::unique_ptr<GameCsvReader>lanePosCsv_;
+	std::vector<XMFLOAT3> lanePos_;
 	int nextLine_ = 1;
 	int laneCount_ = 0;
 	double nowSec_ = 0.0;
+	
+
 };
 

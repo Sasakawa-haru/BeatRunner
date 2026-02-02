@@ -45,12 +45,11 @@ void Lane::Initialize()
     hLaneModel_ = Model::Load("Models/Lane.fbx");
     assert(hLaneModel_ >= 0);
 
-    float offset = (laneIndex_ - (laneCount) * 0.5f) * laneWidth;
+    float offset = (laneIndex_ - (laneCount+1) * 0.5f) * laneWidth;
     transform_.position_.x = offset;
     transform_.position_.y = -1.0f;
     transform_.position_.z = 0.0f;
 
-    Instantiate<Notes>(this);
     Instantiate<Music>(this);
 
 }
@@ -62,8 +61,8 @@ void Lane::Update()
 void Lane::Draw()
 {
     Transform t = transform_;
-    t.position_.x=laneWidth/2;
-    Model::SetTransform(hLaneModel_, transform_);
+    t.position_.x += laneWidth * 0.5f; 
+    Model::SetTransform(hLaneModel_, t);
     Model::Draw(hLaneModel_);
 }
 
@@ -80,9 +79,9 @@ void Lane::ResetLaneIndex()
 
 XMFLOAT3 Lane::GetCenterPosition() const
 {
-    XMFLOAT3 p = transform_.position_;
-    p.x += laneWidth / 2;
-    return p;
+    //XMFLOAT3 p = transform_.position_;
+    //p.x += laneWidth / 2;
+    return transform_.position_;
 }
 
 Lane* Lane::FindByName(const std::string& name)

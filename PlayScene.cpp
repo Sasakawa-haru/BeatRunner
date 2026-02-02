@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include"Player.h"
 #include"Lane.h"
+#include"Notes.h"
 #include"Engine/Input.h"
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
@@ -21,6 +22,7 @@ void PlayScene::Initialize()
 		Instantiate<Lane>(this);
 	}
 
+	Instantiate<Notes>(this);
 	Instantiate<Player>(this);
 }
 
