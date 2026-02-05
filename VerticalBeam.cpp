@@ -3,6 +3,14 @@
 #include"Engine/Model.h"
 #include"Engine/Time.h"
 
+#include<cassert>
+
+namespace
+{
+	constexpr float kBeamSpeed = 20.0f;
+	constexpr float kKillz = -10.0f;
+}
+
 VerticalBeam::VerticalBeam(GameObject* parent)
 	:GameObject(parent,"VertivalBeam"),hVerticalBeamModel_(-1)
 {
@@ -18,6 +26,7 @@ void VerticalBeam::Initialize()
 	Enter();
 	Visible();
 	Lane* lane = (Lane*)FindObject("Lane");
+	assert(lane);
 	transform_.position_.x += Lane::laneWidth / 2;
 	assert(lane);
 
@@ -25,9 +34,8 @@ void VerticalBeam::Initialize()
 
 void VerticalBeam::Update()
 {
-	const float speed = 20.0f;
 	float dt =Time::DeltaTime();
-	transform_.position_.z -= speed * dt;
+	transform_.position_.z -= kBeamSpeed * dt;
 
 	if (transform_.position_.z < -10.0f) {
 		KillMe();

@@ -6,6 +6,8 @@
 #include "Engine/Input.h"
 #include "Engine/SphereCollider.h"
 #include "Engine/Camera.h"
+#include"Engine/Audio.h"
+#include"Lane.h"
 #include <cassert>
 #include<cmath>
 
@@ -13,7 +15,7 @@ using namespace DirectX;
 
 Player::Player(GameObject* parent)
     : GameObject(parent, "Player")
-    , hPlayerModel_(-1)
+    , hPlayerModel_(-1),hMoveSound_(-1)
 {
     GameCsvReader* Player = new GameCsvReader("Assets/Csv/PlayerState.csv");
     for (int i = 0; i < Player->GetLines(); i++) {
@@ -66,6 +68,9 @@ void Player::Initialize()
     hPlayerModel_ = Model::Load("Models/Player.fbx");
     assert(hPlayerModel_ >= 0);
 
+    hMoveSound_ = Audio::Load("Sound/move.wav");
+    assert(hMoveSound_ >= 0);
+
     // 当たり判定
     collider_ = new SphereCollider(transform_.position_, radius_);
     AddCollider(collider_);
@@ -83,10 +88,12 @@ void Player::Update()
     if (Input::IsKeyDown(DIK_A))
     {
         transform_.position_.x -= 2.0f;
+        Audio::Play(hMoveSound_);
     }
     if (Input::IsKeyDown(DIK_D))
     {
         transform_.position_.x += 2.0f;
+        Audio::Play(hMoveSound_);
     }
 
     // --- ジャンプ開始 ---

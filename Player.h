@@ -20,6 +20,7 @@ public:
 
 private:
     int   hPlayerModel_;
+    int   hMoveSound_;
     float radius_ = 0.0f;   // プレイヤーの足元判定用半径
     float jumpVelocity_;
     bool  isJumping_ = false;
@@ -31,4 +32,6 @@ private:
 
     SphereCollider* collider_ = nullptr;
     std::vector<Lane*>   lanes_;      // 全レーンへのポインタ
+
+
 };

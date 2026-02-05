@@ -13,12 +13,14 @@
 namespace
 {
     constexpr float  kJudgeZ = 0.0f;
-    constexpr float  kSpawnZ = 40.0f;
-    constexpr float  kScrollSpeed = 10.0f;
+    constexpr float  kSpawnZ = 50.0f;
+    constexpr float  kScrollSpeed = 20.0f;
     constexpr double kLeadTimeSec = (kSpawnZ - kJudgeZ) / kScrollSpeed;
+    constexpr double kEarlySec = 0.50f;
 
     constexpr float  kSplitY = 0.7f; // lane6/lane7 Ç lane5 ÇÃè„â∫Ç…Ç∏ÇÁÇ∑ó 
 }
+
 
 Notes::Notes(GameObject* parent)
     : GameObject(parent, "Notes")
@@ -52,6 +54,7 @@ void Notes::Update()
     while (nextLine_ < lines)
     {
         const float hitTimeSec = notesCsv_->GetFloat(nextLine_, 0);
+        const double spawnTimeSec = (double)hitTimeSec - kLeadTimeSec - kEarlySec;
         if (nowSec_ < hitTimeSec - kLeadTimeSec) break;
 
         for (int lane = 0; lane < laneCount_; lane++)
@@ -77,7 +80,7 @@ void Notes::Update()
             if (!ln) continue;
 
             XMFLOAT3 pos = ln->GetCenterPosition();
-            pos.y += yOff;
+            pos.y += yOff+2.0;
             pos.z = kSpawnZ;
 
             if (isBeside) {
