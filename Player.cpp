@@ -169,8 +169,8 @@ void Player::Update()
 
         XMFLOAT3 camPos(
             p.x,
-            p.y + 1.0f,
-            p.z - 5.0f
+            p.y + 3.0f,
+            p.z -10.0f
         );
         Camera::SetPosition(camPos);
         Camera::SetTarget(p);

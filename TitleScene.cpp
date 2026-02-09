@@ -21,7 +21,7 @@ void TitleScene::Update()
 		pSceneManager->ChangeScene(SCENE_ID_PLAY);
 	}
 	if (Input::IsKeyDown(DIK_0)){
-		ConvertAllJsonInDir_IfJsonNewer("Json");
+		ConvertAllJsonInDir_IfJsonNewer("Notes");
 	}
 }
 

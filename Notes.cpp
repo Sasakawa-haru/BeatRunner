@@ -1,5 +1,4 @@
-// Notes.cppiCSV•ˆ–Ê”ÅFlane6/lane7 ¨ lane5‚Ìã‰º‚ÉBesideBeamj
-#include "Notes.h"
+ï»¿#include "Notes.h"
 
 #include "Engine/Time.h"
 #include "Engine/GameCsvReader.h"
@@ -16,9 +15,12 @@ namespace
     constexpr float  kSpawnZ = 50.0f;
     constexpr float  kScrollSpeed = 20.0f;
     constexpr double kLeadTimeSec = (kSpawnZ - kJudgeZ) / kScrollSpeed;
-    constexpr double kEarlySec = 0.50f;
+    constexpr double kEarlySec = 0.60f;
 
-    constexpr float  kSplitY = 0.7f; // lane6/lane7 ‚ğ lane5 ‚Ìã‰º‚É‚¸‚ç‚·—Ê
+    constexpr float  kSplitY = 0.3f; // lane6/lane7 ã‚’ lane5 ã®ä¸Šä¸‹ã«ãšã‚‰ã™é‡
+
+    constexpr float kBesideLeftFixX = 0.0f;
+    constexpr int kBaseLaneCount = 5;
 }
 
 
@@ -38,7 +40,7 @@ void Notes::Initialize()
 
     laneCount_ = 0;
     if (notesCsv_ && notesCsv_->GetLines() > 0) {
-        laneCount_ = notesCsv_->GetColumns(0) - 1; // time—ñ‚ğœ‚­
+        laneCount_ = notesCsv_->GetColumns(0) - 1; // timeåˆ—ã‚’é™¤ã
         if (laneCount_ < 0) laneCount_ = 0;
     }
 }
@@ -62,24 +64,25 @@ void Notes::Update()
             if (notesCsv_->GetInt(nextLine_, 1 + lane) != 1) continue;
 
             bool isBeside = false;
-            int baseLane = lane;   // 0..4ilane1..5j‚É—‚Æ‚·
+            int baseLane = lane;   // 0..4ï¼ˆlane1..5ï¼‰ã«è½ã¨ã™
             float yOff = 0.0f;
 
-            // lane1..5 ‚Í‚»‚Ì‚Ü‚Ü VerticalBeam
-            // lane6/lane7 ‚Í lane5 ‚Ìã‰º‚É BesideBeam
-            if (lane == 5 || lane == 6) {         // CSV: lane6/lane7i0-basedj
+            // lane1..5 ã¯ãã®ã¾ã¾ VerticalBeam
+            // lane6/lane7 ã¯ lane5 ã®ä¸Šä¸‹ã« BesideBeam
+            if (lane == 5 || lane == 6) {         // CSV: lane6/lane7ï¼ˆ0-basedï¼‰
                 isBeside = true;
-                baseLane = 4;                      // lane5i0-basedj
+                baseLane = 4;                      // lane5ï¼ˆ0-basedï¼‰
                 yOff = (lane == 5) ? +kSplitY : -kSplitY;
             }
 
-            // ‰æ–Êã‚ÌLane‚Í lane1..lane5 ‚ğ‘z’è
+            // ç”»é¢ä¸Šã®Laneã¯ lane1..lane5 ã‚’æƒ³å®š
             if (baseLane < 0 || baseLane >= 5) continue;
 
             Lane* ln = Lane::FindByName("lane" + std::to_string(baseLane + 1));
             if (!ln) continue;
 
             XMFLOAT3 pos = ln->GetCenterPosition();
+            pos.x += Lane::laneWidth * 0.5f;
             pos.y += yOff+2.0;
             pos.z = kSpawnZ;
 

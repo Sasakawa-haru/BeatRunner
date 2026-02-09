@@ -1,43 +1,27 @@
 #pragma once
-#include"Engine/GameObject.h"
-#include"BeatmapJsonLoader.h"
-#include<memory>
-#include<vector>
+
+#include "Engine/GameObject.h"
+#include <memory>
 
 class GameCsvReader;
 
-class Notes:public GameObject
+class Notes : public GameObject
 {
 public:
-	//コンストラクタ
-	Notes(GameObject* parent);
-	
-	//デストラクタ
-	~Notes();
-	
-	//初期化
-	void Initialize()override;
+    Notes(GameObject* parent);
+    ~Notes();
 
-	//更新
-	void Update()override;
-
-	//描画
-	void Draw()override;
-
-	//関数
-	void Release();
-
-	BeatMap map_;
-	size_t nextIndex_ = 0;
+    void Initialize() override;
+    void Update() override;
+    void Draw() override;
+    void Release() override;
 
 private:
-	std::unique_ptr<GameCsvReader> notesCsv_;
-	std::unique_ptr<GameCsvReader>lanePosCsv_;
-	std::vector<XMFLOAT3> lanePos_;
-	int nextLine_ = 1;
-	int laneCount_ = 0;
-	double nowSec_ = 0.0;
-	
+    std::unique_ptr<GameCsvReader> notesCsv_;
+    int nextLine_ = 1;    //csvヘッダー分の1
+    int laneCount_ = 0;   // CSV列数-1
+    double nowSec_ = 0.0; // 曲の経過秒（理想は音源再生位置）
+    int comboCount = 0;  //コンボ数
+    int maxCombo;        //最大コンボ数
 
 };
-
