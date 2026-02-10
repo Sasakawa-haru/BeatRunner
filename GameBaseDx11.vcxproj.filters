@@ -27,6 +27,9 @@
     <Filter Include="Notes">
       <UniqueIdentifier>{cf5fc5ac-15e7-44fc-b824-1894115707ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{fdc13867-4a12-4e1b-99ac-18f17c6e0a16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\BoxCollider.cpp">
@@ -125,6 +128,11 @@
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="JsonToCsvConverter.cpp" />
     <ClCompile Include="Music.cpp" />
+    <ClCompile Include="Combo.cpp">
+      <Filter>Notes</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreSystem.cpp" />
+    <ClCompile Include="JudgeSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -232,6 +240,11 @@
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="JsonToCsvConverter.h" />
     <ClInclude Include="Music.h" />
+    <ClInclude Include="Combo.h">
+      <Filter>Notes</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreSystem.h" />
+    <ClInclude Include="JudgeSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

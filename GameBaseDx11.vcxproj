@@ -145,6 +145,7 @@
     </ClCompile>
     <ClCompile Include="BeatmapJsonLoader.cpp" />
     <ClCompile Include="BesideBeam.cpp" />
+    <ClCompile Include="Combo.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
     <ClCompile Include="Engine\BillBoard.cpp" />
     <ClCompile Include="Engine\BoxCollider.cpp" />
@@ -171,11 +172,13 @@
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="JsonToCsvConverter.cpp" />
+    <ClCompile Include="JudgeSystem.cpp" />
     <ClCompile Include="Lane.cpp" />
     <ClCompile Include="Notes.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Music.cpp" />
+    <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="VerticalBeam.cpp" />
   </ItemGroup>
@@ -185,6 +188,7 @@
     <ClInclude Include="BeatmapJsonLoader.h" />
     <ClInclude Include="BeatmapMeta.h" />
     <ClInclude Include="BesideBeam.h" />
+    <ClInclude Include="Combo.h" />
     <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\BillBoard.h" />
     <ClInclude Include="Engine\BoxCollider.h" />
@@ -212,11 +216,13 @@
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="JsonToCsvConverter.h" />
+    <ClInclude Include="JudgeSystem.h" />
     <ClInclude Include="Lane.h" />
     <ClInclude Include="Notes.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Music.h" />
+    <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="VerticalBeam.h" />
   </ItemGroup>

@@ -20,13 +20,13 @@ Lane::Lane(GameObject* parent)
     laneIndex_ = sNextLaneIndex_++;
 
     switch (laneIndex_) {
-    case 0: laneType_ = LaneType::Lane1; break;
+    case 0: laneType_ = LaneType::Lane1; break;//1ÉåÅ[Éì
     case 1: laneType_ = LaneType::Lane2; break;
     case 2: laneType_ = LaneType::Lane3; break;
     case 3: laneType_ = LaneType::Lane4; break;
     case 4: laneType_ = LaneType::Lane5; break;
-    case 5: laneType_ = LaneType::Lane6; break;
-    case 6: laneType_ = LaneType::Lane7; break;
+    case 5: laneType_ = LaneType::Lane6; break;//è„
+    case 6: laneType_ = LaneType::Lane7; break;//â∫
     default: laneType_ = LaneType::Unknown; break;
     }
 
