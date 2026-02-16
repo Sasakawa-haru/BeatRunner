@@ -2,12 +2,10 @@
 class JudgeSystem
 {
 public:
-	JudgeSystem(const JudgeWindowMs& w);
+	JudgeSystem();
 	~JudgeSystem();
 
-	JudgeResult On
 
 private:
-	JudgeWindowMs window_;
 };
 
