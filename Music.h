@@ -4,8 +4,6 @@
 //◆◆◆を管理するクラス
 class Music : public GameObject
 {
-private:
-    bool started_ = false;
 public:
     //コンストラクタ
     Music(GameObject* parent);
@@ -24,6 +22,10 @@ public:
 
     //開放
     void Release() override;
+
+private:
     int hSound_;
+    bool started_;
+    double nowSec_;
 
 };
