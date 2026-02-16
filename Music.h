@@ -5,7 +5,7 @@
 class Music : public GameObject
 {
 private:
-
+    bool started_ = false;
 public:
     //コンストラクタ
     Music(GameObject* parent);

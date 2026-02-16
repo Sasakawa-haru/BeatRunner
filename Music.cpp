@@ -15,12 +15,17 @@ Music::~Music()
 //‰Šú‰»
 void Music::Initialize()
 {
-    hSound_ = Audio::Load("Sound/01 - Chartreuse Green.wav");
+    if (!started_) {
+        hSound_ = Audio::Load("Sound/01 - Chartreuse Green.wav");
+        started_ = true;
+    }
+
 }
 
 //XV
 void Music::Update()
 {
+
     Audio::Play(hSound_);
 }
 
