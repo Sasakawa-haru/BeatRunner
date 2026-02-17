@@ -1,6 +1,7 @@
 #pragma once
+#include"NoteBase.h"
 #include "Engine/GameObject.h"
-class VerticalBeam :public GameObject
+class VerticalBeam :public NoteBase
 {
 public:
 	//コンストラクタ

@@ -12,7 +12,7 @@ namespace
 }
 
 VerticalBeam::VerticalBeam(GameObject* parent)
-	:GameObject(parent,"VertivalBeam"),hVerticalBeamModel_(-1)
+	:NoteBase(parent,"VertivalBeam"),hVerticalBeamModel_(-1)
 {
 }
 
@@ -23,13 +23,8 @@ VerticalBeam::~VerticalBeam()
 void VerticalBeam::Initialize()
 {
 	hVerticalBeamModel_ = Model::Load("Models/VerticalBeam.fbx");
-	Enter();
+	Enter();\
 	Visible();
-	Lane* lane = (Lane*)FindObject("Lane");
-	assert(lane);
-	transform_.position_.x += Lane::laneWidth / 2;
-	assert(lane);
-
 }
 
 void VerticalBeam::Update()

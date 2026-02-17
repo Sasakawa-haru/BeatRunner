@@ -5,6 +5,7 @@
 #include "Lane.h"
 #include "VerticalBeam.h"
 #include "BesideBeam.h"
+#include"Music.h"
 
 #include <memory>
 #include <string>
@@ -47,6 +48,8 @@ void Notes::Initialize()
 
 void Notes::Update()
 {
+    auto* music(Music*) FindObject("Music");
+    if (!music || !music->IsStarted())return;
     nowSec_ += Time::DeltaTime();
     if (!notesCsv_) return;
 
@@ -89,10 +92,14 @@ void Notes::Update()
             if (isBeside) {
                 auto* note = Instantiate<BesideBeam>(this);
                 note->SetPosition(pos);
+                note->SetLane(baseLane);
+                note->SetHitTimeSec(hitTimeSec);
             }
             else {
                 auto* note = Instantiate<VerticalBeam>(this);
                 note->SetPosition(pos);
+                note->SetLane(baseLane);
+                note->SetHitTimeSec(hitTimeSec);
             }
         }
 

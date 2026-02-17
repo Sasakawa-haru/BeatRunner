@@ -1,7 +1,7 @@
 #pragma once
+#include"NoteBase.h"
 #include "Engine/GameObject.h"
-class BesideBeam :
-    public GameObject
+class BesideBeam :public NoteBase
 {
 public:
     BesideBeam(GameObject* parent);

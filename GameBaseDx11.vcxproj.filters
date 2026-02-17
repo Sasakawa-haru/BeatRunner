@@ -133,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="JudgeSystem.cpp" />
+    <ClCompile Include="NoteBase.cpp">
+      <Filter>Notes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -245,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="JudgeSystem.h" />
+    <ClInclude Include="NoteBase.h">
+      <Filter>Notes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

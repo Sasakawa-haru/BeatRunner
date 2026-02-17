@@ -50,7 +50,6 @@ void Lane::Initialize()
     transform_.position_.y = -1.0f;
     transform_.position_.z = 0.0f;
 
-    Instantiate<Music>(this);
 
 }
 

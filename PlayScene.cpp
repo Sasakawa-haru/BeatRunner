@@ -2,6 +2,8 @@
 #include"Player.h"
 #include"Lane.h"
 #include"Notes.h"
+#include"Music.h"
+#include"JudgeSystem.h"
 #include"Engine/Input.h"
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
@@ -21,8 +23,9 @@ void PlayScene::Initialize()
 	for (int i = 0; i < Lane::laneCount; i++) {
 		Instantiate<Lane>(this);
 	}
-
+	Instantiate<Music>(this);
 	Instantiate<Notes>(this);
+	Instantiate<JudgeSystem>(this);
 	Instantiate<Player>(this);
 }
 

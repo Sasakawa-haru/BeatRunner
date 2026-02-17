@@ -175,6 +175,7 @@
     <ClCompile Include="JudgeSystem.cpp" />
     <ClCompile Include="Lane.cpp" />
     <ClCompile Include="Notes.cpp" />
+    <ClCompile Include="NoteBase.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Music.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="JudgeSystem.h" />
     <ClInclude Include="Lane.h" />
     <ClInclude Include="Notes.h" />
+    <ClInclude Include="NoteBase.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Music.h" />
