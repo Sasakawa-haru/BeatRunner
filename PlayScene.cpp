@@ -4,6 +4,7 @@
 #include"Notes.h"
 #include"Music.h"
 #include"JudgeSystem.h"
+#include"ScoreSystem.h"
 #include"Engine/Input.h"
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
@@ -26,6 +27,7 @@ void PlayScene::Initialize()
 	Instantiate<Music>(this);
 	Instantiate<Notes>(this);
 	Instantiate<JudgeSystem>(this);
+	Instantiate<ScoreSystem>(this);
 	Instantiate<Player>(this);
 }
 

@@ -191,5 +191,4 @@ void Player::Draw()
 
 void Player::Release()
 {
-    // 必要なら collider_ の delete など
 }

@@ -19,7 +19,8 @@ public:
 	void Update()override;
 	void Draw()override;
 	void Release()override;
-
+	void OnHit(int groupId, double diffSec);
+	void OnCollision(int groupId);
 	void OnJudge(JudgeResult r);
 
 private:

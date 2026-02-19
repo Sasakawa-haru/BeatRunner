@@ -32,9 +32,21 @@ void ScoreSystem::Draw()
 {
 	text_.Draw(20, 20, "SCORE:");
 	text_.Draw(140, 20, score_);
+
+	text_.Draw(20, 60, "COMBO:");
+	text_.Draw(140, 60, combo_);
+
 }
 
 void ScoreSystem::Release()
+{
+}
+
+void ScoreSystem::OnHit(int groupId, double diffSec)
+{
+}
+
+void ScoreSystem::OnCollision(int groupId)
 {
 }
 

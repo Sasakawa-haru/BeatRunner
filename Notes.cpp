@@ -7,6 +7,8 @@
 #include "BesideBeam.h"
 #include"Music.h"
 
+#include<algorithm>
+#include<cmath>
 #include <memory>
 #include <string>
 
@@ -44,6 +46,7 @@ void Notes::Initialize()
         laneCount_ = notesCsv_->GetColumns(0) - 1; // time列を除く
         if (laneCount_ < 0) laneCount_ = 0;
     }
+    BuildGroupsFromCsv();
 }
 
 void Notes::Update()
@@ -109,3 +112,22 @@ void Notes::Update()
 
 void Notes::Draw() {}
 void Notes::Release() {}
+
+int Notes::GetGroupIdByTimeMs(int tms) const
+{
+    auto it = timeMsToGroupId_.find(tms);
+    if (it == timeMsToGroupId_.end())return-1;
+    return it->second;
+}
+
+void Notes::BuildGroupsFromCsv()
+{
+    groupTimesMs_.clear();
+    timeMsToGroupId_.clear();
+    if (!notesCsv_)return;
+
+    const int rowCount = notesCsv_->GetRowCount();
+    for (int row = 0; row < rowCount; ++row) {
+        float hitTimeSec = notesCsv->GetFloat(row, 0);
+    }
+}
