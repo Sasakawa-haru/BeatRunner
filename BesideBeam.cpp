@@ -4,7 +4,7 @@
 #include"Engine/Time.h"
 
 BesideBeam::BesideBeam(GameObject* parent)
-	:GameObject(parent,"BesideBeam"),  hBesideBeamModel_(-1)
+	:NoteBase(parent,"BesideBeam"),  hBesideBeamModel_(-1)
 {
 	
 }

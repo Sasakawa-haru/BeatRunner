@@ -23,6 +23,9 @@ public:
     //ŠJ•ú
     void Release() override;
 
+    bool IsStarted()const { return started_; }
+    double GetNowSec()const { return nowSec_; }
+
 private:
     int hSound_;
     bool started_;

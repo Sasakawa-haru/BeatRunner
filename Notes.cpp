@@ -48,7 +48,7 @@ void Notes::Initialize()
 
 void Notes::Update()
 {
-    auto* music(Music*) FindObject("Music");
+    auto* music=(Music*) FindObject("Music");
     if (!music || !music->IsStarted())return;
     nowSec_ += Time::DeltaTime();
     if (!notesCsv_) return;

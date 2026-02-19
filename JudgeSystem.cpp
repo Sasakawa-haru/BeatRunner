@@ -7,3 +7,15 @@ struct Judge {
 	int normal;//タイミング関係なしに素通りした場合
 	int but;//当たった場合
 };
+
+JudgeSystem::JudgeSystem(GameObject* parent)
+	: GameObject(parent, "JudgeSystem")
+{
+}
+
+JudgeSystem::~JudgeSystem() {}
+
+void JudgeSystem::Initialize() {}
+void JudgeSystem::Update() {}
+void JudgeSystem::Draw() {}
+void JudgeSystem::Release() {}
