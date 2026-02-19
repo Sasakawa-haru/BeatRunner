@@ -17,7 +17,7 @@ Music::~Music()
 void Music::Initialize()
 {
     hSound_ = Audio::Load("Sound/01 - Chartreuse Green.wav");
-    started_ = true;
+    started_ = false;
     nowSec_ = 0.0f;
     
 
