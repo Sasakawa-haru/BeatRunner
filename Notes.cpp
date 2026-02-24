@@ -11,6 +11,7 @@
 #include<cmath>
 #include <memory>
 #include <string>
+#include<vector>
 
 namespace
 {
@@ -53,7 +54,7 @@ void Notes::Update()
 {
     auto* music=(Music*) FindObject("Music");
     if (!music || !music->IsStarted())return;
-    nowSec_ += Time::DeltaTime();
+    nowSec_ = music->GetNowSec();
     if (!notesCsv_) return;
 
     const int lines = notesCsv_->GetLines();
@@ -124,18 +125,24 @@ void Notes::BuildGroupsFromCsv()
 {
     groupTimesMs_.clear();
     timeMsToGroupId_.clear();
-    if (!notesCsv_)return;
+    if (!notesCsv_) return;
 
-    const int rowCount = notesCsv_->GetLines();
-    if (lines <= 1)return;
+    const int lines = notesCsv_->GetLines();   
+    if (lines <= 1) return;                 
     for (int line = 1; line < lines; ++line) {
         const float hitTimeSec = notesCsv_->GetFloat(line, 0);
-        const int tms = (int)std::(hitTimeSec * 1000.0f);
-        groupTimeMs_.push_back(tms);
+
+        
+        const int tms = (int)(hitTimeSec * 1000.0f + 0.5f);
+
+        groupTimesMs_.push_back(tms);        
     }
 
     std::sort(groupTimesMs_.begin(), groupTimesMs_.end());
-    groupTimesMs_.erase(std::unique(groupTimesMs_.begin(), groupTimesMs_.end()), groupTimesMs_.end());
+    groupTimesMs_.erase(
+        std::unique(groupTimesMs_.begin(), groupTimesMs_.end()),
+        groupTimesMs_.end()
+    );
 
     for (int i = 0; i < (int)groupTimesMs_.size(); ++i) {
         timeMsToGroupId_[groupTimesMs_[i]] = i;
