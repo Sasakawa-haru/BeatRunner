@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include"ScoreSystem.h"
 
 class Notes;
 class Music;
@@ -20,8 +21,14 @@ public:
 
 private:
 	void TryHitLane(int lane, double nowSec, Notes* notes, ScoreSystem* score);
-	
-	static constexpr double kBadWindow_ = 0.150;
+	void UpdateAutoMiss(double nowSec, Notes* notes, ScoreSystem* score);
+	ScoreSystem::JudgeResult CalcJudge(double diffSec)const;
+
 	static constexpr int kLaneCount_ = 5;
+
+	static constexpr double kPerfect_ = 0.030;
+	static constexpr double kGreat_ = 0.060;
+	static constexpr double kGood_ = 0.100;
+	static constexpr double kNormal_ = 0.150;
 };
 

@@ -49,7 +49,7 @@ void JudgeSystem::TryHitLane(int lane, double nowSec, Notes* notes, ScoreSystem*
 		const double diff = nowSec - (double)note->GetHitTimeSec();
 		const double ad = std::abs(diff);
 
-		if (ad > kBadWindow_)continue;
+		if (ad > kNormal_)continue;
 		if (ad < bestAbs) {
 			bestAbs = ad;
 			best = note;
@@ -60,4 +60,28 @@ void JudgeSystem::TryHitLane(int lane, double nowSec, Notes* notes, ScoreSystem*
 
 	score->OnHit(best->GetGroupId(), nowSec - (double)best->GetHitTimeSec());
 	best->KillMe();
+}
+
+void JudgeSystem::UpdateAutoMiss(double nowSec, Notes* notes, ScoreSystem* score)
+{
+	for (auto* obj : *notes->GetChildList()) {
+		auto* note = dynamic_cast<NoteBase*>(obj);
+		if (!note) continue;
+
+		const double diff = nowSec - (double)note->GetHitTimeSec(); // +‚È‚ç’x‚¢
+		if (diff > kNormal_) {
+			score->OnJudge(ScoreSystem::JudgeResult::Miss);
+			note->KillMe();
+		}
+	}
+}
+
+ScoreSystem::JudgeResult JudgeSystem::CalcJudge(double diffSec) const
+{
+	const double ad = std::abs(diffSec);
+	if (ad <= kPerfect_) return ScoreSystem::JudgeResult::Perfect;
+	if (ad <= kGreat_)   return ScoreSystem::JudgeResult::Great;
+	if (ad <= kGood_)    return ScoreSystem::JudgeResult::Good;
+	if (ad <= kNormal_)  return ScoreSystem::JudgeResult::Normal;
+	return ScoreSystem::JudgeResult::Miss;
 }

@@ -44,6 +44,19 @@ void ScoreSystem::Release()
 
 void ScoreSystem::OnHit(int groupId, double diffSec)
 {
+	const double ad = std::abs(diffSec);
+
+	constexpr double kPerfect = 0.030;
+	constexpr double kGreat = 0.060;
+	constexpr double kGood = 0.100;
+	constexpr double kNormal = 0.150;
+
+	if (ad <= kPerfect) { OnJudge(JudgeResult::Perfect); return; }
+	if (ad <= kGreat) { OnJudge(JudgeResult::Great);   return; }
+	if (ad <= kGood) { OnJudge(JudgeResult::Good);    return; }
+	if (ad <= kNormal) { OnJudge(JudgeResult::Normal);  return; }
+
+	OnJudge(JudgeResult::Miss);
 }
 
 void ScoreSystem::OnCollision(int groupId)
