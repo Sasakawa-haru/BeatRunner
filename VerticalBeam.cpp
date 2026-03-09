@@ -12,7 +12,7 @@ namespace
 }
 
 VerticalBeam::VerticalBeam(GameObject* parent)
-	:NoteBase(parent,"VertivalBeam"),hVerticalBeamModel_(-1)
+	:NoteBase(parent,"VerticalBeam"),hVerticalBeamModel_(-1)
 {
 }
 

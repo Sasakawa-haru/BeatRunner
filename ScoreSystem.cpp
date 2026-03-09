@@ -77,25 +77,25 @@ void ScoreSystem::OnJudge(JudgeResult r)
 		great_++;
 		combo_++;
 		maxCombo_ = ((std::max)(maxCombo_, combo_));
-		AddScore(1000);
+		AddScore(700);
 		break;
 	case JudgeResult::Good:
 		good_++;
 		combo_++;
 		maxCombo_ = ((std::max)(maxCombo_, combo_));
-		AddScore(1000);
+		AddScore(500);
 		break;
 	case JudgeResult::Normal:
 		normal_++;
 		combo_ = 0;
 		maxCombo_ = ((std::max)(maxCombo_, combo_));
-		AddScore(1000);
+		AddScore(100);
 		break;
 	case JudgeResult::Miss:
 		miss_++;
 		combo_ = 0;
 		maxCombo_ = ((std::max)(maxCombo_, combo_));
-		AddScore(1000);
+		AddScore(0);
 		break;
 
 

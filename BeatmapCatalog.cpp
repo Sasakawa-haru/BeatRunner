@@ -32,7 +32,7 @@ std::vector<BeatmapMeta> BeatmapCatalog::LoadCatalog(const std::string& dir)
             out.push_back(std::move(m));
         }
         catch (...) {
-            // 壊れてるjsonは無視（必要ならログ出す）
+            // 壊れてるjsonは無視
         }
     }
     return out;

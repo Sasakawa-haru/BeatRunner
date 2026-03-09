@@ -136,6 +136,7 @@
     <ClCompile Include="NoteBase.cpp">
       <Filter>Notes</Filter>
     </ClCompile>
+    <ClCompile Include="SelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -251,6 +252,7 @@
     <ClInclude Include="NoteBase.h">
       <Filter>Notes</Filter>
     </ClInclude>
+    <ClInclude Include="SelectScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">
