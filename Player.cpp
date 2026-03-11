@@ -151,7 +151,7 @@ void Player::Update()
         // プレイヤーの足の高さ（中心 - 半径）
         float footY = transform_.position_.y - radius_;
 
-        // 足が地面より下に行っていたら「乗せる」
+        // 足が地面より下に行っていたら乗せる
         if (footY <= hitY)
         {
             float diff = hitY - footY;

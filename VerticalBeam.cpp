@@ -2,6 +2,7 @@
 #include"Lane.h"
 #include"Engine/Model.h"
 #include"Engine/Time.h"
+#include"Engine/BoxCollider.h"
 
 #include<cassert>
 
@@ -23,8 +24,12 @@ VerticalBeam::~VerticalBeam()
 void VerticalBeam::Initialize()
 {
 	hVerticalBeamModel_ = Model::Load("Models/VerticalBeam.fbx");
-	Enter();\
+	Enter();
 	Visible();
+
+	//è’ìÀîªíË
+	BoxCollider* collision = new BoxCollider(XMFLOAT3(transform_.position_.x, transform_.position_
+		.y, transform_.position_.z),XMFLOAT3());
 }
 
 void VerticalBeam::Update()
