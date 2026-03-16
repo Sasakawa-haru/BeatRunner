@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "Lane.h"
+#include"ScoreSystem.h"
 #include "Engine/GameCsvReader.h"
 #include "Engine/Time.h"
 #include "Engine/Model.h"
@@ -235,16 +236,18 @@ void Player::Release()
 
 void Player::OnCollision(GameObject* pTarget)
 {
-    if (pTarget->GetObjectName() == "VerticalBeam")
+    if (pTarget->GetObjectName() == "VerticalBeam" ||
+        pTarget->GetObjectName() == "BesideBeam")
     {
         Hit = true;
         PlayerHP -= 10;
 
-        // まずは中央に出るか確認
-        effectTransform_ = Transform();
-        effectTransform_.position_ = XMFLOAT3(0.0f, 0.0f, 0.0f);
-        effectTransform_.scale_ = XMFLOAT3(0.2f, 0.2f, 1.0f);
+        auto* score = (ScoreSystem*)FindObject("ScoreSystem");
+        if (score)
+        {
+            score->OnMissCollision();
+        }
 
-        effectTimer_ = 10;
+        pTarget->KillMe();
     }
 }
