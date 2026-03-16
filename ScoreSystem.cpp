@@ -161,7 +161,7 @@ void ScoreSystem::OnMissCollision()
 	judgeText_ = "MISS";
 	judgeTimer_ = 20;
 
-	Camera::StartShake(0.5f, 0.5f);
+	Camera::StartShake(0.25f, 0.25f);
 }
 
 void ScoreSystem::AddScore(int base)

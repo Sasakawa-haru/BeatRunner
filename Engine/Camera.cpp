@@ -55,8 +55,10 @@ void Camera::Update()
 	);
 
 	//ビュー行列
-	_view = XMMatrixLookAtLH(XMVectorSet(_position.x, _position.y, _position.z, 0),
-		XMVectorSet(_target.x, _target.y, _target.z, 0), XMVectorSet(0, 1, 0, 0));
+	_view = XMMatrixLookAtLH(XMVectorSet(camPos.x, camPos.y, camPos.z, 0),
+		XMVectorSet(_target.x, _target.y, _target.z, 0), 
+		XMVectorSet(0, 1, 0, 0)
+	);
 
 
 	//ビルボード行列
