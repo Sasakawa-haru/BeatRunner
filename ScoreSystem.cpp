@@ -1,4 +1,5 @@
 #include "ScoreSystem.h"
+#include"Engine/Camera.h"
 #include <algorithm>
 #include <cmath>
 
@@ -159,10 +160,13 @@ void ScoreSystem::OnMissCollision()
 
 	judgeText_ = "MISS";
 	judgeTimer_ = 20;
+
+	Camera::StartShake(0.5f, 0.5f);
 }
 
 void ScoreSystem::AddScore(int base)
 {
 	float comboMul = 1.0f + (combo_ * 0.01f);
 	score_ += (int)(base * comboMul);
+
 }

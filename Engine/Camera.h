@@ -18,6 +18,9 @@ namespace Camera
 	//焦点（見る位置）を設定
 	void SetTarget(XMFLOAT3 target);
 
+	//画面揺らし
+	void StartShake(float power, float TimeSec);
+
 	//位置を取得
 	XMFLOAT3 GetPosition();
 
