@@ -28,8 +28,9 @@ void VerticalBeam::Initialize()
 	Visible();
 
 	//衝突判定
-	BoxCollider* collision = new BoxCollider(XMFLOAT3(transform_.position_.x, transform_.position_
-		.y, transform_.position_.z),XMFLOAT3());
+	BoxCollider* collision = new BoxCollider(XMFLOAT3(0.0f, 0.0f, 0.0f),   // オブジェクト原点からのずれ
+		XMFLOAT3(1.0f, 20.0f, 1.0f));
+	AddCollider(collision);
 }
 
 void VerticalBeam::Update()

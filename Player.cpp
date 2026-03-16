@@ -8,6 +8,7 @@
 #include "Engine/Camera.h"
 #include"Engine/Audio.h"
 #include"Engine/Image.h"
+#include "Engine/VFX.h"
 #include"Lane.h"
 #include <cassert>
 #include<cmath>
@@ -201,12 +202,26 @@ void Player::Release()
 
 void Player::OnCollision(GameObject* pTarget)
 {
-    if (pTarget->GetObjectName() == "VerticalBeam" )
+    if (pTarget->GetObjectName() == "VerticalBeam")
     {
-        Hit = true;
         PlayerHP -= 10;
-        Image::SetTransform(hEffect_, transform_);
-        Image::Draw(hEffect_);
+
+        EmitterData data;
+        data.textureFileName = "Effect.png";
+        data.position = transform_.position_;
+        data.position.y += 1.0f;
+        data.direction = XMFLOAT3(0, 1, 0);
+        data.directionRnd = XMFLOAT3(30, 30, 30);
+        data.speed = 0.15f;
+        data.speedRnd = 0.8f;
+        data.lifeTime = 20;
+        data.delay = 0;          // 一回だけ発生
+        data.number = 12;
+        data.size = XMFLOAT2(1.0f, 1.0f);
+        data.sizeRnd = XMFLOAT2(0.5f, 0.5f);
+        data.deltaColor = XMFLOAT4(0, 0, 0, -0.05f);
+
+        VFX::Start(data);
+        pTarget->KillMe(); // 1回当たったノーツは消すなら    }
     }
-    
 }
