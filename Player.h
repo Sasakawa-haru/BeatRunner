@@ -38,5 +38,8 @@ private:
 
     int PlayerHP = 100;
     bool Hit = false;
+    int effectTimer_ = 0;
+    Transform effectTransform_;
 
+    DirectX::XMFLOAT3 WorldToScreen(const DirectX::XMFLOAT3& worldPos);
 };
