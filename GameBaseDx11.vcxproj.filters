@@ -253,6 +253,7 @@
       <Filter>Notes</Filter>
     </ClInclude>
     <ClInclude Include="SelectScene.h" />
+    <ClInclude Include="RhythmConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

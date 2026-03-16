@@ -93,9 +93,8 @@ void Player::Initialize()
     assert(hEffect_ >= 0);
 
     // 当たり判定
-    collider_ = new SphereCollider(transform_.position_, radius_);
+    collider_ = new SphereCollider(XMFLOAT3(0.0f, 0.0f, 0.0f), radius_);
     AddCollider(collider_);
-
     // ジャンプ初期化
     isJumping_ = false;
     jumpVelocity_ = 0.0f;
@@ -210,11 +209,6 @@ void Player::Update()
         Camera::SetTarget(p);
     }
 
-    // --- コライダー更新 ---
-    if (collider_)
-    {
-        collider_->SetCenter(transform_.position_);
-    }
 }
 
 void Player::Draw()
@@ -241,6 +235,7 @@ void Player::OnCollision(GameObject* pTarget)
     {
         Hit = true;
         PlayerHP -= 10;
+
 
         auto* score = (ScoreSystem*)FindObject("ScoreSystem");
         if (score)

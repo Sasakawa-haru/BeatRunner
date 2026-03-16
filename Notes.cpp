@@ -6,6 +6,7 @@
 #include "VerticalBeam.h"
 #include "BesideBeam.h"
 #include"Music.h"
+#include"RhythmConfig.h"
 
 #include<algorithm>
 #include<cmath>
@@ -54,8 +55,7 @@ void Notes::Update()
 {
     auto* music=(Music*) FindObject("Music");
     if (!music || !music->IsStarted())return;
-    nowSec_ = music->GetNowSec();
-    if (!notesCsv_) return;
+    nowSec_ = music->GetNowSec() + RhythmConfig::kJudgeOffsetSec;    if (!notesCsv_) return;
 
     const int lines = notesCsv_->GetLines();
     if (nextLine_ >= lines) return;

@@ -225,6 +225,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Music.h" />
+    <ClInclude Include="RhythmConfig.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="TitleScene.h" />
