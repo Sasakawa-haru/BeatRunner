@@ -7,6 +7,7 @@
 #include "Engine/SphereCollider.h"
 #include "Engine/Camera.h"
 #include"Engine/Audio.h"
+#include"Engine/Image.h"
 #include"Lane.h"
 #include <cassert>
 #include<cmath>
@@ -14,7 +15,7 @@
 using namespace DirectX;
 
 Player::Player(GameObject* parent)
-    : GameObject(parent, "Player")
+    : GameObject(parent, "Player"), hEffect_(-1)
     , hPlayerModel_(-1),hMoveSound_(-1)
 {
     GameCsvReader* Player = new GameCsvReader("Assets/Csv/PlayerState.csv");
@@ -30,6 +31,7 @@ Player::Player(GameObject* parent)
             downGravity = Player->GetFloat(i, 1);
         }
     }
+
 }
 
 Player::~Player()
@@ -70,6 +72,9 @@ void Player::Initialize()
 
     hMoveSound_ = Audio::Load("Sound/move.wav");
     assert(hMoveSound_ >= 0);
+
+    hEffect_ = Image::Load("Effect.png");
+    assert(hEffect_ >= 0);
 
     // 当たり判定
     collider_ = new SphereCollider(transform_.position_, radius_);
@@ -187,8 +192,21 @@ void Player::Draw()
 {
     Model::SetTransform(hPlayerModel_, transform_);
     Model::Draw(hPlayerModel_);
+    
 }
 
 void Player::Release()
 {
+}
+
+void Player::OnCollision(GameObject* pTarget)
+{
+    if (pTarget->GetObjectName() == "VerticalBeam" )
+    {
+        Hit = true;
+        PlayerHP -= 10;
+        Image::SetTransform(hEffect_, transform_);
+        Image::Draw(hEffect_);
+    }
+    
 }

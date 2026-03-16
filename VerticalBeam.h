@@ -1,6 +1,7 @@
 #pragma once
 #include"NoteBase.h"
 #include "Engine/GameObject.h"
+#include"Player.h"
 class VerticalBeam :public NoteBase
 {
 public:
@@ -22,7 +23,10 @@ public:
 	//ä÷êî
 	void Release();
 
+	void OnCollision(GameObject* pTarget)override;
+
 private:
 	int hVerticalBeamModel_;
+	bool PlayerHit = false;
 };
 

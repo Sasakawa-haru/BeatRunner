@@ -51,3 +51,8 @@ void VerticalBeam::Draw()
 void VerticalBeam::Release()
 {
 }
+
+void VerticalBeam::OnCollision(GameObject* Player)
+{
+	PlayerHit = true;
+}

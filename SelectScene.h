@@ -4,7 +4,7 @@
 class SelectScene:public GameObject
 {
 public:
-	SelectScene();
+	SelectScene(GameObject*parent);
 	~SelectScene();
 	void Initialize()override;
 	void Update()override;
