@@ -14,6 +14,13 @@ ScoreSystem::~ScoreSystem()
 
 void ScoreSystem::Initialize()
 {
+	hMissImage_ = Image::Load("Effect.png");
+	assert(hMissImage_ >= 0);
+
+	missEffectTimer_ = 0;
+	missEffectTransform_ = Transform();
+	missEffectTransform_.position_ = XMFLOAT3(0.0f, 0.02f, -0.02f);   
+	missEffectTransform_.scale_ = XMFLOAT3(0.25f, 0.25f, 1.0f);
 	text_.Initialize();
 
 	score_ = 0;
@@ -39,6 +46,11 @@ void ScoreSystem::Update()
 	{
 		judgeTimer_--;
 	}
+
+	if (missEffectTimer_ > 0)
+	{
+		missEffectTimer_--;
+	}
 }
 
 void ScoreSystem::Draw()
@@ -59,6 +71,12 @@ void ScoreSystem::Draw()
 
 		text_.Draw(20, 140, "DIFF(ms):");
 		text_.Draw(180, 140, diffMs);
+	}
+
+	if (missEffectTimer_ > 0)
+	{
+		Image::SetTransform(hMissImage_, missEffectTransform_);
+		Image::Draw(hMissImage_);
 	}
 }
 
@@ -160,6 +178,7 @@ void ScoreSystem::OnMissCollision()
 
 	judgeText_ = "MISS";
 	judgeTimer_ = 20;
+	missEffectTimer_ = 20;
 
 	Camera::StartShake(0.25f, 0.25f);
 }

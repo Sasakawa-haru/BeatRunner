@@ -50,4 +50,8 @@ private:
 
 	double lastDiffSec_ = 0.0;
 	bool hasLastDiff_ = false;
+
+	int hMissImage_ = -1;
+	int missEffectTimer_ = 0;
+	Transform missEffectTransform_;
 };
