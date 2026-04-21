@@ -28,7 +28,7 @@ class Fbx
 	//FbxPartクラスをフレンドクラスにする
 	//FbxPartのprivateな関数にもアクセス可
 	friend class FbxParts;
-
+	
 
 
 	//モデルの各パーツ（複数あるかも）

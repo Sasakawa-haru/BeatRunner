@@ -24,6 +24,7 @@ void SelectScene::Update()
 
 void SelectScene::Draw()
 {
+
 }
 
 void SelectScene::Release()
