@@ -137,7 +137,7 @@
       <Filter>Notes</Filter>
     </ClCompile>
     <ClCompile Include="SelectScene.cpp" />
-    <ClCompile Include="ClearSene.cpp" />
+    <ClCompile Include="ClearScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -255,7 +255,7 @@
     </ClInclude>
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="RhythmConfig.h" />
-    <ClInclude Include="ClearSene.h" />
+    <ClInclude Include="ClearScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

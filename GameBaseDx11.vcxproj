@@ -145,7 +145,7 @@
     </ClCompile>
     <ClCompile Include="BeatmapJsonLoader.cpp" />
     <ClCompile Include="BesideBeam.cpp" />
-    <ClCompile Include="ClearSene.cpp" />
+    <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="Combo.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
     <ClCompile Include="Engine\BillBoard.cpp" />
@@ -191,7 +191,7 @@
     <ClInclude Include="BeatmapJsonLoader.h" />
     <ClInclude Include="BeatmapMeta.h" />
     <ClInclude Include="BesideBeam.h" />
-    <ClInclude Include="ClearSene.h" />
+    <ClInclude Include="ClearScene.h" />
     <ClInclude Include="Combo.h" />
     <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\BillBoard.h" />

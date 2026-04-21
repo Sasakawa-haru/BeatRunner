@@ -18,7 +18,7 @@ void TitleScene::Update()
 {
 	if (Input::IsKeyDown(DIK_SPACE)) {
 		SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-		pSceneManager->ChangeScene(SCENE_ID_PLAY);
+		pSceneManager->ChangeScene(SCENE_ID_SELECT);
 	}
 	if (Input::IsKeyDown(DIK_0)){
 		ConvertAllJsonInDir_IfJsonNewer("Notes");
