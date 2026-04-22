@@ -8,6 +8,7 @@
 #include"Engine/Input.h"
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
+#include"SelectedMusic.h"
 
 
 //コンストラクタ

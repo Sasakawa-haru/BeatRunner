@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include<string>
 
 //ŸŸŸ‚ğŠÇ—‚·‚éƒNƒ‰ƒX
 class Music : public GameObject
@@ -25,10 +26,12 @@ public:
 
     bool IsStarted()const { return started_; }
     double GetNowSec()const { return nowSec_; }
+    void SelectedMusic();
 
 private:
     int hSound_;
     bool started_;
     double nowSec_;
+    std::string musicName;
 
 };

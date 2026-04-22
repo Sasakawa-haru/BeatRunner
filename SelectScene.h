@@ -4,6 +4,13 @@
 #include<string>
 #include<vector>
 
+enum Level
+{
+	Easy,
+	Normal,
+	Hard
+};
+
 class SelectScene:public GameObject
 {
 public:
@@ -23,5 +30,6 @@ private:
 	int MaxSelectId_=0;
 	int hJacketPict_=-1;
 	Text* pText=nullptr;
+	Level level_;
 };
 

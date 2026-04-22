@@ -1,6 +1,7 @@
 #include "Music.h"
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
+#include"SelectedMusic.h"
 
 //コンストラクタ
 Music::Music(GameObject* parent)
@@ -16,7 +17,7 @@ Music::~Music()
 //初期化
 void Music::Initialize()
 {
-    hSound_ = Audio::Load("Sound/01 - Chartreuse Green.wav");
+    SelectedMusic();
     started_ = false;
     nowSec_ = 0.0f;
     
@@ -44,4 +45,11 @@ void Music::Draw()
 //開放
 void Music::Release()
 {
+}
+
+void Music::SelectedMusic()
+{
+    musicName = gSelectedMusicName;
+    std::string MusicPath = "Sound_" + musicName + ".wav";
+    hSound_ = Audio::Load(MusicPath.c_str());
 }

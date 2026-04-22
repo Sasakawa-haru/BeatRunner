@@ -181,6 +181,7 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Music.cpp" />
     <ClCompile Include="ScoreSystem.cpp" />
+    <ClCompile Include="SelectedMusic.cpp" />
     <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="VerticalBeam.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="Music.h" />
     <ClInclude Include="RhythmConfig.h" />
     <ClInclude Include="ScoreSystem.h" />
+    <ClInclude Include="SelectedMusic.h" />
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="VerticalBeam.h" />

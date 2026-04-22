@@ -138,6 +138,7 @@
     </ClCompile>
     <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="ClearScene.cpp" />
+    <ClCompile Include="SelectedMusic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -256,6 +257,7 @@
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="RhythmConfig.h" />
     <ClInclude Include="ClearScene.h" />
+    <ClInclude Include="SelectedMusic.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">
