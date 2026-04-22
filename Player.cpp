@@ -20,7 +20,7 @@ Player::Player(GameObject* parent)
     , hPlayerModel_(-1)
     , hMoveSound_(-1)
 {
-    GameCsvReader* Player = new GameCsvReader("Assets/Csv/PlayerState.csv");
+    GameCsvReader* Player = new GameCsvReader("Csv/PlayerState.csv");
     for (int i = 0; i < Player->GetLines(); i++)
     {
         std::string tag = Player->GetString(i, 0);

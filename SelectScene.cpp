@@ -10,7 +10,7 @@
 
 SelectScene::SelectScene(GameObject* parent) :SelectId_(1), hJacketPict_(-1)
 {
-	GameCsvReader musicState("Assets/Csv/MusicState.csv");
+	GameCsvReader musicState("Csv/MusicState.csv");
 	MaxSelectId_ = musicState.GetLines() - 1;
 }
 
@@ -22,7 +22,7 @@ void SelectScene::Initialize()
 {
 	pText = new Text;
 	pText->Initialize();
-
+	transform_.position_ = {};
 	RefreshMusicData();
 }
 
@@ -54,23 +54,36 @@ void SelectScene::Draw()
 	pText->Draw(30, 30, MusicName_.c_str());
 	Image::SetTransform(hJacketPict_, transform_);
 	Image::Draw(hJacketPict_);
+	pText->Draw(50, 50, "SelectScene");
 
 }
 
 void SelectScene::Release()
 {
+	if (pText != nullptr) {
+		delete pText;
+		pText = nullptr;
+	}
 }
 
 void SelectScene::RefreshMusicData()
 {
-	GameCsvReader musicState("Assets/Csv/MusicState.csv");
-	for (int i = 0;i < musicState.GetLines();i++) {
+	GameCsvReader musicState("Csv/MusicState.csv");
+
+	MusicName_ = "";
+	hJacketPict_ = -1;
+	for (int i = 1;i < musicState.GetLines();i++) {
 		int id = musicState.GetInt(i, 0);
 		if (id == SelectId_) {
 			MusicName_ = musicState.GetString(i, 1);
+			JacketName_ = musicState.GetString(i, 2);
 			break;
 		}
 	}
-	std::string path = "Assets/Jacket/" + MusicName_ + ".png";
+	if (JacketName_.empty()) {
+		return;
+	}
+
+	std::string path = "Jacket/" + JacketName_ + ".png";
 	hJacketPict_ = Image::Load(path.c_str());
 }

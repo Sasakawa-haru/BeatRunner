@@ -2,6 +2,7 @@
 #include"Engine/GameObject.h"
 #include"Engine/Text.h"
 #include<string>
+#include<vector>
 
 class SelectScene:public GameObject
 {
@@ -17,9 +18,10 @@ public:
 
 private:
 	std::string MusicName_;
-	int SelectId_;
-	int MaxSelectId_;
-	int hJacketPict_;
-	Text* pText;
+	std::string JacketName_;
+	int SelectId_=1;
+	int MaxSelectId_=0;
+	int hJacketPict_=-1;
+	Text* pText=nullptr;
 };
 
