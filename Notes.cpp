@@ -7,6 +7,7 @@
 #include "BesideBeam.h"
 #include"Music.h"
 #include"RhythmConfig.h"
+#include"SelectedMusic.h"
 
 #include<algorithm>
 #include<cmath>
@@ -38,7 +39,8 @@ Notes::~Notes() {}
 
 void Notes::Initialize()
 {
-    notesCsv_ = std::make_unique<GameCsvReader>("Csv/Notes/01 - Chartreuse Green_notes.csv");
+    std::string MusicLevelPath = "Csv/Notes/" + gSelectedMusicName + "_" + gSelectedMusicLevel + ".csv";
+    notesCsv_ = std::make_unique<GameCsvReader>(MusicLevelPath.c_str());
 
     nowSec_ = 0.0;
     nextLine_ = 1; 
@@ -148,3 +150,4 @@ void Notes::BuildGroupsFromCsv()
         timeMsToGroupId_[groupTimesMs_[i]] = i;
     }
 }
+

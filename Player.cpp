@@ -85,7 +85,7 @@ void Player::Initialize()
     assert(hPlayerModel_ >= 0);
 
     // SE
-    hMoveSound_ = Audio::Load("Sound/move.wav");
+    hMoveSound_ = Audio::Load("Sound/SE/move.wav");
     assert(hMoveSound_ >= 0);
 
     // 衝突エフェクト画像

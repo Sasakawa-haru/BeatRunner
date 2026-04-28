@@ -28,10 +28,13 @@ public:
     double GetNowSec()const { return nowSec_; }
     void LoadSelectedMusic();
 
+
+
 private:
     int hSound_;
     bool started_;
     double nowSec_;
     std::string musicName;
+
 
 };
