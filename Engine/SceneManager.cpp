@@ -38,6 +38,8 @@ void SceneManager::Update()
 		Model::AllRelease();
 		Image::AllRelease();
 
+		Audio::Initialize();
+
 		//Ÿ‚ÌƒV[ƒ“‚ğì¬
 		switch (nextSceneID_)
 		{

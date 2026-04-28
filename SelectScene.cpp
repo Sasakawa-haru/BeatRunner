@@ -83,8 +83,10 @@ void SelectScene::Update()
 		gSelectedMusicName = MusicName_;
 		gSelectedMusicLevel = GetLevelName(level_);
 		SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-		pSceneManager->ChangeScene(SCENE_ID_PLAY);
-
+		if (pSceneManager != nullptr) {
+			OutputDebugStringA("ChangeScene PLAY\n");
+			pSceneManager->ChangeScene(SCENE_ID_PLAY);
+		}
 	}
 	if (changed) {
 		RefreshMusicData();

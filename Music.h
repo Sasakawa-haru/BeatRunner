@@ -26,7 +26,7 @@ public:
 
     bool IsStarted()const { return started_; }
     double GetNowSec()const { return nowSec_; }
-    void SelectedMusic();
+    void LoadSelectedMusic();
 
 private:
     int hSound_;

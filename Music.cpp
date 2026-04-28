@@ -5,7 +5,10 @@
 
 //コンストラクタ
 Music::Music(GameObject* parent)
-    :GameObject(parent, "Music")
+    :GameObject(parent, "Music"),
+    hSound_(-1),
+    started_(false),
+    nowSec_(0.0f)
 {
 }
 
@@ -17,7 +20,7 @@ Music::~Music()
 //初期化
 void Music::Initialize()
 {
-    SelectedMusic();
+    LoadSelectedMusic();
     started_ = false;
     nowSec_ = 0.0f;
     
@@ -30,7 +33,7 @@ void Music::Update()
     if (!started_) {
         Audio::Play(hSound_);
         started_ = true;
-        nowSec_=0.0;
+        nowSec_=0.0f;
         return;
     }
 
@@ -47,9 +50,12 @@ void Music::Release()
 {
 }
 
-void Music::SelectedMusic()
+void Music::LoadSelectedMusic()
 {
     musicName = gSelectedMusicName;
-    std::string MusicPath = "Sound_" + musicName + ".wav";
+    std::string MusicPath = "Sound/Music/" + musicName + ".wav";
     hSound_ = Audio::Load(MusicPath.c_str());
+    if (hSound_ < 0) {
+        started_ = true;
+    }
 }
