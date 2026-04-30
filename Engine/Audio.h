@@ -30,5 +30,7 @@ namespace Audio
 
 	//–{‘Ì‚à‰ð•ú
 	void AllRelease();
+
+	bool IsPlaying(int ID);
 };
 

@@ -1,6 +1,7 @@
 #include "Music.h"
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
+#include"Engine/SceneManager.h"
 #include"SelectedMusic.h"
 
 //コンストラクタ
@@ -38,6 +39,12 @@ void Music::Update()
     }
 
     nowSec_ += Time::DeltaTime();
+
+    if (!Audio::IsPlaying(hSound_)) {//曲終了時
+        started_ = false;
+        SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
+        pSceneManager->ChangeScene(SCENE_ID_CLEAR);
+    }
 }
 
 //描画

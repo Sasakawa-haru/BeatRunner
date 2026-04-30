@@ -29,7 +29,6 @@ public:
     void LoadSelectedMusic();
 
 
-
 private:
     int hSound_;
     bool started_;
