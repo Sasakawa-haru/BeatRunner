@@ -1,4 +1,5 @@
-jumpHeight,30,ジャンプの高さ
-upGravity,-0.5,上昇時の重力
-downGravity,-0.8,下降時の重力
-radius,3,当たり判定の半径
+jumpHeight,3,ジャンプの高さ
+upGravity,-30,上昇時の重力
+downGravity,-45,下降時の重力
+diveGravity,-100,急降下時
+radius,0.5,当たり判定の半径

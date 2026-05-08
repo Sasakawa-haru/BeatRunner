@@ -23,6 +23,9 @@ void TitleScene::Update()
 	if (Input::IsKeyDown(DIK_0)){
 		ConvertAllJsonInDir_IfJsonNewer("Notes");
 	}
+	if (Input::IsKey(DIK_LALT) && Input::IsKey(DIK_F4)) {
+
+	}
 }
 
 //•`‰æ

@@ -22,15 +22,18 @@ public:
 
 private:
     int   hPlayerModel_;
+    int   hColliderModel_;
     int   hMoveSound_;
     int   hEffect_;
-    float radius_ = 0.5f;   // プレイヤーの足元判定用半径
+    float radius_ ;   // プレイヤーの足元判定用半径
     float jumpVelocity_;
     bool  isJumping_ = false;
+    bool showCollider_ = true;
 
     float jumpHeight;
     float upGravity;
     float downGravity;
+    float diveGravity;
     float jumpSpeed;
 
     SphereCollider* collider_ = nullptr;

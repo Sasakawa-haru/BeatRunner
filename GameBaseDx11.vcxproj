@@ -177,9 +177,11 @@
     <ClCompile Include="Lane.cpp" />
     <ClCompile Include="Notes.cpp" />
     <ClCompile Include="NoteBase.cpp" />
+    <ClCompile Include="Option.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Music.cpp" />
+    <ClCompile Include="Result.cpp" />
     <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="SelectedMusic.cpp" />
     <ClCompile Include="SelectScene.cpp" />
@@ -225,9 +227,11 @@
     <ClInclude Include="Lane.h" />
     <ClInclude Include="Notes.h" />
     <ClInclude Include="NoteBase.h" />
+    <ClInclude Include="Option.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Music.h" />
+    <ClInclude Include="Result.h" />
     <ClInclude Include="RhythmConfig.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="SelectedMusic.h" />

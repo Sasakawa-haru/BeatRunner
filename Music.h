@@ -2,7 +2,6 @@
 #include "Engine/GameObject.h"
 #include<string>
 
-//ŸŸŸ‚ğŠÇ—‚·‚éƒNƒ‰ƒX
 class Music : public GameObject
 {
 public:

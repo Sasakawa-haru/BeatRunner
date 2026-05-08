@@ -18,6 +18,7 @@ Player::Player(GameObject* parent)
     : GameObject(parent, "Player")
     , hEffect_(-1)
     , hPlayerModel_(-1)
+    ,hColliderModel_(-1)
     , hMoveSound_(-1)
 {
     GameCsvReader* Player = new GameCsvReader("Csv/PlayerState.csv");
@@ -36,6 +37,10 @@ Player::Player(GameObject* parent)
         if (tag == "downGravity")
         {
             downGravity = Player->GetFloat(i, 1);
+        }
+        if (tag == "diveGravity")
+        {
+            diveGravity = Player->GetFloat(i, 1);
         }
         if (tag == "radius")
         {
@@ -83,6 +88,7 @@ void Player::Initialize()
     // モデル
     hPlayerModel_ = Model::Load("Models/Player.fbx");
     assert(hPlayerModel_ >= 0);
+    hColliderModel_ = Model::Load("DebugCollision/SphereCollider.fbx");
 
     // SE
     hMoveSound_ = Audio::Load("Sound/SE/move.wav");
@@ -215,8 +221,14 @@ void Player::Draw()
 {
     Model::SetTransform(hPlayerModel_, transform_);
     Model::Draw(hPlayerModel_);
-
-    // まずは中央表示で確認
+    if (showCollider_)
+    {
+        Transform colTf = transform_;
+        colTf.scale_ = XMFLOAT3(radius_, radius_, radius_);
+        Model::SetTransform(hColliderModel_, colTf);
+        Model::Draw(hColliderModel_);
+    }
+    
     if (effectTimer_ > 0)
     {
         Image::SetTransform(hEffect_, effectTransform_);
