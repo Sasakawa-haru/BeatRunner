@@ -12,6 +12,13 @@ namespace Audio
 	//マスターボイス
 	IXAudio2MasteringVoice* pMasteringVoice = nullptr;
 
+	float ClampVolume(float volume)
+	{
+		if (volume < 0.0f)return 0.0f;
+		if (volume > 1.0f)return 1.0f;
+		return volume;
+	}
+
 	//ファイル毎に必要な情報
 	struct AudioData
 	{
@@ -26,6 +33,9 @@ namespace Audio
 
 		//ファイル名
 		std::string fileName;
+
+		//音量
+		float volume=1.0f;
 	};
 	std::vector<AudioData>	audioDatas;
 }
@@ -152,6 +162,7 @@ int Audio::Load(std::string fileName, bool isLoop, int svNum)
 //再生
 void Audio::Play(int ID)
 {
+	if (ID < 0 || ID >= audioDatas.size())return;
 	for (int i = 0; i < audioDatas[ID].svNum; i++)
 	{
 		XAUDIO2_VOICE_STATE state;
@@ -159,6 +170,7 @@ void Audio::Play(int ID)
 
 		if (state.BuffersQueued == 0)
 		{
+			audioDatas[ID].pSourceVoice[i]->SetVolume(audioDatas[ID].volume);
 			audioDatas[ID].pSourceVoice[i]->SubmitSourceBuffer(&audioDatas[ID].buf);
 			audioDatas[ID].pSourceVoice[i]->Start();
 			break;
@@ -217,4 +229,23 @@ bool Audio::IsPlaying(int ID)
 		}
 	}
 	return false;
+}
+
+void Audio::SetVolume(int ID, float volume)
+{
+	if (ID < 0 || ID >= audioDatas.size())return;
+	volume = ClampVolume(volume);
+	audioDatas[ID].volume = volume;
+	for (int i = 0;i < audioDatas[ID].svNum;i++) {
+		audioDatas[ID].pSourceVoice[i]->SetVolume(volume);
+	}
+}
+
+void Audio::SetMasterVolume(float volume)
+{
+	volume = ClampVolume(volume);
+	if (pMasteringVoice)
+	{
+		pMasteringVoice->SetVolume(volume);
+	}
 }

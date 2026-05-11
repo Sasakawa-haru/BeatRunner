@@ -31,6 +31,11 @@ namespace Audio
 	//本体も解放
 	void AllRelease();
 
+	//再生状況の確認
 	bool IsPlaying(int ID);
+	//音量設定
+	void SetVolume(int ID, float volume);
+	//全体音量
+	void SetMasterVolume(float volume);
 };
 

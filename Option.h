@@ -1,6 +1,16 @@
 #pragma once
 #include"Engine/GameObject.h"
 #include<string>
+
+enum OPTION
+{
+	NOTES_SPEED,
+	JUDGE_TIMING,
+	MASTER_VOLUME,
+	MUSIC_VOLUME,
+	SE_VOLUME
+};
+
 class Option:GameObject
 {
 public:
@@ -17,10 +27,17 @@ public:
 	//解放
 	void Release()override;
 
+	//プレイシーン関連
+	float NotesSpeed=5.0f;
+	float JudgeTiming=0.0f;
+
+	//音量関連（0.0f~1.0f）
+	float MasterVolume = 1.0f;
+	float MusicVolume=1.0f;
+	float SeVolume=1.0f;
+
 private:
-	float NotesSpeed=0;
-	float JudgeTiming=0;
-	float MusicVolume=0;
-	float SeVolume=0;
+	OPTION option_;
+
 };
 
