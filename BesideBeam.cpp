@@ -2,6 +2,9 @@
 #include"Lane.h"
 #include"Engine/Model.h"
 #include"Engine/Time.h"
+#include"Engine/BoxCollider.h"
+
+#include<cassert>
 
 BesideBeam::BesideBeam(GameObject* parent)
 	:NoteBase(parent,"BesideBeam"),  hBesideBeamModel_(-1)
@@ -44,4 +47,8 @@ void BesideBeam::Draw()
 
 void BesideBeam::Release()
 {
+}
+
+void BesideBeam::OnCollision(GameObject* Player) {
+	PlayerHit = true;
 }

@@ -31,5 +31,6 @@ private:
 	int hJacketPict_=-1;
 	Text* pText=nullptr;
 	Level level_;
+	bool OptionMode;
 };
 

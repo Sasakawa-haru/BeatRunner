@@ -1,5 +1,6 @@
 #include "SelectScene.h"
 #include"Music.h"
+#include"Option.h"
 #include"Engine/Input.h"
 #include"Engine/Image.h"
 #include"Engine/Audio.h"
@@ -11,7 +12,7 @@
 #include<string>
 
 
-SelectScene::SelectScene(GameObject* parent) :SelectId_(1), hJacketPict_(-1),level_(Normal)
+SelectScene::SelectScene(GameObject* parent) :SelectId_(1), hJacketPict_(-1),level_(Normal),OptionMode(false)
 {
 	GameCsvReader musicState("Csv/MusicState.csv");
 	MaxSelectId_ = musicState.GetLines() - 1;
@@ -46,52 +47,55 @@ std::string GetLevelName(Level level)//レベルの文字列表記
 
 void SelectScene::Update()
 {
-	bool changed = false;
-	if (Input::IsKeyDown(DIK_UP))
-	{
-		SelectId_++;
-		if (SelectId_ > MaxSelectId_) {
-			SelectId_ = 1;
-		}
-		changed = true;
+	if (OptionMode) {
 	}
-	if (Input::IsKeyDown(DIK_DOWN)) {
-		SelectId_--;
-		if (SelectId_ <= 0) {
-			SelectId_ = MaxSelectId_;
+	if (!OptionMode) {
+		bool changed = false;
+		if (Input::IsKeyDown(DIK_UP))
+		{
+			SelectId_++;
+			if (SelectId_ > MaxSelectId_) {
+				SelectId_ = 1;
+			}
+			changed = true;
 		}
-		changed = true;
+		if (Input::IsKeyDown(DIK_DOWN)) {
+			SelectId_--;
+			if (SelectId_ <= 0) {
+				SelectId_ = MaxSelectId_;
+			}
+			changed = true;
+		}
+		if (Input::IsKeyDown(DIK_RIGHT)) {
+			if (level_ == Hard) {
+				level_ = Easy;
+			}
+			else {
+				level_ = (Level)(level_ + 1);
+			}
+		}
+		if (Input::IsKeyDown(DIK_LEFT)) {
+			if (level_ == Easy) {
+				level_ = Hard;
+			}
+			else {
+				level_ = (Level)(level_ - 1);
+			}
+		}
+		if (Input::IsKeyDown(DIK_SPACE)) {
+			gSelectedMusicId = SelectId_;
+			gSelectedMusicName = MusicName_;
+			gSelectedMusicLevel = GetLevelName(level_);
+			SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
+			if (pSceneManager != nullptr) {
+				OutputDebugStringA("ChangeScene PLAY\n");
+				pSceneManager->ChangeScene(SCENE_ID_PLAY);
+			}
+		}
+		if (changed) {
+			RefreshMusicData();
+		}
 	}
-	if (Input::IsKeyDown(DIK_RIGHT)) {
-		if (level_ == Hard) {
-			level_ = Easy;
-		}
-		else {
-			level_ = (Level)(level_ + 1);
-		}
-	}
-	if (Input::IsKeyDown(DIK_LEFT)) {
-		if (level_ == Easy) {
-			level_ = Hard;
-		}
-		else {
-			level_ = (Level)(level_ - 1);
-		}
-	}
-	if (Input::IsKeyDown(DIK_SPACE)) {
-		gSelectedMusicId = SelectId_;
-		gSelectedMusicName = MusicName_;
-		gSelectedMusicLevel = GetLevelName(level_);
-		SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-		if (pSceneManager != nullptr) {
-			OutputDebugStringA("ChangeScene PLAY\n");
-			pSceneManager->ChangeScene(SCENE_ID_PLAY);
-		}
-	}
-	if (changed) {
-		RefreshMusicData();
-	}
-	
 }
 
 void SelectScene::Draw()
