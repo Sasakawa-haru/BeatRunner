@@ -141,6 +141,7 @@
     <ClCompile Include="SelectedMusic.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Option.cpp" />
+    <ClCompile Include="OptionData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -262,6 +263,7 @@
     <ClInclude Include="SelectedMusic.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Option.h" />
+    <ClInclude Include="OptionData.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

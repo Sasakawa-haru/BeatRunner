@@ -1,5 +1,6 @@
 #pragma once
 #include"Engine/GameObject.h"
+#include"Engine/Text.h"
 #include<string>
 
 enum OPTION
@@ -11,7 +12,7 @@ enum OPTION
 	SE_VOLUME
 };
 
-class Option:GameObject
+class Option:public GameObject
 {
 public:
 	//コンストラクタ
@@ -27,6 +28,8 @@ public:
 	//解放
 	void Release()override;
 
+	void ApplyOptionData();
+
 	//プレイシーン関連
 	float NotesSpeed=5.0f;
 	float JudgeTiming=0.0f;
@@ -35,9 +38,11 @@ public:
 	float MasterVolume = 1.0f;
 	float MusicVolume=1.0f;
 	float SeVolume=1.0f;
-
+	bool OptionMode = false;
 private:
 	OPTION option_;
-
+	int hBackGroundOption_;
+	Text* pText_ = nullptr;
+	bool prevOptionMode_ = false;
 };
 

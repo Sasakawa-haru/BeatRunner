@@ -1,6 +1,7 @@
 #pragma once
 #include"Engine/GameObject.h"
 #include"Engine/Text.h"
+#include"Option.h"
 #include<string>
 #include<vector>
 
@@ -24,6 +25,7 @@ public:
 	void RefreshMusicData();
 
 private:
+	Option* pOption_ = nullptr;
 	std::string MusicName_;
 	std::string JacketName_;
 	int SelectId_=1;
@@ -31,6 +33,5 @@ private:
 	int hJacketPict_=-1;
 	Text* pText=nullptr;
 	Level level_;
-	bool OptionMode;
 };
 

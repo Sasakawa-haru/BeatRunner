@@ -178,6 +178,7 @@
     <ClCompile Include="Notes.cpp" />
     <ClCompile Include="NoteBase.cpp" />
     <ClCompile Include="Option.cpp" />
+    <ClCompile Include="OptionData.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Music.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="Notes.h" />
     <ClInclude Include="NoteBase.h" />
     <ClInclude Include="Option.h" />
+    <ClInclude Include="OptionData.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Music.h" />
