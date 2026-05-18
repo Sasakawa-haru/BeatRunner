@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "Lane.h"
 #include"ScoreSystem.h"
+#include"OptionData.h"
 #include "Engine/GameCsvReader.h"
 #include "Engine/Time.h"
 #include "Engine/Model.h"
@@ -93,6 +94,7 @@ void Player::Initialize()
     // SE
     hMoveSound_ = Audio::Load("Sound/SE/move.wav");
     assert(hMoveSound_ >= 0);
+    Audio::SetVolume(hMoveSound_, gOptionData.SeVolume * gOptionData.MasterVolume);
 
     // 衝突エフェクト画像
     hEffect_ = Image::Load("Effect.png");
@@ -242,8 +244,7 @@ void Player::Release()
 
 void Player::OnCollision(GameObject* pTarget)
 {
-    if (pTarget->GetObjectName() == "VerticalBeam" ||
-        pTarget->GetObjectName() == "BesideBeam")
+    if (pTarget->GetObjectName()=="Beam")
     {
         Hit = true;
         PlayerHP -= 10;

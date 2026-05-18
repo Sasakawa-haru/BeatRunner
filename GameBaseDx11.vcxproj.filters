@@ -142,6 +142,9 @@
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Option.cpp" />
     <ClCompile Include="OptionData.cpp" />
+    <ClCompile Include="Beam.cpp">
+      <Filter>Notes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -264,6 +267,9 @@
     <ClInclude Include="Result.h" />
     <ClInclude Include="Option.h" />
     <ClInclude Include="OptionData.h" />
+    <ClInclude Include="Beam.h">
+      <Filter>Notes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

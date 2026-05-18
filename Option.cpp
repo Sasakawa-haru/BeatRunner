@@ -1,9 +1,17 @@
 #include "Option.h"
 #include"OptionData.h"
+#include"Engine//Audio.h"
 #include"Engine/Input.h"
 #include"Engine/Text.h"
 #include"Engine/Image.h"
 
+OptionData gOptionData = {
+	5.0f,//NotesSpeed
+	0.0f,//JudgeTiming
+	1.0f,//MasterVolume
+	1.0f,//MusicVolume
+	1.0f//SeVolume
+};
 
 
 Option::Option(GameObject* parent)
@@ -23,6 +31,14 @@ void Option::Initialize()
 	assert(hBackGroundOption_ >= 0);
 	pText_ = new Text;
 	pText_->Initialize();
+
+	NotesSpeed = gOptionData.NotesSpeed;
+	JudgeTiming = gOptionData.JudgeTiming;
+	MasterVolume = gOptionData.MasterVolume;
+	MusicVolume = gOptionData.MusicVolume;
+	SeVolume = gOptionData.SeVolume;
+
+	Audio::SetMasterVolume(gOptionData.MasterVolume);
 }
 
 void Option::Update()

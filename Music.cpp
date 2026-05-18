@@ -1,4 +1,5 @@
 #include "Music.h"
+#include "OptionData.h"
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
 #include"Engine/SceneManager.h"
@@ -64,5 +65,7 @@ void Music::LoadSelectedMusic()
     hSound_ = Audio::Load(MusicPath.c_str());
     if (hSound_ < 0) {
         started_ = true;
+        return;
     }
+    Audio::SetVolume(hSound_, gOptionData.MusicVolume * gOptionData.MasterVolume);
 }

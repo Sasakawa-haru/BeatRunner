@@ -1,6 +1,7 @@
 #include "JudgeSystem.h"
 #include "Music.h"
 #include "ScoreSystem.h"
+#include"OptionData.h"
 #include "Engine/Input.h"
 #include "Notes.h"
 #include "NoteBase.h"
@@ -31,7 +32,7 @@ void JudgeSystem::Update()
 
 	if (!music || !music->IsStarted() || !notes || !score || !player) return;
 
-	const double now = music->GetNowSec() + RhythmConfig::kJudgeOffsetSec;
+	const double now = music->GetNowSec() + gOptionData.JudgeTiming;
 	for (int lane = 0; lane < kLaneCount_; ++lane)
 	{
 		if (Input::IsKeyDown(kLaneKey[lane]))

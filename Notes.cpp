@@ -5,9 +5,11 @@
 #include "Lane.h"
 #include "VerticalBeam.h"
 #include "BesideBeam.h"
+#include "Beam.h"
 #include"Music.h"
 #include"RhythmConfig.h"
 #include"SelectedMusic.h"
+#include"OptionData.h"
 
 #include<algorithm>
 #include<cmath>
@@ -57,7 +59,8 @@ void Notes::Update()
 {
     auto* music=(Music*) FindObject("Music");
     if (!music || !music->IsStarted())return;
-    nowSec_ = music->GetNowSec() + RhythmConfig::kJudgeOffsetSec;    if (!notesCsv_) return;
+    nowSec_ = music->GetNowSec() + gOptionData.JudgeTiming;    
+    if (!notesCsv_) return;
 
     const int lines = notesCsv_->GetLines();
     if (nextLine_ >= lines) return;
@@ -95,18 +98,24 @@ void Notes::Update()
             pos.y += yOff+2.0;
             pos.z = kSpawnZ;
 
+            auto* note = Instantiate<Beam>(this);
             if (isBeside) {
-                auto* note = Instantiate<BesideBeam>(this);
-                note->SetPosition(pos);
-                note->SetLane(baseLane);
-                note->SetHitTimeSec(hitTimeSec);
+                note->Setup(BeamType::Beside);
+                //auto* note = Instantiate<BesideBeam>(this);
+                //note->SetPosition(pos);
+                //note->SetLane(baseLane);
+                //note->SetHitTimeSec(hitTimeSec);
             }
             else {
-                auto* note = Instantiate<VerticalBeam>(this);
-                note->SetPosition(pos);
-                note->SetLane(baseLane);
-                note->SetHitTimeSec(hitTimeSec);
+                note->Setup(BeamType::Vertical);
+                //auto* note = Instantiate<VerticalBeam>(this);
+                //note->SetPosition(pos);
+                //note->SetLane(baseLane);
+                //note->SetHitTimeSec(hitTimeSec);
             }
+            note->SetPosition(pos);
+            note->SetLane(baseLane);
+            note->SetHitTimeSec(hitTimeSec);
         }
 
         nextLine_++;
