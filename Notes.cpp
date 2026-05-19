@@ -3,116 +3,167 @@
 #include "Engine/Time.h"
 #include "Engine/GameCsvReader.h"
 #include "Lane.h"
-#include "VerticalBeam.h"
-#include "BesideBeam.h"
 #include "Beam.h"
-#include"Music.h"
-#include"RhythmConfig.h"
-#include"SelectedMusic.h"
-#include"OptionData.h"
+#include "Music.h"
+#include "SelectedMusic.h"
+#include "OptionData.h"
 
-#include<algorithm>
-#include<cmath>
+#include <algorithm>
+#include <cmath>
 #include <memory>
 #include <string>
-#include<vector>
+#include <vector>
 
 namespace
 {
-    constexpr float  kJudgeZ = 0.0f;
-    constexpr float  kSpawnZ = 50.0f;
-    constexpr float  kScrollSpeed = 20.0f;
-    constexpr double kLeadTimeSec = (kSpawnZ - kJudgeZ) / kScrollSpeed;
-    constexpr double kEarlySec = 0.60f;
+    // 判定ラインのZ座標
+    constexpr float kJudgeZ = 0.0f;
 
-    constexpr float  kSplitY = 0.3f; // lane6/lane7 を lane5 の上下にずらす量
+    // ノーツを出現させるZ座標
+    constexpr float kSpawnZ = 50.0f;
 
-    constexpr float kBesideLeftFixX = 0.0f;
-    constexpr int kBaseLaneCount = 5;
+    // 速度が0以下になると計算が壊れるので最低速度を決める
+    constexpr float kMinNotesSpeed = 0.1f;
+
+    // lane6 / lane7 を上下にずらす量
+    constexpr float kSplitY = 0.3f;
+
+    constexpr float kBesideOffsetX = -4.5f;
 }
-
 
 Notes::Notes(GameObject* parent)
     : GameObject(parent, "Notes")
 {
 }
 
-Notes::~Notes() {}
+Notes::~Notes()
+{
+}
 
 void Notes::Initialize()
 {
-    std::string MusicLevelPath = "Csv/Notes/" + gSelectedMusicName + "_" + gSelectedMusicLevel + ".csv";
-    notesCsv_ = std::make_unique<GameCsvReader>(MusicLevelPath.c_str());
+    std::string musicLevelPath =
+        "Csv/Notes/" + gSelectedMusicName + "_" + gSelectedMusicLevel + ".csv";
+
+    notesCsv_ = std::make_unique<GameCsvReader>(musicLevelPath.c_str());
 
     nowSec_ = 0.0;
-    nextLine_ = 1; 
+    nextLine_ = 1;
 
     laneCount_ = 0;
-    if (notesCsv_ && notesCsv_->GetLines() > 0) {
-        laneCount_ = notesCsv_->GetColumns(0) - 1; // time列を除く
-        if (laneCount_ < 0) laneCount_ = 0;
+
+    if (notesCsv_ && notesCsv_->GetLines() > 0)
+    {
+        // 0列目は時間なので、それ以外がレーン数
+        laneCount_ = notesCsv_->GetColumns(0) - 1;
+
+        if (laneCount_ < 0)
+        {
+            laneCount_ = 0;
+        }
     }
+
     BuildGroupsFromCsv();
 }
 
 void Notes::Update()
 {
-    auto* music=(Music*) FindObject("Music");
-    if (!music || !music->IsStarted())return;
-    nowSec_ = music->GetNowSec() + gOptionData.JudgeTiming;    
-    if (!notesCsv_) return;
+    Music* music = (Music*)FindObject("Music");
+
+    if (!music || !music->IsStarted())
+    {
+        return;
+    }
+
+    if (!notesCsv_)
+    {
+        return;
+    }
+
+    // Optionで設定した判定調整を反映
+    nowSec_ = music->GetNowSec() + gOptionData.JudgeTiming;
 
     const int lines = notesCsv_->GetLines();
-    if (nextLine_ >= lines) return;
+
+    if (nextLine_ >= lines)
+    {
+        return;
+    }
+
+    // Optionで設定したノーツ速度を反映
+    float notesSpeed = GetActualNotesSpeed();
+
+    if (notesSpeed < kMinNotesSpeed)
+    {
+        notesSpeed = kMinNotesSpeed;
+    }
+
+    // ノーツが SpawnZ から JudgeZ まで来るのに必要な時間
+    const double leadTimeSec = (kSpawnZ - kJudgeZ) / notesSpeed;
 
     while (nextLine_ < lines)
     {
         const float hitTimeSec = notesCsv_->GetFloat(nextLine_, 0);
-        const double spawnTimeSec = (double)hitTimeSec - kLeadTimeSec - kEarlySec;
-        if (nowSec_ < hitTimeSec - kLeadTimeSec) break;
+
+        // まだ出す時間ではないなら終了
+        if (nowSec_ < hitTimeSec - leadTimeSec)
+        {
+            break;
+        }
 
         for (int lane = 0; lane < laneCount_; lane++)
         {
-            if (notesCsv_->GetInt(nextLine_, 1 + lane) != 1) continue;
+            const int noteFlag = notesCsv_->GetInt(nextLine_, 1 + lane);
+
+            if (noteFlag != 1)
+            {
+                continue;
+            }
 
             bool isBeside = false;
-            int baseLane = lane;   // 0..4（lane1..5）に落とす
+            int baseLane = lane;
             float yOff = 0.0f;
 
-            // lane1..5 はそのまま VerticalBeam
-            // lane6/lane7 は lane5 の上下に BesideBeam
-            if (lane == 5 || lane == 6) {         // CSV: lane6/lane7（0-based）
+            // lane1～lane5 は VerticalBeam
+            // lane6 / lane7 は lane5 の上下に BesideBeam として出す
+            if (lane == 5 || lane == 6)
+            {
                 isBeside = true;
-                baseLane = 4;                      // lane5（0-based）
+                baseLane = 4;
                 yOff = (lane == 5) ? +kSplitY : -kSplitY;
             }
 
-            // 画面上のLaneは lane1..lane5 を想定
-            if (baseLane < 0 || baseLane >= 5) continue;
+            // 実際に画面上にあるレーンは lane1～lane5 想定
+            if (baseLane < 0 || baseLane >= 5)
+            {
+                continue;
+            }
 
             Lane* ln = Lane::FindByName("lane" + std::to_string(baseLane + 1));
-            if (!ln) continue;
+
+            if (!ln)
+            {
+                continue;
+            }
 
             XMFLOAT3 pos = ln->GetCenterPosition();
+
             pos.x += Lane::laneWidth * 0.5f;
-            pos.y += yOff+2.0;
+            pos.y += yOff + 2.0f;
             pos.z = kSpawnZ;
 
             auto* note = Instantiate<Beam>(this);
-            if (isBeside) {
+
+            if (isBeside)
+            {
+                pos.x += kBesideOffsetX;
                 note->Setup(BeamType::Beside);
-                //auto* note = Instantiate<BesideBeam>(this);
-                //note->SetPosition(pos);
-                //note->SetLane(baseLane);
-                //note->SetHitTimeSec(hitTimeSec);
             }
-            else {
+            else
+            {
                 note->Setup(BeamType::Vertical);
-                //auto* note = Instantiate<VerticalBeam>(this);
-                //note->SetPosition(pos);
-                //note->SetLane(baseLane);
-                //note->SetHitTimeSec(hitTimeSec);
             }
+
             note->SetPosition(pos);
             note->SetLane(baseLane);
             note->SetHitTimeSec(hitTimeSec);
@@ -122,13 +173,23 @@ void Notes::Update()
     }
 }
 
-void Notes::Draw() {}
-void Notes::Release() {}
+void Notes::Draw()
+{
+}
+
+void Notes::Release()
+{
+}
 
 int Notes::GetGroupIdByTimeMs(int tms) const
 {
     auto it = timeMsToGroupId_.find(tms);
-    if (it == timeMsToGroupId_.end())return-1;
+
+    if (it == timeMsToGroupId_.end())
+    {
+        return -1;
+    }
+
     return it->second;
 }
 
@@ -136,27 +197,37 @@ void Notes::BuildGroupsFromCsv()
 {
     groupTimesMs_.clear();
     timeMsToGroupId_.clear();
-    if (!notesCsv_) return;
 
-    const int lines = notesCsv_->GetLines();   
-    if (lines <= 1) return;                 
-    for (int line = 1; line < lines; ++line) {
+    if (!notesCsv_)
+    {
+        return;
+    }
+
+    const int lines = notesCsv_->GetLines();
+
+    if (lines <= 1)
+    {
+        return;
+    }
+
+    for (int line = 1; line < lines; ++line)
+    {
         const float hitTimeSec = notesCsv_->GetFloat(line, 0);
 
-        
-        const int tms = (int)(hitTimeSec * 1000.0f + 0.5f);
+        const int tms = static_cast<int>(hitTimeSec * 1000.0f + 0.5f);
 
-        groupTimesMs_.push_back(tms);        
+        groupTimesMs_.push_back(tms);
     }
 
     std::sort(groupTimesMs_.begin(), groupTimesMs_.end());
+
     groupTimesMs_.erase(
         std::unique(groupTimesMs_.begin(), groupTimesMs_.end()),
         groupTimesMs_.end()
     );
 
-    for (int i = 0; i < (int)groupTimesMs_.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(groupTimesMs_.size()); ++i)
+    {
         timeMsToGroupId_[groupTimesMs_[i]] = i;
     }
 }
-

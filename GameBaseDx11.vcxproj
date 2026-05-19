@@ -145,7 +145,6 @@
     </ClCompile>
     <ClCompile Include="BeatmapJsonLoader.cpp" />
     <ClCompile Include="Beam.cpp" />
-    <ClCompile Include="BesideBeam.cpp" />
     <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="Combo.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
@@ -188,7 +187,6 @@
     <ClCompile Include="SelectedMusic.cpp" />
     <ClCompile Include="SelectScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
-    <ClCompile Include="VerticalBeam.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BeatMap.h" />
@@ -196,7 +194,6 @@
     <ClInclude Include="BeatmapJsonLoader.h" />
     <ClInclude Include="BeatmapMeta.h" />
     <ClInclude Include="Beam.h" />
-    <ClInclude Include="BesideBeam.h" />
     <ClInclude Include="ClearScene.h" />
     <ClInclude Include="Combo.h" />
     <ClInclude Include="Engine\Audio.h" />
@@ -241,7 +238,6 @@
     <ClInclude Include="SelectedMusic.h" />
     <ClInclude Include="SelectScene.h" />
     <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="VerticalBeam.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\BillBoard.hlsl">

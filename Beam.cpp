@@ -1,12 +1,12 @@
 #include "Beam.h"
-
+#include "OptionData.h"
 #include "Engine/Model.h"
 #include "Engine/Time.h"
 #include "Engine/BoxCollider.h"
 
 namespace
 {
-	constexpr float kBeamSpeed = 20.0f;
+	const float kBeamSpeed = 20.0f;
 	constexpr float kKillZ = -10.0f;
 }
 
@@ -71,7 +71,7 @@ void Beam::Update()
 {
 	float dt = Time::DeltaTime();
 
-	transform_.position_.z -= kBeamSpeed * dt;
+	transform_.position_.z -= GetActualNotesSpeed() * dt;
 
 	if (transform_.position_.z < kKillZ)
 	{

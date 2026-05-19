@@ -10,3 +10,10 @@ struct OptionData
 };
 
 extern OptionData gOptionData;
+
+const float kNotesSpeedRate = 4.0f;
+
+inline float GetActualNotesSpeed()
+{
+	return gOptionData.NotesSpeed * kNotesSpeedRate;
+}

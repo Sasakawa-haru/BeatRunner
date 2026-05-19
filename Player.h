@@ -25,6 +25,7 @@ private:
     int   hColliderModel_;
     int   hMoveSound_;
     int   hEffect_;
+
     float radius_ ;   // プレイヤーの足元判定用半径
     float jumpVelocity_;
     bool  isJumping_ = false;
@@ -40,6 +41,7 @@ private:
     std::vector<Lane*>   lanes_;      // 全レーンへのポインタ
 
     int PlayerHP = 100;
+    int PlayerPosition;
     bool Hit = false;
     int effectTimer_ = 0;
     Transform effectTransform_;

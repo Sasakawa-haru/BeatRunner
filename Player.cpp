@@ -21,6 +21,7 @@ Player::Player(GameObject* parent)
     , hPlayerModel_(-1)
     ,hColliderModel_(-1)
     , hMoveSound_(-1)
+    ,PlayerPosition(3)
 {
     GameCsvReader* Player = new GameCsvReader("Csv/PlayerState.csv");
     for (int i = 0; i < Player->GetLines(); i++)
@@ -131,13 +132,19 @@ void Player::Update()
     // --- 横移動 ---
     if (Input::IsKeyDown(DIK_A))
     {
-        transform_.position_.x -= 2.0f;
-        Audio::Play(hMoveSound_);
+        if (PlayerPosition > 1) {
+            transform_.position_.x -= 2.0f;
+            Audio::Play(hMoveSound_);
+            PlayerPosition--;
+        }
     }
     if (Input::IsKeyDown(DIK_D))
     {
-        transform_.position_.x += 2.0f;
-        Audio::Play(hMoveSound_);
+        if (PlayerPosition < 5) {
+            transform_.position_.x += 2.0f;
+            Audio::Play(hMoveSound_);
+            PlayerPosition++;
+        }
     }
 
     // --- ジャンプ開始 ---
