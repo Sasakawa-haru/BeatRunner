@@ -5,6 +5,7 @@
 #include"Music.h"
 #include"JudgeSystem.h"
 #include"ScoreSystem.h"
+#include"ResultData.h"
 #include"Engine/Input.h"
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
@@ -35,11 +36,19 @@ void PlayScene::Initialize()
 //XV
 void PlayScene::Update()
 {
+	Player* player = (Player*)FindObject("Player");
+	if (player) {
+		int hp = player->GetHP();
+		if (hp <= 0) {
+
+		}
+	}
 	char buf[64];
 	sprintf_s(buf, "dt=%.6f\n", Time::DeltaTime());
 	OutputDebugStringA(buf);
 	if (Input::IsKeyDown(DIK_ESCAPE)) {
 	}
+	
 }
 
 //•`‰æ
@@ -50,4 +59,12 @@ void PlayScene::Draw()
 //ŠJ•ú
 void PlayScene::Release()
 {
+}
+
+void PlayScene::SaveResultData() 
+{
+	ScoreSystem* scoreSystem = (ScoreSystem*)FindObject("ScoreSystem");
+	if (scoreSystem) {
+		gResultData.score=scoreSystem->
+	}
 }

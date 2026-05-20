@@ -20,6 +20,8 @@ public:
 
     void OnCollision(GameObject* pTarget)override;
 
+    int GetHP()const { return PlayerHP; }
+
 private:
     int   hPlayerModel_;
     int   hColliderModel_;
@@ -36,11 +38,11 @@ private:
     float downGravity;
     float diveGravity;
     float jumpSpeed;
+    int PlayerHP;
 
     SphereCollider* collider_ = nullptr;
     std::vector<Lane*>   lanes_;      // 全レーンへのポインタ
 
-    int PlayerHP = 100;
     int PlayerPosition;
     bool Hit = false;
     int effectTimer_ = 0;

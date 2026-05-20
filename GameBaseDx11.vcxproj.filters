@@ -139,6 +139,7 @@
     <ClCompile Include="Beam.cpp">
       <Filter>Notes</Filter>
     </ClCompile>
+    <ClCompile Include="ResultData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -258,6 +259,7 @@
     <ClInclude Include="Beam.h">
       <Filter>Notes</Filter>
     </ClInclude>
+    <ClInclude Include="ResultData.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

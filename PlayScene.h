@@ -20,4 +20,6 @@ public:
 
 	//ŠJ•ú
 	void Release() override;
+
+	void SaveResultData();
 };

@@ -31,6 +31,7 @@ namespace
     constexpr float kBesideOffsetX = -4.5f;
 }
 
+
 Notes::Notes(GameObject* parent)
     : GameObject(parent, "Notes")
 {

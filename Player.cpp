@@ -48,6 +48,10 @@ Player::Player(GameObject* parent)
         {
             radius_ = Player->GetFloat(i, 1);
         }
+        if (tag == "PlayerHP")
+        {
+            PlayerHP = Player->GetInt(i, 1);
+        }
     }
 
     delete Player;
@@ -209,6 +213,7 @@ void Player::Update()
             jumpVelocity_ = 0.0f;
         }
     }
+
 
     // --- カメラ追従 ---
     {
