@@ -30,6 +30,16 @@ public:
 	void OnNormalPass();      // å©ì¶Çµóp
 	void OnMissCollision();   // è’ìÀópMISS
 
+	int GetScore()const { return score_; }
+	int GetMaxCombo()const { return maxCombo_; }
+
+	int GetPerfect()const { return perfect_; }
+	int GetGreat()const { return great_; }
+	int GetGood()const { return good_; }
+	int GetNormal()const { return normal_; }
+	int GetMiss()const { return miss_; }
+
+
 private:
 	void AddScore(int base);
 

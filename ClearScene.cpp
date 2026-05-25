@@ -1,6 +1,8 @@
 #include "ClearScene.h"
 #include"Engine/Input.h"
 #include"Engine/SceneManager.h"
+#include"Engine/Text.h"
+#include<string>
 
 ClearSene::ClearSene(GameObject* parent)
 {
@@ -8,7 +10,7 @@ ClearSene::ClearSene(GameObject* parent)
 
 void ClearSene::Initialize()
 {
-	
+	text_.Initialize();
 }
 
 void ClearSene::Update()
@@ -22,6 +24,7 @@ void ClearSene::Update()
 
 void ClearSene::Draw()
 {
+	text_.Draw(100,80,"Result");
 }
 
 void ClearSene::Release()

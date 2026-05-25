@@ -64,7 +64,16 @@ void PlayScene::Release()
 void PlayScene::SaveResultData() 
 {
 	ScoreSystem* scoreSystem = (ScoreSystem*)FindObject("ScoreSystem");
+	Player* player = (Player*)FindObject("Player");
 	if (scoreSystem) {
-		gResultData.score=scoreSystem->
+		gResultData.score = scoreSystem->GetScore();
+		gResultData.maxCombo = scoreSystem->GetMaxCombo();
+
+		gResultData.perfect = scoreSystem->GetPerfect();
+		gResultData.great = scoreSystem->GetGreat();
+		gResultData.good = scoreSystem->GetGood();
+		gResultData.normal = scoreSystem->GetNormal();
+		gResultData.miss = scoreSystem->GetMiss();
 	}
+
 }
