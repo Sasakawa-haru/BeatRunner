@@ -173,6 +173,7 @@
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="JsonToCsvConverter.cpp" />
+    <ClCompile Include="JudgeLine.cpp" />
     <ClCompile Include="JudgeSystem.cpp" />
     <ClCompile Include="Lane.cpp" />
     <ClCompile Include="Notes.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="JsonToCsvConverter.h" />
+    <ClInclude Include="JudgeLine.h" />
     <ClInclude Include="JudgeSystem.h" />
     <ClInclude Include="Lane.h" />
     <ClInclude Include="Notes.h" />
@@ -236,6 +238,7 @@
     <ClInclude Include="Result.h" />
     <ClInclude Include="ResultData.h" />
     <ClInclude Include="RhythmConfig.h" />
+    <ClInclude Include="RhythmLayout.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="SelectedMusic.h" />
     <ClInclude Include="SelectScene.h" />

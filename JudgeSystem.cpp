@@ -6,6 +6,7 @@
 #include "Notes.h"
 #include "NoteBase.h"
 #include "RhythmConfig.h"
+#include"RhythmLayout.h"
 #include <cmath>
 
 namespace {
@@ -83,8 +84,8 @@ void JudgeSystem::UpdateAutoNormal(Notes* notes, ScoreSystem* score, GameObject*
 		if (!note) continue;
 		if (note->IsDead()) continue;
 
-		// プレイヤー位置を十分通り過ぎたら見逃しNORMAL
-		if (note->GetPosition().z < playerZ - 1.0f)
+		// 判定線を通り過ぎたら見逃し
+		if (note->GetPosition().z < RhythmLayout::PassZ)
 		{
 			score->OnNormalPass();
 			note->KillMe();

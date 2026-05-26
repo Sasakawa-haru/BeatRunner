@@ -7,6 +7,7 @@
 #include "Music.h"
 #include "SelectedMusic.h"
 #include "OptionData.h"
+#include"RhythmLayout.h"
 
 #include <algorithm>
 #include <cmath>
@@ -16,11 +17,6 @@
 
 namespace
 {
-    // 判定ラインのZ座標
-    constexpr float kJudgeZ = 0.0f;
-
-    // ノーツを出現させるZ座標
-    constexpr float kSpawnZ = 50.0f;
 
     // 速度が0以下になると計算が壊れるので最低速度を決める
     constexpr float kMinNotesSpeed = 0.1f;
@@ -100,7 +96,8 @@ void Notes::Update()
     }
 
     // ノーツが SpawnZ から JudgeZ まで来るのに必要な時間
-    const double leadTimeSec = (kSpawnZ - kJudgeZ) / notesSpeed;
+    const double leadTimeSec 
+        = (RhythmLayout::SpawnZ - RhythmLayout::JudgeLineZ) / notesSpeed;
 
     while (nextLine_ < lines)
     {
@@ -151,7 +148,7 @@ void Notes::Update()
 
             pos.x += Lane::laneWidth * 0.5f;
             pos.y += yOff + 2.0f;
-            pos.z = kSpawnZ;
+            pos.z = RhythmLayout::JudgeLineZ+(hitTimeSec-nowSec_)*notesSpeed;
 
             auto* note = Instantiate<Beam>(this);
 

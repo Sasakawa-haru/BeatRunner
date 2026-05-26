@@ -10,6 +10,7 @@
 #include "Engine/Camera.h"
 #include "Engine/Audio.h"
 #include "Engine/Image.h"
+#include"RhythmLayout.h"
 #include <cassert>
 #include <cmath>
 
@@ -88,7 +89,7 @@ void Player::Initialize()
     transform_.position_ = XMFLOAT3(
         lanePos.x + Lane::laneWidth / 2.0f,
         centerY,
-        lanePos.z - 10.0f
+        RhythmLayout::PlayerZ
     );
 
     // モデル

@@ -140,6 +140,7 @@
       <Filter>Notes</Filter>
     </ClCompile>
     <ClCompile Include="ResultData.cpp" />
+    <ClCompile Include="JudgeLine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -260,6 +261,8 @@
       <Filter>Notes</Filter>
     </ClInclude>
     <ClInclude Include="ResultData.h" />
+    <ClInclude Include="RhythmLayout.h" />
+    <ClInclude Include="JudgeLine.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

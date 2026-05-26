@@ -3,6 +3,7 @@
 #include"Lane.h"
 #include"Notes.h"
 #include"Music.h"
+#include"JudgeLine.h"
 #include"JudgeSystem.h"
 #include"ScoreSystem.h"
 #include"ResultData.h"
@@ -26,6 +27,7 @@ void PlayScene::Initialize()
 	for (int i = 0; i < Lane::laneCount; i++) {
 		Instantiate<Lane>(this);
 	}
+	Instantiate<JudgeLine>(this);
 	Instantiate<Music>(this);
 	Instantiate<Notes>(this);
 	Instantiate<JudgeSystem>(this);
