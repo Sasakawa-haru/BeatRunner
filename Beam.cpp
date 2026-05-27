@@ -6,7 +6,6 @@
 
 namespace
 {
-	const float kBeamSpeed = 20.0f;
 	constexpr float kKillZ = -10.0f;
 }
 
@@ -24,8 +23,9 @@ Beam::~Beam()
 
 void Beam::Initialize()
 {
-	// 初期状態は縦ビームにしておく
-	Setup(BeamType::Vertical);
+	hBeamModel_ = -1;
+	beamType_ = BeamType::Vertical;
+	PlayerHit = false;
 
 	Enter();
 	Visible();
@@ -81,6 +81,9 @@ void Beam::Update()
 
 void Beam::Draw()
 {
+	if (hBeamModel_ < 0) {
+		return;
+	}
 	Model::SetTransform(hBeamModel_, transform_);
 	Model::Draw(hBeamModel_);
 }

@@ -7,7 +7,7 @@
 
 int Lane::sNextLaneIndex_ = 0;
 const int Lane::laneCount = 5;
-const float Lane::laneWidth = 2.0f;
+const float Lane::laneWidth = 2.3f;
 
 std::map<std::string, Lane*> Lane::sLaneTable_;
 

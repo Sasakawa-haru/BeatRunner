@@ -48,15 +48,16 @@ void JudgeSystem::Update()
 void JudgeSystem::TryHitLane(int lane, double nowSec, Notes* notes, ScoreSystem* score)
 {
 	NoteBase* best = nullptr;
-	double bestAbs = 1e18;
+	double bestAbs = 99999;
 
 	for (auto* obj : *notes->GetChildList())
 	{
-		auto* note = dynamic_cast<NoteBase*>(obj);
+		NoteBase* note = dynamic_cast<NoteBase*>(obj);
 		if (!note) continue;
+		if (note->IsDead())continue;
 		if (note->GetLane() != lane) continue;
 
-		const double diff = nowSec - (double)note->GetHitTimeSec();
+		const double diff = nowSec - note->GetHitTimeSec();
 		const double ad = std::abs(diff);
 
 		if (ad > kNormal_) continue;
@@ -69,7 +70,6 @@ void JudgeSystem::TryHitLane(int lane, double nowSec, Notes* notes, ScoreSystem*
 	}
 
 	if (!best) return;
-
 	score->OnHit(best->GetGroupId(), nowSec - (double)best->GetHitTimeSec());
 	best->KillMe();
 }
@@ -92,6 +92,23 @@ void JudgeSystem::UpdateAutoNormal(Notes* notes, ScoreSystem* score, GameObject*
 		}
 	}
 }
+
+void UpdateDodgeSccess(Notes* notes, ScoreSystem* score)
+{
+	for (auto* obj : *notes->GetChildList())
+	{
+		NoteBase* note = dynamic_cast<NoteBase*>(obj);
+		if (!note)continue;
+		if (note->IsDead())continue;
+		if (note->GetPosition().z <= RhytmLayout::PassZ)
+		{
+			score->OnDodgeSuccess();
+			note->KillMe();
+		}
+	}
+}
+
+
 ScoreSystem::JudgeResult JudgeSystem::CalcJudge(double diffSec) const
 {
 	const double ad = std::abs(diffSec);

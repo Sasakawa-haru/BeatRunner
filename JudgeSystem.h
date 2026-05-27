@@ -20,7 +20,10 @@ public:
 
 private:
 	void TryHitLane(int lane, double nowSec, Notes* notes, ScoreSystem* score);
-	void UpdateAutoNormal(Notes* notes, ScoreSystem* score, GameObject* player);	ScoreSystem::JudgeResult CalcJudge(double diffSec) const;
+	void UpdateAutoNormal(Notes* notes, ScoreSystem* score, GameObject* player);
+	void UpdateDodgeSuccsess(Notes* notes, ScoreSystem* score);
+	ScoreSystem::JudgeResult CalcJudge(double diffSec) const;
+
 
 	static constexpr int kLaneCount_ = 5;
 

@@ -17,7 +17,8 @@ void JudgeLine::Initialize()
 	transform_.position_ = XMFLOAT3(0.0f, 0.05f, RhythmLayout::JudgeLineZ);
 	hJudgeLine_ = Model::Load("Models/JudgeLine.fbx");
 	assert(hJudgeLine_ >= 0);
-
+	Enter();
+	Visible();
 }
 
 void JudgeLine::Update()

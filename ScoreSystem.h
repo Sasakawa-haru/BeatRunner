@@ -28,6 +28,7 @@ public:
 	void OnJudge(JudgeResult r);
 
 	void OnNormalPass();      // Œ©“¦‚µ—p
+	void OnDodgeSuccess();   // ‰ñ”ğ¬Œ÷—p
 	void OnMissCollision();   // Õ“Ë—pMISS
 
 	int GetScore()const { return score_; }
