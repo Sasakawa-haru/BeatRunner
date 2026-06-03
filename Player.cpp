@@ -123,6 +123,8 @@ void Player::Initialize()
 
 void Player::Update()
 {
+    rhythmActionTriggered_ = false;
+
     if (effectTimer_ > 0)
     {
         effectTimer_--;
@@ -137,11 +139,13 @@ void Player::Update()
     // --- 横移動 ---
     if (Input::IsKeyDown(DIK_A))
     {
-        if (PlayerPosition > 1) {
+        if(PlayerPosition>1) {
             transform_.position_.x -= 2.0f;
             Audio::Play(hMoveSound_);
             PlayerPosition--;
-        }
+		}
+        rhythmActionTriggered_ = true;
+
     }
     if (Input::IsKeyDown(DIK_D))
     {
@@ -150,6 +154,7 @@ void Player::Update()
             Audio::Play(hMoveSound_);
             PlayerPosition++;
         }
+        rhythmActionTriggered_ = true;
     }
 
     // --- ジャンプ開始 ---

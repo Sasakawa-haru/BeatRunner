@@ -21,6 +21,8 @@ public:
     void OnCollision(GameObject* pTarget)override;
 
     int GetHP()const { return PlayerHP; }
+    int GetLaneIndex()const { return PlayerPosition; }
+    bool IsRhythmActionTriggered()const { return rhythmActionTriggered_; }
 
 private:
     int   hPlayerModel_;
@@ -32,6 +34,7 @@ private:
     float jumpVelocity_;
     bool  isJumping_ = false;
     bool showCollider_ = true;
+    bool rhythmActionTriggered_ = false;
 
     float jumpHeight;
     float upGravity;
