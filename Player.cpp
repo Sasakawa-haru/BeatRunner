@@ -87,7 +87,7 @@ void Player::Initialize()
     float centerY = laneTopY + radius_;
 
     transform_.position_ = XMFLOAT3(
-        lanePos.x + Lane::laneWidth / 2.0f,
+        lanePos.x+Lane::laneWidth*0.5f,
         centerY,
         RhythmLayout::PlayerZ
     );
@@ -139,29 +139,45 @@ void Player::Update()
     // --- 横移動 ---
     if (Input::IsKeyDown(DIK_A))
     {
-        if(PlayerPosition>1) {
-            transform_.position_.x -= 2.0f;
-            Audio::Play(hMoveSound_);
+        if (PlayerPosition > 1)
+        {
             PlayerPosition--;
-		}
-        rhythmActionTriggered_ = true;
 
+            Lane* lane = lanes_[PlayerPosition - 1];
+            if (lane)
+            {
+                XMFLOAT3 lanePos = lane->GetCenterPosition();
+                transform_.position_.x = lanePos.x + Lane::laneWidth * 0.5f;
+            }
+
+            Audio::Play(hMoveSound_);
+            rhythmActionTriggered_ = true;
+        }
     }
+
     if (Input::IsKeyDown(DIK_D))
     {
-        if (PlayerPosition < 5) {
-            transform_.position_.x += 2.0f;
-            Audio::Play(hMoveSound_);
+        if (PlayerPosition < 5)
+        {
             PlayerPosition++;
-        }
-        rhythmActionTriggered_ = true;
-    }
 
+            Lane* lane = lanes_[PlayerPosition - 1];
+            if (lane)
+            {
+                XMFLOAT3 lanePos = lane->GetCenterPosition();
+                transform_.position_.x = lanePos.x + Lane::laneWidth * 0.5f;
+            }
+
+            Audio::Play(hMoveSound_);
+            rhythmActionTriggered_ = true;
+        }
+    }
     // --- ジャンプ開始 ---
     if (isJumping_ == false && Input::IsKeyDown(DIK_SPACE))
     {
         isJumping_ = true;
         jumpVelocity_ = jumpSpeed;
+        rhythmActionTriggered_ = true;
     }
 
     // --- 重力・縦移動 ---
@@ -170,6 +186,7 @@ void Player::Update()
         float g = (jumpVelocity_ > 0.0f) ? upGravity : downGravity;
         jumpVelocity_ += g * dt;
         transform_.position_.y += jumpVelocity_ * dt;
+        
     }
 
     // --- 地面との接地判定 ---
@@ -227,7 +244,7 @@ void Player::Update()
 
         XMFLOAT3 camPos(
             p.x,
-            p.y + 3.0f,
+            p.y + 5.0f,
             p.z - 10.0f
         );
 

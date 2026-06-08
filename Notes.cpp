@@ -146,7 +146,7 @@ void Notes::Update()
 
             XMFLOAT3 pos = ln->GetCenterPosition();
 
-            pos.x += Lane::laneWidth * 0.5f;
+            //pos.x += Lane::laneWidth * 0.5f;
             pos.y += yOff + 2.0f;
             pos.z = RhythmLayout::JudgeLineZ+(hitTimeSec-nowSec_)*notesSpeed;
 

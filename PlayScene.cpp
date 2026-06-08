@@ -30,9 +30,9 @@ void PlayScene::Initialize()
 	Instantiate<JudgeLine>(this);
 	Instantiate<Music>(this);
 	Instantiate<Notes>(this);
+	Instantiate<Player>(this);
 	Instantiate<JudgeSystem>(this);
 	Instantiate<ScoreSystem>(this);
-	Instantiate<Player>(this);
 }
 
 //XV

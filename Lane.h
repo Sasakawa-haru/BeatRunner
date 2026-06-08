@@ -36,6 +36,11 @@ public:
     static void ResetLaneIndex();
 
 
+    float GetlaneCenterX()const
+    {
+        return GetCenterPosition().x + laneWidth * 0.5f;
+    }
+
     // レーン中心（= Lane の transform_.position_）
     XMFLOAT3 GetCenterPosition() const;
 

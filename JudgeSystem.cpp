@@ -1,14 +1,14 @@
 #include "JudgeSystem.h"
+
 #include "Music.h"
-#include "ScoreSystem.h"
-#include"OptionData.h"
-#include "Engine/Input.h"
 #include "Notes.h"
 #include "NoteBase.h"
-#include "RhythmConfig.h"
-#include"RhythmLayout.h"
-#include <cmath>
+#include "Player.h"
+#include "ScoreSystem.h"
+#include "OptionData.h"
+#include "RhythmLayout.h"
 
+#include <cmath>
 
 JudgeSystem::JudgeSystem(GameObject* parent)
 	: GameObject(parent, "JudgeSystem")
@@ -30,22 +30,27 @@ void JudgeSystem::Update()
 	Music* music = (Music*)FindObject("Music");
 	Notes* notes = (Notes*)FindObject("Notes");
 	ScoreSystem* score = (ScoreSystem*)FindObject("ScoreSystem");
+	Player* player = (Player*)FindObject("Player");
 
-	if (!music || !music->IsStarted() || !notes || !score)
+	if (!music || !music->IsStarted() || !notes || !score || !player)
 	{
 		return;
 	}
 
-	const double now = music->GetNowSec() + gOptionData.JudgeTiming;
+	const double nowSec = music->GetNowSec() + gOptionData.JudgeTiming;
 
-	for (int lane = 0; lane < kLaneCount_; ++lane)
+	// Player操作があった瞬間だけ、音ゲー判定する
+	if (player->IsRhythmActionTriggered())
 	{
-		if (Input::IsKeyDown(kLaneKey[lane]))
+		int lane = player->GetLaneIndex();
+
+		if (lane >= 0 && lane < 5)
 		{
-			TryHitLane(lane, now, notes, score);
+			TryHitLane(lane, nowSec, notes, score);
 		}
 	}
 
+	// 音ゲー判定できずにプレイヤーを通り過ぎたノーツはDODGE扱い
 	UpdateDodgeSuccess(notes, score);
 }
 
@@ -66,18 +71,32 @@ void JudgeSystem::TryHitLane(int lane, double nowSec, Notes* notes, ScoreSystem*
 	{
 		NoteBase* note = dynamic_cast<NoteBase*>(obj);
 
-		if (!note) continue;
-		if (note->IsDead()) continue;
-		if (note->GetLane() != lane) continue;
-
-		const double diff = nowSec - note->GetHitTimeSec();
-		const double ad = std::abs(diff);
-
-		if (ad > kNormal_) continue;
-
-		if (ad < bestAbs)
+		if (!note)
 		{
-			bestAbs = ad;
+			continue;
+		}
+
+		if (note->IsDead())
+		{
+			continue;
+		}
+
+		if (note->GetLane() != lane)
+		{
+			continue;
+		}
+
+		const double diffSec = nowSec - note->GetHitTimeSec();
+		const double absDiff = std::abs(diffSec);
+
+		if (absDiff > kNormal_)
+		{
+			continue;
+		}
+
+		if (absDiff < bestAbs)
+		{
+			bestAbs = absDiff;
 			best = note;
 		}
 	}
@@ -97,8 +116,15 @@ void JudgeSystem::UpdateDodgeSuccess(Notes* notes, ScoreSystem* score)
 	{
 		NoteBase* note = dynamic_cast<NoteBase*>(obj);
 
-		if (!note) continue;
-		if (note->IsDead()) continue;
+		if (!note)
+		{
+			continue;
+		}
+
+		if (note->IsDead())
+		{
+			continue;
+		}
 
 		if (note->GetPosition().z <= RhythmLayout::PassZ)
 		{
@@ -110,12 +136,27 @@ void JudgeSystem::UpdateDodgeSuccess(Notes* notes, ScoreSystem* score)
 
 ScoreSystem::JudgeResult JudgeSystem::CalcJudge(double diffSec) const
 {
-	const double ad = std::abs(diffSec);
+	const double absDiff = std::abs(diffSec);
 
-	if (ad <= kPerfect_) return ScoreSystem::JudgeResult::Perfect;
-	if (ad <= kGreat_) return ScoreSystem::JudgeResult::Great;
-	if (ad <= kGood_) return ScoreSystem::JudgeResult::Good;
-	if (ad <= kNormal_) return ScoreSystem::JudgeResult::Normal;
+	if (absDiff <= kPerfect_)
+	{
+		return ScoreSystem::JudgeResult::Perfect;
+	}
+
+	if (absDiff <= kGreat_)
+	{
+		return ScoreSystem::JudgeResult::Great;
+	}
+
+	if (absDiff <= kGood_)
+	{
+		return ScoreSystem::JudgeResult::Good;
+	}
+
+	if (absDiff <= kNormal_)
+	{
+		return ScoreSystem::JudgeResult::Normal;
+	}
 
 	return ScoreSystem::JudgeResult::Miss;
 }
