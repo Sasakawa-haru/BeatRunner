@@ -24,7 +24,7 @@ bool BeatmapJsonLoader::LoadFromFile(const std::string path, BeatMap& out, std::
         out.notes.clear();
         if (j.contains("notes") && j["notes"].is_array()) {
             for (const auto& n : j["notes"]) {
-                Note note;
+                RhythmNote note;
                 note.lpb = n.value("LPB", 4);
                 note.num = n.value("num", 0);
                 note.block = n.value("block", 0);

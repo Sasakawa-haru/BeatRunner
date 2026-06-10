@@ -1,17 +1,17 @@
 #pragma once
 #include "NoteBase.h"
 
-enum class BeamType
+enum class NotesType
 {
-	Vertical,
-	Beside
+	VerticalNote,
+	JumpNote
 };
 
-class Beam : public NoteBase
+class RhythmNote : public NoteBase
 {
 public:
-	Beam(GameObject* parent);
-	~Beam() override;
+	RhythmNote(GameObject* parent);
+	~RhythmNote() override;
 
 	void Initialize() override;
 	void Update() override;
@@ -20,13 +20,16 @@ public:
 
 	void OnCollision(GameObject* pTarget) override;
 
-	void Setup(BeamType type);
+	void Setup(NotesType type);
 
 private:
 	void CreateCollider();
 
 private:
-	int hBeamModel_;
-	BeamType beamType_;
+	int hNoteModel_;
+	int hColliderModel_;
+	NotesType beamType_;
 	bool PlayerHit;
+	bool showCollider_=true;
+
 };

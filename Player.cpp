@@ -87,7 +87,7 @@ void Player::Initialize()
     float centerY = laneTopY + radius_;
 
     transform_.position_ = XMFLOAT3(
-        lanePos.x+Lane::laneWidth*0.5f,
+        centerLane->GetLaneCenterX(),
         centerY,
         RhythmLayout::PlayerZ
     );
@@ -146,8 +146,7 @@ void Player::Update()
             Lane* lane = lanes_[PlayerPosition - 1];
             if (lane)
             {
-                XMFLOAT3 lanePos = lane->GetCenterPosition();
-                transform_.position_.x = lanePos.x + Lane::laneWidth * 0.5f;
+                transform_.position_.x = lane->GetLaneCenterX();
             }
 
             Audio::Play(hMoveSound_);
@@ -164,8 +163,7 @@ void Player::Update()
             Lane* lane = lanes_[PlayerPosition - 1];
             if (lane)
             {
-                XMFLOAT3 lanePos = lane->GetCenterPosition();
-                transform_.position_.x = lanePos.x + Lane::laneWidth * 0.5f;
+                transform_.position_.x = lane->GetLaneCenterX();
             }
 
             Audio::Play(hMoveSound_);
@@ -279,7 +277,7 @@ void Player::Release()
 
 void Player::OnCollision(GameObject* pTarget)
 {
-    if (pTarget->GetObjectName()=="Beam")
+    if (pTarget->GetObjectName()=="RhythmNote")
     {
         Hit = true;
         PlayerHP -= 10;

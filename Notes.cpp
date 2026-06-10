@@ -3,7 +3,7 @@
 #include "Engine/Time.h"
 #include "Engine/GameCsvReader.h"
 #include "Lane.h"
-#include "Beam.h"
+#include "RhythmNote.h"
 #include "Music.h"
 #include "SelectedMusic.h"
 #include "OptionData.h"
@@ -24,7 +24,6 @@ namespace
     // lane6 / lane7 を上下にずらす量
     constexpr float kSplitY = 0.3f;
 
-    constexpr float kBesideOffsetX = -4.5f;
 }
 
 
@@ -118,20 +117,18 @@ void Notes::Update()
                 continue;
             }
 
-            bool isBeside = false;
+            bool isJumpNote = false;
             int baseLane = lane;
             float yOff = 0.0f;
 
-            // lane1～lane5 は VerticalBeam
-            // lane6 / lane7 は lane5 の上下に BesideBeam として出す
-            if (lane == 5 || lane == 6)
+            if (lane == 5 )
             {
-                isBeside = true;
-                baseLane = 4;
-                yOff = (lane == 5) ? +kSplitY : -kSplitY;
+                isJumpNote = true;
+                baseLane =2;
+                yOff = 1.0f;
             }
 
-            // 実際に画面上にあるレーンは lane1～lane5 想定
+            // 画面上にあるレーンは lane1～lane5 
             if (baseLane < 0 || baseLane >= 5)
             {
                 continue;
@@ -146,20 +143,24 @@ void Notes::Update()
 
             XMFLOAT3 pos = ln->GetCenterPosition();
 
-            //pos.x += Lane::laneWidth * 0.5f;
-            pos.y += yOff + 2.0f;
-            pos.z = RhythmLayout::JudgeLineZ+(hitTimeSec-nowSec_)*notesSpeed;
-
-            auto* note = Instantiate<Beam>(this);
-
-            if (isBeside)
+            if (isJumpNote)
             {
-                pos.x += kBesideOffsetX;
-                note->Setup(BeamType::Beside);
+                pos.y += 1.0f; // ジャンプノーツ用の高さ
             }
             else
             {
-                note->Setup(BeamType::Vertical);
+                pos.y += 2.0f; // 通常ノーツ用の高さ
+            }            pos.z = RhythmLayout::JudgeLineZ+(hitTimeSec-nowSec_)*notesSpeed;
+
+            auto* note = Instantiate<RhythmNote>(this);
+
+            if (isJumpNote)
+            {
+                note->Setup(NotesType::JumpNote);
+            }
+            else
+            {
+                note->Setup(NotesType::VerticalNote);
             }
 
             note->SetPosition(pos);

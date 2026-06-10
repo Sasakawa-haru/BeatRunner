@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-struct Note {
+struct RhythmNote {
 	int lpb = 4;
 	int num = 0;
 	int block = 0;
@@ -14,6 +14,6 @@ struct BeatMap
 	int maxBlock = 0;
 	int bpm = 120;
 	int offset = 0;
-	std::vector<Note> notes;
+	std::vector<RhythmNote> notes;
 };
 

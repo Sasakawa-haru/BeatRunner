@@ -14,8 +14,7 @@ enum class LaneType
     Lane3,
     Lane4,
     Lane5,
-    Lane6,
-    Lane7,
+    Lane6,//ジャンプ用
     Unknown,
 };
 
@@ -36,9 +35,9 @@ public:
     static void ResetLaneIndex();
 
 
-    float GetlaneCenterX()const
+    float GetLaneCenterX()const
     {
-        return GetCenterPosition().x + laneWidth * 0.5f;
+        return GetCenterPosition().x;
     }
 
     // レーン中心（= Lane の transform_.position_）

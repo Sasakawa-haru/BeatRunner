@@ -26,7 +26,6 @@ Lane::Lane(GameObject* parent)
     case 3: laneType_ = LaneType::Lane4; break;
     case 4: laneType_ = LaneType::Lane5; break;
     case 5: laneType_ = LaneType::Lane6; break;//è„
-    case 6: laneType_ = LaneType::Lane7; break;//â∫
     default: laneType_ = LaneType::Unknown; break;
     }
 
@@ -59,9 +58,7 @@ void Lane::Update()
 
 void Lane::Draw()
 {
-    Transform t = transform_;
-    t.position_.x += laneWidth * 0.5f; 
-    Model::SetTransform(hLaneModel_, t);
+    Model::SetTransform(hLaneModel_, transform_);
     Model::Draw(hLaneModel_);
 }
 

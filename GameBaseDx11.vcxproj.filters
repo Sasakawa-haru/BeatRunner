@@ -136,7 +136,7 @@
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Option.cpp" />
     <ClCompile Include="OptionData.cpp" />
-    <ClCompile Include="Beam.cpp">
+    <ClCompile Include="RhythmNote.cpp">
       <Filter>Notes</Filter>
     </ClCompile>
     <ClCompile Include="ResultData.cpp" />
@@ -257,7 +257,7 @@
     <ClInclude Include="Result.h" />
     <ClInclude Include="Option.h" />
     <ClInclude Include="OptionData.h" />
-    <ClInclude Include="Beam.h">
+    <ClInclude Include="RhythmNote.h">
       <Filter>Notes</Filter>
     </ClInclude>
     <ClInclude Include="ResultData.h" />
