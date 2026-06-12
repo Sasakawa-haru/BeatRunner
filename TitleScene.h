@@ -21,4 +21,7 @@ public:
 
 	//ŠJ•ú
 	void Release() override;
+
+private:
+	int hTitleImage_;
 };

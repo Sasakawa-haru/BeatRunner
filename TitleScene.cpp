@@ -1,16 +1,19 @@
 #include "TitleScene.h"
 #include"Engine/Input.h"
 #include "Engine/SceneManager.h"
+#include"Engine/Image.h"
 #include"JsonToCsvConverter.h"
 //コンストラクタ
 TitleScene::TitleScene(GameObject* parent)
-	: GameObject(parent, "TitleScene")
+	: GameObject(parent, "TitleScene"),
+	hTitleImage_(-1)
 {
 }
 
 //初期化
 void TitleScene::Initialize()
 {
+	hTitleImage_ = Image::Load("Image/Title.png");
 }
 
 //更新
@@ -31,6 +34,8 @@ void TitleScene::Update()
 //描画
 void TitleScene::Draw()
 {
+	Image::SetTransform(hTitleImage_, transform_);
+	Image::Draw(hTitleImage_);
 }
 
 //開放
