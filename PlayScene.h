@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include"GameConfig.h"
 
 
 class PlayScene : public GameObject
@@ -22,4 +23,7 @@ public:
 	void Release() override;
 
 	void SaveResultData();
+
+private:
+	GameConfig gameConfig_;
 };

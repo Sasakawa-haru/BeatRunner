@@ -144,6 +144,7 @@
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
     <ClCompile Include="BeatmapJsonLoader.cpp" />
+    <ClCompile Include="GameConfig.cpp" />
     <ClCompile Include="RhythmNote.cpp" />
     <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="Combo.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="BeatmapCatalog.h" />
     <ClInclude Include="BeatmapJsonLoader.h" />
     <ClInclude Include="BeatmapMeta.h" />
+    <ClInclude Include="GameConfig.h" />
     <ClInclude Include="RhythmNote.h" />
     <ClInclude Include="ClearScene.h" />
     <ClInclude Include="Combo.h" />

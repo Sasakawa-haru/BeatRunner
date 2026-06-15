@@ -141,6 +141,7 @@
     </ClCompile>
     <ClCompile Include="ResultData.cpp" />
     <ClCompile Include="JudgeLine.cpp" />
+    <ClCompile Include="GameConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -263,6 +264,7 @@
     <ClInclude Include="ResultData.h" />
     <ClInclude Include="RhythmLayout.h" />
     <ClInclude Include="JudgeLine.h" />
+    <ClInclude Include="GameConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

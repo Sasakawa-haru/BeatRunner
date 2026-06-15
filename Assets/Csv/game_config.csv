@@ -1,0 +1,11 @@
+key,value
+LaneCount,5
+SpawnZ,40
+JudgeZ,0
+PlayerZ,-4
+PassZ,-5
+NoteSpeed,10
+JudgeOffsetSec,0.05
+PerfectrRangeSec,0.05
+GoodRangeSec,0.1
+BadTangeSec,0.15

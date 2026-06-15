@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Engine/GameObject.h"
-#include "Engine/Model.h"      
+#include "Engine/Model.h"
+
 #include <string>
 #include <map>
-
 
 // レーン種類
 enum class LaneType
@@ -14,28 +14,32 @@ enum class LaneType
     Lane3,
     Lane4,
     Lane5,
-    Lane6,//ジャンプ用
+    Lane6, // ジャンプ用
     Unknown,
 };
 
 class Lane : public GameObject
 {
 public:
-    static const int laneCount;
-    static const float laneWidth;
+    static int laneCount;
+
+    static float laneWidth;
 
     Lane(GameObject* parent);
+
     ~Lane();
 
     void Initialize() override;
+
     void Update() override;
+
     void Draw() override;
+
     void Release() override;
 
     static void ResetLaneIndex();
 
-
-    float GetLaneCenterX()const
+    float GetLaneCenterX() const
     {
         return GetCenterPosition().x;
     }
@@ -49,7 +53,7 @@ public:
     // レーン種別
     LaneType GetLaneType() const { return laneType_; }
 
-    //lane1/lane2... の名前
+    // lane1/lane2... の名前
     const std::string& GetLaneName() const { return laneName_; }
 
     // 名前でレーンを取得
@@ -63,6 +67,7 @@ private:
     static std::map<std::string, Lane*> sLaneTable_;
 
     int laneIndex_ = 0;
+
     LaneType laneType_ = LaneType::Unknown;
 
     int hLaneModel_ = -1;

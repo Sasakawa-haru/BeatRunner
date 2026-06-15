@@ -11,6 +11,8 @@
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
 #include"SelectedMusic.h"
+#include "GameConfig.h"
+#include <iostream>
 
 
 //コンストラクタ
@@ -22,6 +24,15 @@ PlayScene::PlayScene(GameObject* parent)
 //初期化
 void PlayScene::Initialize()
 {
+	const bool loaded = gameConfig_.LoadFromCsv("Assets/Csv/game_config.csv");
+	if (!loaded)
+	{
+		std::cout << "game_config.csvの読み込みに失敗しました" << std::endl;
+	}
+
+	Lane::laneCount = gameConfig_.GetLaneCount();
+	Lane::laneWidth = gameConfig_.GetLaneWidth();
+
 	Lane::ResetLaneIndex();
 
 	for (int i = 0; i < Lane::laneCount; i++) {
