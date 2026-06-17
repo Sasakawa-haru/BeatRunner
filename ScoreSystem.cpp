@@ -172,11 +172,9 @@ void ScoreSystem::OnNormalPass()
 void ScoreSystem::OnDodgeSuccess()
 {
 	normal_++;
-	combo_ = 0;
 	maxCombo_ = (std::max)(maxCombo_, combo_);
 	AddScore(100);
 
-	judgeText_="DODGE";
 	judgeTimer_ = 20;
 }
 

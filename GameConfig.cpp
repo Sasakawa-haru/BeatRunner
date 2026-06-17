@@ -1,4 +1,5 @@
 #include "GameConfig.h"
+
 #include "Engine/GameCsvReader.h"
 
 #include <iostream>
@@ -10,12 +11,11 @@ bool GameConfig::LoadFromCsv(const std::string& filePath)
 
     if (reader.GetLines() <= 1)
     {
-        std::cout << "GameConfig CSVを読み込めません、または中身が空です: "
-            << filePath << std::endl;
+        std::cout << "GameConfig csv load failed: " << filePath << std::endl;
         return false;
     }
 
-    // 0行目はヘッダー key,value として飛ばす
+	// 1行目はヘッダなので、2行目以降を読み込む
     for (int line = 1; line < reader.GetLines(); ++line)
     {
         if (reader.GetColumns(line) < 2)
@@ -73,19 +73,33 @@ bool GameConfig::LoadFromCsv(const std::string& filePath)
 
     if (m_laneCount <= 0)
     {
-        std::cout << "LaneCountが0以下です" << std::endl;
+        std::cout << "LaneCount error" << std::endl;
+        return false;
+    }
+
+    if (m_laneWidth <= 0.0f)
+    {
+        std::cout << "LaneWidth error" << std::endl;
         return false;
     }
 
     if (m_noteSpeed <= 0.0f)
     {
-        std::cout << "NoteSpeedが0以下です" << std::endl;
+		std::cout << "NoteSpeed error" << std::endl;//ノーツ速度は0以下にできない
         return false;
     }
 
     if (m_spawnZ <= m_judgeZ)
     {
-        std::cout << "SpawnZはJudgeZより大きくしてください" << std::endl;
+		std::cout << "SpawnZ JudgeZ error" << std::endl;//スポーン位置は判定位置より奥にする必要がある
+        return false;
+    }
+
+    if (m_perfectRangeSec < 0.0 ||
+        m_goodRangeSec < 0.0 ||
+        m_badRangeSec < 0.0)
+    {
+        std::cout << "Judge range error" << std::endl;//判定範囲は0未満にできない
         return false;
     }
 

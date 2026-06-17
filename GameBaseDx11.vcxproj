@@ -189,6 +189,7 @@
     <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="SelectedMusic.cpp" />
     <ClCompile Include="SelectScene.cpp" />
+    <ClCompile Include="SideObject.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +245,7 @@
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="SelectedMusic.h" />
     <ClInclude Include="SelectScene.h" />
+    <ClInclude Include="SideObject.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include"Notes.h"
 #include"Music.h"
 #include"JudgeLine.h"
+#include"SideObject.h"
 #include"JudgeSystem.h"
 #include"ScoreSystem.h"
 #include"ResultData.h"
@@ -44,6 +45,7 @@ void PlayScene::Initialize()
 	Instantiate<Player>(this);
 	Instantiate<JudgeSystem>(this);
 	Instantiate<ScoreSystem>(this);
+	Instantiate<SideObject>(this);
 }
 
 //çXêV
