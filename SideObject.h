@@ -37,7 +37,7 @@ private:
     float startZ_ = 80.0f;
     float endZ_ = -20.0f;
     float intervalZ_ = 12.0f;
-	float sideOffset_ = 2.0f;
+	float sideOffset_ = 8.0f;
 
     float leftX_ = -8.0f;
     float rightX_ = 8.0f;

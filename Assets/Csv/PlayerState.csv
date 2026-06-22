@@ -1,6 +1,11 @@
 jumpHeight,3,ジャンプの高さ
-upGravity,-30,上昇時の重力
-downGravity,-45,下降時の重力
+upGravity,-50,上昇時の重力
+downGravity,-100,下降時の重力
 diveGravity,-100,急降下時
 radius,0.5,当たり判定の半径
 PlayerHP,100,プレイヤーのHP
+,,
+cameraHeight,4.5,
+cameraBackDistance,11,
+cameraTargetHeight,1.5,
+cameraTargetForward,5,

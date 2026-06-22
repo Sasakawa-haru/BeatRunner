@@ -10,6 +10,7 @@ Music::Music(GameObject* parent)
     :GameObject(parent, "Music"),
     hSound_(-1),
     started_(false),
+    finished_(false),
     nowSec_(0.0f)
 {
 }
@@ -24,6 +25,7 @@ void Music::Initialize()
 {
     LoadSelectedMusic();
     started_ = false;
+    finished_ = false;
     nowSec_ = 0.0f;
     
 
@@ -43,8 +45,7 @@ void Music::Update()
 
     if (!Audio::IsPlaying(hSound_)) {//‹ÈI—¹Žž
         started_ = false;
-        SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-        pSceneManager->ChangeScene(SCENE_ID_CLEAR);
+        finished_ = true;
     }
 }
 

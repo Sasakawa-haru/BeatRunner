@@ -18,6 +18,8 @@ void SideObject::Initialize()
 	hBuildingModels_[1] = Model::Load("Models/Object_B.fbx");
 	hBuildingModels_[2] = Model::Load("Models/Object_C.fbx");
 
+    SetupSidePositions();
+
 	buildings_.clear();
 
     for (int i = 0; i < buildingCountPerSide_; ++i)
@@ -77,7 +79,7 @@ void SideObject::SetupSidePositions()
 {
     Lane* leftLane = Lane::FindByName("lane1");
 
-    const std::string rightLaneName = "Lane" + std::to_string(Lane::laneCount);
+    const std::string rightLaneName = "lane" + std::to_string(Lane::laneCount);
 	Lane* rightLane = Lane::FindByName(rightLaneName);
     if (leftLane != nullptr) {
 		leftX_ = leftLane->GetLaneCenterX()-sideOffset_;

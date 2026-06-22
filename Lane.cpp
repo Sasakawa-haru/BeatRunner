@@ -44,6 +44,7 @@ void Lane::Initialize()
     hLaneModel_ = Model::Load("Models/Lane.fbx");
     assert(hLaneModel_ >= 0);
 
+    float centerIndex = (Lane::laneCount - 1) * 0.5f;
     float offset = (laneIndex_ - (laneCount+1) * 0.5f) * laneWidth;
     transform_.position_.x = offset;
     transform_.position_.y = -1.0f;

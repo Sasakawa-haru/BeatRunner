@@ -26,4 +26,17 @@ public:
 
 private:
 	GameConfig gameConfig_;
+	enum class ClearState
+	{
+		Playing,
+		PlayerPerformance,
+		ShowClear,
+		ChangeResult
+	};
+	ClearState clearState_ = ClearState::Playing;
+	float clearTimer_ = 0.0f;
+
+	int hClearImage_ = -1;
+	Transform clearImageTransform_;
+	float clearShowTime_ = 1.2f;
 };

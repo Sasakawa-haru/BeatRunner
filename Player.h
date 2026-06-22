@@ -24,6 +24,9 @@ public:
     int GetLaneIndex()const { return PlayerPosition; }
     bool IsRhythmActionTriggered()const { return rhythmActionTriggered_; }
 
+    void StartClearPerformance();
+    bool UpdateClearPerformance(float dt);
+
 private:
     int   hPlayerModel_;
     int   hColliderModel_;
@@ -43,6 +46,11 @@ private:
     float jumpSpeed;
     int PlayerHP;
 
+    float cameraHeight;
+    float cameraBackDistance;
+    float cameraTargetHeight;
+    float cameraTargetForward;
+
     SphereCollider* collider_ = nullptr;
     std::vector<Lane*>   lanes_;      // 全レーンへのポインタ
 
@@ -52,4 +60,12 @@ private:
     Transform effectTransform_;
 
     DirectX::XMFLOAT3 WorldToScreen(const DirectX::XMFLOAT3& worldPos);
+
+    bool isClearPerformance_ = false;
+    float clearTimer_ = 0.0f;
+    //クリア演出調整用
+    float clearPerformanceTime_ = 2.0f;
+    float clearRotateSpeed_ = 6.0f;
+    float clearForwardSpeed_ = 4.0f;
+    float clearUpSpeed_ = 0.5f;
 };

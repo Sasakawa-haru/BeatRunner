@@ -53,6 +53,22 @@ Player::Player(GameObject* parent)
         {
             PlayerHP = Player->GetInt(i, 1);
         }
+        if (tag == "cameraHeight")
+        {
+			cameraHeight = Player->GetFloat(i, 1);
+        }
+        if (tag == "cameraBackDistance")
+        {
+            cameraBackDistance = Player->GetFloat(i, 1);
+        }
+        if (tag == "cameraTargetHeight")
+        {
+            cameraTargetHeight = Player->GetFloat(i, 1);
+        }
+        if (tag == "cameraTargetForward")
+        {
+            cameraTargetForward = Player->GetFloat(i, 1);
+        }
     }
 
     delete Player;
@@ -124,6 +140,11 @@ void Player::Initialize()
 void Player::Update()
 {
     rhythmActionTriggered_ = false;
+
+    if (isClearPerformance_)
+    { 
+        return;
+    }
 
     if (effectTimer_ > 0)
     {
@@ -242,12 +263,18 @@ void Player::Update()
 
         XMFLOAT3 camPos(
             p.x,
-            p.y + 3.0f,
-            p.z - 6.0f
+            p.y + cameraHeight,
+            p.z - cameraBackDistance
+        );
+
+        XMFLOAT3 camTarget(
+            p.x,
+            p.y+cameraTargetHeight,
+            p.z+cameraTargetForward
         );
 
         Camera::SetPosition(camPos);
-        Camera::SetTarget(p);
+        Camera::SetTarget(camTarget);
     }
 
 }
@@ -291,4 +318,44 @@ void Player::OnCollision(GameObject* pTarget)
 
         pTarget->KillMe();
     }
+}
+
+void Player::StartClearPerformance()
+{
+    isClearPerformance_ = true;
+    clearTimer_ = 0.0f;
+}
+
+bool Player::UpdateClearPerformance(float dt)
+{
+    if (!isClearPerformance_)
+    {
+        return false;
+    }
+    clearTimer_ += dt;
+    // 回転
+    transform_.rotate_.y += clearRotateSpeed_ * dt;
+    // 前進
+    transform_.position_.z += clearForwardSpeed_ * dt;
+    // 上昇
+    transform_.position_.y += clearUpSpeed_ * dt;
+
+    XMFLOAT3 p = transform_.position_;
+
+    XMFLOAT3 camPos(
+        p.x,
+        p.y + 2.5f,
+        p.z - 7.0f
+    );
+
+    XMFLOAT3 camTarget(
+        p.x,
+        p.y + 1.0f,
+        p.z
+    );
+
+    Camera::SetPosition(camPos);
+    Camera::SetTarget(camTarget);
+
+    return clearTimer_ >= clearPerformanceTime_;
 }
