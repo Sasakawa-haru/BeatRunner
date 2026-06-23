@@ -6,7 +6,7 @@
 #include "Engine/Time.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
-#include "Engine/SphereCollider.h"
+#include "Engine/BoxCollider.h"
 #include "Engine/Camera.h"
 #include "Engine/Audio.h"
 #include "Engine/Image.h"
@@ -111,7 +111,7 @@ void Player::Initialize()
     // モデル
     hPlayerModel_ = Model::Load("Models/Player.fbx");
     assert(hPlayerModel_ >= 0);
-    hColliderModel_ = Model::Load("DebugCollision/SphereCollider.fbx");
+    hColliderModel_ = Model::Load("DebugCollision/BoxCollider.fbx");
 
     // SE
     hMoveSound_ = Audio::Load("Sound/SE/move.wav");
@@ -123,9 +123,11 @@ void Player::Initialize()
     assert(hEffect_ >= 0);
 
     // 当たり判定
-    collider_ = new SphereCollider(XMFLOAT3(0.0f, 0.0f, 0.0f), radius_);
-    AddCollider(collider_);
-    // ジャンプ初期化
+    collider_ = new BoxCollider(
+        XMFLOAT3(0.0f, 0.0f, 0.0f),
+        XMFLOAT3(1.2f, 2.0f, 1.2f)
+    );
+    AddCollider(collider_);    // ジャンプ初期化
     isJumping_ = false;
     jumpVelocity_ = 0.0f;
     jumpSpeed = std::sqrt(2.0f * jumpHeight * -upGravity);
@@ -283,21 +285,24 @@ void Player::Draw()
 {
     Model::SetTransform(hPlayerModel_, transform_);
     Model::Draw(hPlayerModel_);
+
     if (showCollider_)
     {
         Transform colTf = transform_;
-        colTf.scale_ = XMFLOAT3(radius_, radius_, radius_);
+
+        // BoxCollider の size と同じ値にする
+        colTf.scale_ = XMFLOAT3(1.2f, 2.0f, 1.2f);
+
         Model::SetTransform(hColliderModel_, colTf);
         Model::Draw(hColliderModel_);
     }
-    
+
     if (effectTimer_ > 0)
     {
         Image::SetTransform(hEffect_, effectTransform_);
         Image::Draw(hEffect_);
     }
 }
-
 void Player::Release()
 {
 }

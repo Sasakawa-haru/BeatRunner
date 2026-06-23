@@ -5,7 +5,7 @@
 #include <string>
 
 class Lane;
-class SphereCollider;
+class BoxCollider;
 
 class Player : public GameObject
 {
@@ -51,7 +51,7 @@ private:
     float cameraTargetHeight;
     float cameraTargetForward;
 
-    SphereCollider* collider_ = nullptr;
+    BoxCollider* collider_ = nullptr;
     std::vector<Lane*>   lanes_;      // 全レーンへのポインタ
 
     int PlayerPosition;
