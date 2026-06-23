@@ -36,10 +36,10 @@ public:
 	float JudgeTiming=0.0f;
 
 	//音量関連（0.0f~1.0f）
-	float MasterVolume = 1.0f;
-	float MusicVolume=1.0f;
-	float BGMVolume = 0.5f;
-	float SeVolume=1.0f;
+	float MasterVolume;
+	float MusicVolume;
+	float BGMVolume;
+	float SeVolume;
 	bool OptionMode = false;
 private:
 	OPTION option_;

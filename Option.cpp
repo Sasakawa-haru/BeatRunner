@@ -37,6 +37,7 @@ void Option::Initialize()
 	JudgeTiming = gOptionData.JudgeTiming;
 	MasterVolume = gOptionData.MasterVolume;
 	MusicVolume = gOptionData.MusicVolume;
+	BGMVolume = gOptionData.BGMVolume;
 	SeVolume = gOptionData.SeVolume;
 
 	//Audio::SetMasterVolume(gOptionData.MasterVolume);
