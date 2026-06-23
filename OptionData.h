@@ -5,6 +5,7 @@ struct OptionData
 	float NotesSpeed;
 	float JudgeTiming;
 	float MasterVolume;
+	float BGMVolume;
 	float MusicVolume;
 	float SeVolume;
 };

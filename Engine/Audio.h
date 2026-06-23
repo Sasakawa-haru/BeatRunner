@@ -35,6 +35,9 @@ namespace Audio
 	bool IsPlaying(int ID);
 	//‰¹—Êİ’è
 	void SetVolume(int ID, float volume);
+	void SetMusicVolume(int ID);
+	void SetBgmVolume(int ID);
+	void SetSeVolume(int ID);
 	//‘S‘Ì‰¹—Ê
 	void SetMasterVolume(float volume);
 };

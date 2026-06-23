@@ -9,6 +9,7 @@ enum OPTION
 	JUDGE_TIMING,
 	MASTER_VOLUME,
 	MUSIC_VOLUME,
+	BGM_VOLUME,
 	SE_VOLUME
 };
 
@@ -37,6 +38,7 @@ public:
 	//音量関連（0.0f~1.0f）
 	float MasterVolume = 1.0f;
 	float MusicVolume=1.0f;
+	float BGMVolume = 0.5f;
 	float SeVolume=1.0f;
 	bool OptionMode = false;
 private:

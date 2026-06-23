@@ -31,6 +31,7 @@ private:
 	int SelectId_=1;
 	int MaxSelectId_=0;
 	int hJacketPict_=-1;
+	int hSelectBGM_ = -1;
 	Text* pText=nullptr;
 	Level level_;
 };

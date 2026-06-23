@@ -12,7 +12,7 @@
 #include<string>
 
 
-SelectScene::SelectScene(GameObject* parent) :SelectId_(1), hJacketPict_(-1),level_(Normal)
+SelectScene::SelectScene(GameObject* parent) :SelectId_(1), hJacketPict_(-1),level_(Normal),hSelectBGM_(-1)
 {
 	GameCsvReader musicState("Csv/MusicState.csv");
 	MaxSelectId_ = musicState.GetLines() - 1;
@@ -32,6 +32,12 @@ void SelectScene::Initialize()
 
 	transform_.position_ = {};
 	RefreshMusicData();
+
+	hSelectBGM_ = Audio::Load("Sound/BGM/SelectScene.wav",true);
+	assert(hSelectBGM_ >= 0);
+	Audio::SetBgmVolume(hSelectBGM_);
+	Audio::Play(hSelectBGM_);
+
 }
 std::string GetLevelName(Level level)//レベルの文字列表記
 {
@@ -59,11 +65,13 @@ void SelectScene::Update()
 
 	if (prevOptionMode && !pOption_->OptionMode) {
 		pOption_->ApplyOptionData();
+		Audio::SetBgmVolume(hSelectBGM_);
 	}
 
 	if (pOption_->OptionMode)
 	{
 		pOption_->Update();
+		Audio::SetBgmVolume(hSelectBGM_);
 		return;
 	}
 
@@ -107,6 +115,7 @@ void SelectScene::Update()
 		if (pSceneManager != nullptr) {
 			OutputDebugStringA("ChangeScene PLAY\n");
 			pSceneManager->ChangeScene(SCENE_ID_PLAY);
+			Audio::Stop(hSelectBGM_);
 		}
 	}
 	if (changed) {

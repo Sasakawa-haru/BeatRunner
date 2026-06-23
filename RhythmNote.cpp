@@ -18,7 +18,7 @@ namespace
 	constexpr float kVerticalColliderSizeX = 1.0f;
 	constexpr float kVerticalColliderSizeY = 20.0f;
 
-	constexpr float kBesideColliderSizeX = 3.0f;
+	constexpr float kBesideColliderSizeX = 10.0f;
 	constexpr float kBesideColliderSizeY = 1.0f;
 }
 

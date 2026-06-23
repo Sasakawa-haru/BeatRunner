@@ -10,6 +10,7 @@ OptionData gOptionData = {
 	0.0f,//JudgeTiming
 	1.0f,//MasterVolume
 	1.0f,//MusicVolume
+	0.5f,//BGMVolume
 	1.0f//SeVolume
 };
 
@@ -38,7 +39,7 @@ void Option::Initialize()
 	MusicVolume = gOptionData.MusicVolume;
 	SeVolume = gOptionData.SeVolume;
 
-	Audio::SetMasterVolume(gOptionData.MasterVolume);
+	//Audio::SetMasterVolume(gOptionData.MasterVolume);
 }
 
 void Option::Update()
@@ -79,6 +80,11 @@ void Option::Update()
 					MusicVolume = MusicVolume - 0.1;
 				}
 			}
+			if (option_ == BGM_VOLUME) {
+				if (BGMVolume > 0.0f) {
+					BGMVolume = BGMVolume - 0.1;
+				}
+			}
 			if (option_ == SE_VOLUME) {
 				if (SeVolume > 0.0f) {
 					SeVolume = SeVolume - 0.1;
@@ -103,6 +109,11 @@ void Option::Update()
 			if (option_ == MUSIC_VOLUME) {
 				if (MusicVolume < 1.0f) {
 					MusicVolume = MusicVolume + 0.1f;
+				}
+			}
+			if (option_ == BGM_VOLUME) {
+				if (BGMVolume < 1.0f) {
+					BGMVolume = BGMVolume + 0.1f;
 				}
 			}
 			if (option_ == SE_VOLUME) {
@@ -138,6 +149,7 @@ void Option::Draw()
 		pText_->Draw(x, y + JUDGE_TIMING * interval, "Judge Timing");
 		pText_->Draw(x, y + MASTER_VOLUME * interval, "Master Volume");
 		pText_->Draw(x, y + MUSIC_VOLUME * interval, "Music Volume");
+		pText_->Draw(x, y + BGM_VOLUME * interval, "BGM Volume");
 		pText_->Draw(x, y + SE_VOLUME * interval, "SE Volume");
 
 		// 数値表示
@@ -154,6 +166,9 @@ void Option::Draw()
 
 		sprintf_s(buf, "%.1f", MusicVolume);
 		pText_->Draw(x + 250, y + MUSIC_VOLUME * interval, buf);
+
+		sprintf_s(buf, " %.1f", BGMVolume);
+		pText_->Draw(x + 250, y + BGM_VOLUME * interval, buf);
 
 		sprintf_s(buf, "%.1f", SeVolume);
 		pText_->Draw(x + 250, y + SE_VOLUME * interval, buf);
@@ -176,6 +191,7 @@ void Option::ApplyOptionData()
 	gOptionData.JudgeTiming = JudgeTiming;
 	gOptionData.MasterVolume = MasterVolume;
 	gOptionData.MusicVolume = MusicVolume;
+	gOptionData.BGMVolume = BGMVolume;
 	gOptionData.SeVolume = SeVolume;
 }
 

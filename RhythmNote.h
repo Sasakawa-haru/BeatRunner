@@ -30,6 +30,6 @@ private:
 	int hColliderModel_;
 	NotesType beamType_;
 	bool PlayerHit;
-	bool showCollider_=true;
+	bool showCollider_ = false;// デバッグ用に当たり判定を表示するかどうか
 
 };

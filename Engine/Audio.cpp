@@ -1,7 +1,7 @@
 #include <xaudio2.h>
 #include <vector>
 #include "Audio.h"
-
+#include"../OptionData.h"
 #define SAFE_DELETE_ARRAY(p) if(p){delete[] p; p = nullptr;}
 
 namespace Audio
@@ -239,6 +239,21 @@ void Audio::SetVolume(int ID, float volume)
 	for (int i = 0;i < audioDatas[ID].svNum;i++) {
 		audioDatas[ID].pSourceVoice[i]->SetVolume(volume);
 	}
+}
+
+void Audio::SetMusicVolume(int ID)
+{
+	SetVolume(ID, gOptionData.MusicVolume * gOptionData.MasterVolume);
+}
+
+void Audio::SetBgmVolume(int ID)
+{
+	SetVolume(ID, gOptionData.BGMVolume * gOptionData.MasterVolume);
+}
+
+void Audio::SetSeVolume(int ID)
+{
+	SetVolume(ID, gOptionData.SeVolume * gOptionData.MasterVolume);
 }
 
 void Audio::SetMasterVolume(float volume)
