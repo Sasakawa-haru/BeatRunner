@@ -166,6 +166,10 @@ void Notes::Update()
             note->SetPosition(pos);
             note->SetLane(baseLane);
             note->SetHitTimeSec(hitTimeSec);
+
+			// 同じ時間のノーツを同グループにする
+			const int tms = static_cast<int>(hitTimeSec * 1000.0f + 0.5f);
+			note->SetGroupId(GetGroupIdByTimeMs(tms));
         }
 
         nextLine_++;

@@ -76,8 +76,6 @@ void Lane::ResetLaneIndex()
 
 XMFLOAT3 Lane::GetCenterPosition() const
 {
-    //XMFLOAT3 p = transform_.position_;
-    //p.x += laneWidth / 2;
     return transform_.position_;
 }
 

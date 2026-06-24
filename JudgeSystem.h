@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "ScoreSystem.h"
+#include<unordered_set>
 
 class Notes;
 class ScoreSystem;
@@ -20,7 +21,12 @@ private:
 	void TryHitLane(int lane, double nowSec, Notes* notes, ScoreSystem* score);
 	void UpdateDodgeSuccess(Notes* notes, ScoreSystem* score);
 
+	void KillGroupNotes(Notes* notes, int groupId);
+	bool IsGroupJudged(int groupId) const;
+
 	ScoreSystem::JudgeResult CalcJudge(double diffSec) const;
+
+	std::unordered_set<int> judgedGroups_;
 
 	static constexpr int kLaneCount_ = 5;
 
