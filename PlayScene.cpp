@@ -43,12 +43,15 @@ void PlayScene::Initialize()
 	}
 	Instantiate<JudgeLine>(this);
 	Instantiate<Music>(this);
-	Instantiate<Notes>(this);
+	Notes*notes=Instantiate<Notes>(this);
 	Instantiate<Player>(this);
 	Instantiate<SideObject>(this);
 
 	Instantiate<JudgeSystem>(this);
-	Instantiate<ScoreSystem>(this);
+	ScoreSystem* scoreSystem=Instantiate<ScoreSystem>(this);
+	if (notes && scoreSystem) {
+		scoreSystem->SetScoreMaxCombo(notes->GetAllNotesCount());
+	}
 }
 
 //XV

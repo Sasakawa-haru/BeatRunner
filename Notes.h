@@ -22,6 +22,8 @@ public:
     int GetGroupId(double hitTime)const { return timeToGroup_.at(hitTime); }
     const std::vector<int>& GetGroupTimesMs()const { return groupTimesMs_; }
     int GetGroupIdByTimeMs(int tms)const;
+    int GetAllNotesCount()const; //ëSÉmÅ[Écêî
+
 private:
     void BuildGroupsFromCsv();
     std::vector<int>groupTimesMs_;

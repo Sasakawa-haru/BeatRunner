@@ -114,7 +114,9 @@ void ScoreSystem::OnJudge(JudgeResult r)
 		perfect_++;
 		combo_++;
 		maxCombo_ = (std::max)(maxCombo_, combo_);
-		AddScore(1000);
+
+		AddScore(1.0);
+
 		judgeText_ = "PERFECT";
 		judgeTimer_ = 20;
 		break;
@@ -123,7 +125,9 @@ void ScoreSystem::OnJudge(JudgeResult r)
 		great_++;
 		combo_++;
 		maxCombo_ = (std::max)(maxCombo_, combo_);
-		AddScore(700);
+
+		AddScore(0.7);
+
 		judgeText_ = "GREAT";
 		judgeTimer_ = 20;
 		break;
@@ -132,7 +136,9 @@ void ScoreSystem::OnJudge(JudgeResult r)
 		good_++;
 		combo_++;
 		maxCombo_ = (std::max)(maxCombo_, combo_);
-		AddScore(500);
+
+		AddScore(0.5);
+
 		judgeText_ = "GOOD";
 		judgeTimer_ = 20;
 		break;
@@ -141,7 +147,9 @@ void ScoreSystem::OnJudge(JudgeResult r)
 		normal_++;
 		combo_ = 0;
 		maxCombo_ = (std::max)(maxCombo_, combo_);
-		AddScore(100);
+
+		AddScore(0.1);
+
 		judgeText_ = "NORMAL";
 		judgeTimer_ = 20;
 		break;
@@ -150,34 +158,36 @@ void ScoreSystem::OnJudge(JudgeResult r)
 		miss_++;
 		combo_ = 0;
 		maxCombo_ = (std::max)(maxCombo_, combo_);
-		AddScore(0);
+
+		AddScore(0.0);
+
 		judgeText_ = "MISS";
 		judgeTimer_ = 20;
 		break;
 	}
 }
-
 void ScoreSystem::OnNormalPass()
 {
 	normal_++;
+
 	combo_ = 0;
 	maxCombo_ = (std::max)(maxCombo_, combo_);
 
-	AddScore(10);
+	AddScore(0.1);
 
-	//judgeText_ = "Through";
 	judgeTimer_ = 20;
 }
 
 void ScoreSystem::OnDodgeSuccess()
 {
 	normal_++;
+
 	maxCombo_ = (std::max)(maxCombo_, combo_);
-	AddScore(100);
+
+	AddScore(0.1);
 
 	judgeTimer_ = 20;
 }
-
 void ScoreSystem::OnMissCollision()
 {
 	miss_++;
@@ -192,9 +202,32 @@ void ScoreSystem::OnMissCollision()
 	Camera::StartShake(0.25f, 0.25f);
 }
 
-void ScoreSystem::AddScore(int base)
+void ScoreSystem::SetScoreMaxCombo(int maxCombo)
 {
-	float comboMul = 1.0f + (combo_ * 0.01f);
-	score_ += (int)(base * comboMul);
+	if(maxCombo<=0)
+	{ 
+		scoreMaxCombo_ = 1;
+		return;
+	}
+	scoreMaxCombo_ = maxCombo;
+}
 
+void ScoreSystem::AddScore(double rate)
+{
+	const double scorePerNote = static_cast<double>(kMaxScore) / static_cast<double>(scoreMaxCombo_);
+	scoreRaw_ += scorePerNote * rate;
+	if (scoreRaw_ > kMaxScore)
+	{
+		scoreRaw_ = kMaxScore;
+	}
+	score_ = static_cast<int>(scoreRaw_+0.5);
+	FixPerfectScoreIfNeeded();
+}
+void ScoreSystem::FixPerfectScoreIfNeeded()
+{
+	if (perfect_ == scoreMaxCombo_)
+	{
+		scoreRaw_ = static_cast<double>(kMaxScore);
+		score_ = kMaxScore;
+	}
 }

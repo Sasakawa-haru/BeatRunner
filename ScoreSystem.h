@@ -30,6 +30,8 @@ public:
 	void OnNormalPass();      // 見逃し用
 	void OnDodgeSuccess();   // 回避成功用
 	void OnMissCollision();   // 衝突用MISS
+	void SetScoreMaxCombo(int maxCombo);// 最大コンボ数を設定（スコア計算用）
+	void FixPerfectScoreIfNeeded();//全判定がパーフェクトだった場合のスコア補正
 
 	int GetScore()const { return score_; }
 	int GetMaxCombo()const { return maxCombo_; }
@@ -42,7 +44,7 @@ public:
 
 
 private:
-	void AddScore(int base);
+	void AddScore(double rate);
 
 	Text text_;
 
@@ -50,6 +52,10 @@ private:
 	int combo_ = 0;
 	int maxCombo_ = 0;
 
+	static constexpr int kMaxScore = 1000000;
+
+	int scoreMaxCombo_ = 0;
+	double scoreRaw_ = 0.0;
 	int perfect_ = 0;
 	int great_ = 0;
 	int good_ = 0;

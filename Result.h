@@ -1,5 +1,6 @@
 #pragma once
 #include"Engine/GameObject.h"
+#include"Engine/Text.h"
 #include<string>
 class Result:GameObject
 {
@@ -18,6 +19,6 @@ public:
 	void Release()override;
 
 private:
-	
+	Text text_;
 };
 

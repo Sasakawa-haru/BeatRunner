@@ -125,7 +125,7 @@ void Player::Initialize()
     // 当たり判定
     collider_ = new BoxCollider(
         XMFLOAT3(0.0f, 0.0f, 0.0f),
-        XMFLOAT3(1.2f, 2.0f, 1.2f)
+        XMFLOAT3(1.0f, 2.0f, 1.0f)
     );
     AddCollider(collider_);    // ジャンプ初期化
     isJumping_ = false;

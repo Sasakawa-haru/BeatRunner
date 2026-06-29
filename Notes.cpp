@@ -150,7 +150,8 @@ void Notes::Update()
             else
             {
                 pos.y += 2.0f; // 通常ノーツ用の高さ
-            }            pos.z = RhythmLayout::JudgeLineZ+(hitTimeSec-nowSec_)*notesSpeed;
+            }           
+            pos.z = RhythmLayout::JudgeLineZ+(hitTimeSec-nowSec_)*notesSpeed;
 
             auto* note = Instantiate<RhythmNote>(this);
 
@@ -194,6 +195,21 @@ int Notes::GetGroupIdByTimeMs(int tms) const
     }
 
     return it->second;
+}
+
+int Notes::GetAllNotesCount() const
+{
+    if (!notesCsv_)
+    {
+        return 1;
+    }
+	const int lines = notesCsv_->GetLines();
+    const int notesCount = lines - 1;//ヘッダー分を引く
+    if (notesCount < 0)
+    {
+        return 1;
+    }
+    return notesCount;
 }
 
 void Notes::BuildGroupsFromCsv()
