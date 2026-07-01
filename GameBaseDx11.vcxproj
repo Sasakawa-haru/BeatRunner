@@ -197,7 +197,9 @@
     <ClInclude Include="BeatmapCatalog.h" />
     <ClInclude Include="BeatmapJsonLoader.h" />
     <ClInclude Include="BeatmapMeta.h" />
+    <ClInclude Include="CsvConfig.h" />
     <ClInclude Include="GameConfig.h" />
+    <ClInclude Include="JudgeConfig.h" />
     <ClInclude Include="RhythmNote.h" />
     <ClInclude Include="ClearScene.h" />
     <ClInclude Include="Combo.h" />
@@ -240,7 +242,6 @@
     <ClInclude Include="Music.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="ResultData.h" />
-    <ClInclude Include="RhythmConfig.h" />
     <ClInclude Include="RhythmLayout.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="SelectedMusic.h" />

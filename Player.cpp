@@ -16,6 +16,12 @@
 
 using namespace DirectX;
 
+namespace {
+	float kGroundRayStartY = 100.0f; // 地面判定用のRayの開始位置
+    float kGroundHItOffsetY = 0.05f; // 地面判定用のRayがヒットしたときのY座標補正
+	float kClearMoveSpeed = 5.0f; // クリア演出時の前進速度
+}
+
 Player::Player(GameObject* parent)
     : GameObject(parent, "Player")
     , hEffect_(-1)
@@ -213,7 +219,7 @@ void Player::Update()
     // --- 地面との接地判定 ---
     XMFLOAT3 rayStart(
         transform_.position_.x,
-        transform_.position_.y + 100.0f,
+        transform_.position_.y + kGroundRayStartY,
         transform_.position_.z
     );
     XMFLOAT3 rayDir(0.0f, -1.0f, 0.0f);
