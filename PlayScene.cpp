@@ -64,6 +64,7 @@ void PlayScene::Update()
 
 	Music* music = (Music*)FindObject("Music");
 	Player* player = (Player*)FindObject("Player");
+	SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
 
 	switch(clearState_)
 		case ClearState::Playing:
@@ -108,7 +109,7 @@ void PlayScene::Update()
 	if (player) {
 		int hp = player->GetHP();
 		if (hp <= 0) {
-
+			pSceneManager->ChangeScene(SCENE_ID_RESULT);
 		}
 	}
 	if (Input::IsKeyDown(DIK_ESCAPE)) {

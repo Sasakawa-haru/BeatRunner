@@ -2,7 +2,7 @@
 #include"Engine/GameObject.h"
 #include"Engine/Text.h"
 #include<string>
-class Result:GameObject
+class Result:public GameObject
 {
 public:
 	//コンストラクタ
