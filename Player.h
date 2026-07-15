@@ -36,7 +36,7 @@ private:
     float radius_ ;   // プレイヤーの足元判定用半径
     float jumpVelocity_;
     bool  isJumping_ = false;
-    bool showCollider_ = true;
+    bool showCollider_ = false;
     bool rhythmActionTriggered_ = false;
 
     float jumpHeight;

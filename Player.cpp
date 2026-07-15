@@ -20,6 +20,12 @@ namespace {
 	float kGroundRayStartY = 100.0f; // 地面判定用のRayの開始位置
     float kGroundHItOffsetY = 0.05f; // 地面判定用のRayがヒットしたときのY座標補正
 	float kClearMoveSpeed = 5.0f; // クリア演出時の前進速度
+
+    float RunMotionStartFrame = 1.0f;
+	float RunMotionEndFrame = 19.0f;
+	float JumpMotionStartFrame = 20.0f;
+	float JumpMotionEndFrame = 30.0f;
+	float MotionFrameRate = 0.5f; // モーションのフレームレート
 }
 
 Player::Player(GameObject* parent)
@@ -115,8 +121,11 @@ void Player::Initialize()
     );
 
     // モデル
-    hPlayerModel_ = Model::Load("Models/Player.fbx");
+    hPlayerModel_ = Model::Load("Models/PlayerMotion.fbx");
     assert(hPlayerModel_ >= 0);
+    Model::SetAnimFrame(hPlayerModel_, RunMotionStartFrame, RunMotionEndFrame, MotionFrameRate);
+	transform_.scale_ = XMFLOAT3(0.001f, 0.001f, 0.001f);
+
     hColliderModel_ = Model::Load("DebugCollision/BoxCollider.fbx");
 
     // SE
@@ -147,6 +156,7 @@ void Player::Initialize()
 
 void Player::Update()
 {
+
     rhythmActionTriggered_ = false;
 
     if (isClearPerformance_)
