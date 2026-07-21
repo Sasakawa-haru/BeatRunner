@@ -299,7 +299,10 @@ void Player::Update()
 
 void Player::Draw()
 {
-    Model::SetTransform(hPlayerModel_, transform_);
+    Transform modelTf = transform_;
+	modelTf.scale_ = XMFLOAT3(0.001f, 0.002f, 0.001f);
+    modelTf.position_.y += 1.7f;
+    Model::SetTransform(hPlayerModel_, modelTf);
     Model::Draw(hPlayerModel_);
 
     if (showCollider_)

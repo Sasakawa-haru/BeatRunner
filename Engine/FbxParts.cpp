@@ -265,143 +265,346 @@ void FbxParts::InitIndex(fbxsdk::FbxMesh * mesh)
 }
 
 //骨の情報を準備
-void FbxParts::InitSkelton(FbxMesh * pMesh)
+void FbxParts::InitSkelton(FbxMesh* pMesh)
 {
-	// デフォーマ情報（ボーンとモデルの関連付け）の取得
-	FbxDeformer *   pDeformer = pMesh->GetDeformer(0);
+	// デフォーマ情報（ボーンとモデルの関連付け）を取得
+	FbxDeformer* pDeformer = pMesh->GetDeformer(0);
+
 	if (pDeformer == nullptr)
 	{
-		//ボーン情報なし
+		// ボーン情報なし
+		pSkinInfo_ = nullptr;
+		numBone_ = 0;
 		return;
 	}
 
+	// スキンメッシュ情報を取得
+	pSkinInfo_ = static_cast<FbxSkin*>(pDeformer);
 
-	// デフォーマ情報からスキンメッシュ情報を取得
-	pSkinInfo_ = (FbxSkin *)pDeformer;
+	// ボーン数を取得
+	numBone_ = pSkinInfo_->GetClusterCount();
 
-	// 頂点からポリゴンを逆引きするための情報を作成する
-	struct  POLY_INDEX
+	if (numBone_ <= 0)
 	{
-		int *   polyIndex;      // ポリゴンの番号
-		int *   vertexIndex;    // 頂点の番号
-		int     numRef;         // 頂点を共有するポリゴンの数
+		pSkinInfo_ = nullptr;
+		numBone_ = 0;
+		return;
+	}
+
+	// 頂点からポリゴンを逆引きする情報
+	struct POLY_INDEX
+	{
+		int* polyIndex;
+		int* vertexIndex;
+		int numRef;
 	};
 
-	POLY_INDEX * polyTable = new POLY_INDEX[vertexCount_];
+	POLY_INDEX* polyTable = new POLY_INDEX[vertexCount_];
+
 	for (DWORD i = 0; i < vertexCount_; i++)
 	{
-		// 三角形ポリゴンに合わせて、頂点とポリゴンの関連情報を構築する
-		// 総頂点数＝ポリゴン数×３頂点
-		polyTable[i].polyIndex = new int[polygonCount_ * 3];
-		polyTable[i].vertexIndex = new int[polygonCount_ * 3];
-		polyTable[i].numRef = 0;
-		ZeroMemory(polyTable[i].polyIndex, sizeof(int)* polygonCount_ * 3);
-		ZeroMemory(polyTable[i].vertexIndex, sizeof(int)* polygonCount_ * 3);
+		polyTable[i].polyIndex =
+			new int[polygonCount_ * 3];
 
-		// ポリゴン間で共有する頂点を列挙する
-		for (DWORD k = 0; k < polygonCount_; k++)
+		polyTable[i].vertexIndex =
+			new int[polygonCount_ * 3];
+
+		polyTable[i].numRef = 0;
+
+		ZeroMemory(
+			polyTable[i].polyIndex,
+			sizeof(int) * polygonCount_ * 3
+		);
+
+		ZeroMemory(
+			polyTable[i].vertexIndex,
+			sizeof(int) * polygonCount_ * 3
+		);
+
+		// ポリゴン間で共有されている頂点を列挙
+		for (DWORD polygonIndex = 0;
+			polygonIndex < polygonCount_;
+			polygonIndex++)
 		{
-			for (int m = 0; m < 3; m++)
+			for (int polygonVertex = 0;
+				polygonVertex < 3;
+				polygonVertex++)
 			{
-				if (pMesh->GetPolygonVertex(k, m) == i)
+				if (pMesh->GetPolygonVertex(
+					polygonIndex,
+					polygonVertex) ==
+					static_cast<int>(i))
 				{
-					polyTable[i].polyIndex[polyTable[i].numRef] = k;
-					polyTable[i].vertexIndex[polyTable[i].numRef] = m;
+					const int referenceIndex =
+						polyTable[i].numRef;
+
+					polyTable[i]
+						.polyIndex[referenceIndex] =
+						static_cast<int>(polygonIndex);
+
+					polyTable[i]
+						.vertexIndex[referenceIndex] =
+						polygonVertex;
+
 					polyTable[i].numRef++;
 				}
 			}
 		}
 	}
 
-	// ボーン情報を取得する
-	numBone_ = pSkinInfo_->GetClusterCount();
-	ppCluster_ = new FbxCluster*[numBone_];
-	for (int i = 0; i < numBone_; i++)
+	// 各ボーンのクラスタを取得
+	ppCluster_ = new FbxCluster * [numBone_];
+
+	for (int boneIndex = 0;
+		boneIndex < numBone_;
+		boneIndex++)
 	{
-		ppCluster_[i] = pSkinInfo_->GetCluster(i);
+		ppCluster_[boneIndex] =
+			pSkinInfo_->GetCluster(boneIndex);
 	}
 
-	// ボーンの数に合わせてウェイト情報を準備する
+	// 頂点ごとのウェイト情報を準備
 	pWeightArray_ = new FbxParts::Weight[vertexCount_];
-	for (DWORD i = 0; i < vertexCount_; i++)
+
+	for (DWORD vertexIndex = 0;
+		vertexIndex < vertexCount_;
+		vertexIndex++)
 	{
-		pWeightArray_[i].posOrigin = pVertexData_[i].position;
-		pWeightArray_[i].normalOrigin = pVertexData_[i].normal;
-		pWeightArray_[i].pBoneIndex = new int[numBone_];
-		pWeightArray_[i].pBoneWeight = new float[numBone_];
-		for (int j = 0; j < numBone_; j++)
+		pWeightArray_[vertexIndex].posOrigin =
+			pVertexData_[vertexIndex].position;
+
+		pWeightArray_[vertexIndex].normalOrigin =
+			pVertexData_[vertexIndex].normal;
+
+		pWeightArray_[vertexIndex].pBoneIndex =
+			new int[numBone_];
+
+		pWeightArray_[vertexIndex].pBoneWeight =
+			new float[numBone_];
+
+		for (int influence = 0;
+			influence < numBone_;
+			influence++)
 		{
-			pWeightArray_[i].pBoneIndex[j] = -1;
-			pWeightArray_[i].pBoneWeight[j] = 0.0f;
+			pWeightArray_[vertexIndex]
+				.pBoneIndex[influence] = -1;
+
+			pWeightArray_[vertexIndex]
+				.pBoneWeight[influence] = 0.0f;
 		}
 	}
 
-
-
-
-	// それぞれのボーンに影響を受ける頂点を調べる
-	// そこから逆に、頂点ベースでボーンインデックス・重みを整頓する
-	for (int i = 0; i < numBone_; i++)
+	// ============================================================
+	// 全ボーンのウェイトを登録
+	// ============================================================
+	for (int boneIndex = 0;
+		boneIndex < numBone_;
+		boneIndex++)
 	{
-		int numIndex = ppCluster_[i]->GetControlPointIndicesCount();   //このボーンに影響を受ける頂点数
-		int * piIndex = ppCluster_[i]->GetControlPointIndices();       //ボーン/ウェイト情報の番号
-		double * pdWeight = ppCluster_[i]->GetControlPointWeights();     //頂点ごとのウェイト情報
+		FbxCluster* cluster =
+			ppCluster_[boneIndex];
 
-																				 //頂点側からインデックスをたどって、頂点サイドで整理する
-		for (int k = 0; k < numIndex; k++)
+		if (cluster == nullptr)
 		{
-			// 頂点に関連付けられたウェイト情報がボーン５本以上の場合は、重みの大きい順に４本に絞る
-			for (int m = 0; m < 4; m++)
-			{
-				if (m >= numBone_)
-					break;
+			continue;
+		}
 
-				if (pdWeight[k] > pWeightArray_[piIndex[k]].pBoneWeight[m])
+		const int influenceVertexCount =
+			cluster->GetControlPointIndicesCount();
+
+		int* controlPointIndices =
+			cluster->GetControlPointIndices();
+
+		double* controlPointWeights =
+			cluster->GetControlPointWeights();
+
+		if (controlPointIndices == nullptr ||
+			controlPointWeights == nullptr)
+		{
+			continue;
+		}
+
+		for (int influenceVertex = 0;
+			influenceVertex < influenceVertexCount;
+			influenceVertex++)
+		{
+			const int vertexIndex =
+				controlPointIndices[influenceVertex];
+
+			const float weight =
+				static_cast<float>(
+					controlPointWeights[influenceVertex]
+					);
+
+			// 不正な頂点番号を除外
+			if (vertexIndex < 0 ||
+				vertexIndex >=
+				static_cast<int>(vertexCount_))
+			{
+				continue;
+			}
+
+			// 影響がほぼないウェイトは登録しない
+			if (weight <= 0.000001f)
+			{
+				continue;
+			}
+
+			// 保存するのは最大4ボーン
+			const int maxInfluence =
+				(numBone_ < 4) ? numBone_ : 4;
+
+			// ウェイトの大きい順に挿入
+			for (int insertIndex = 0;
+				insertIndex < maxInfluence;
+				insertIndex++)
+			{
+				if (weight >
+					pWeightArray_[vertexIndex]
+					.pBoneWeight[insertIndex])
 				{
-					for (int n = numBone_ - 1; n > m; n--)
+					// 後ろへ1つずつ移動
+					for (int shiftIndex =
+						maxInfluence - 1;
+						shiftIndex > insertIndex;
+						shiftIndex--)
 					{
-						pWeightArray_[piIndex[k]].pBoneIndex[n] = pWeightArray_[piIndex[k]].pBoneIndex[n - 1];
-						pWeightArray_[piIndex[k]].pBoneWeight[n] = pWeightArray_[piIndex[k]].pBoneWeight[n - 1];
+						pWeightArray_[vertexIndex]
+							.pBoneIndex[shiftIndex] =
+							pWeightArray_[vertexIndex]
+							.pBoneIndex[
+								shiftIndex - 1
+							];
+
+						pWeightArray_[vertexIndex]
+							.pBoneWeight[shiftIndex] =
+							pWeightArray_[vertexIndex]
+							.pBoneWeight[
+								shiftIndex - 1
+							];
 					}
-					pWeightArray_[piIndex[k]].pBoneIndex[m] = i;
-					pWeightArray_[piIndex[k]].pBoneWeight[m] = (float)pdWeight[k];
+
+					pWeightArray_[vertexIndex]
+						.pBoneIndex[insertIndex] =
+						boneIndex;
+
+					pWeightArray_[vertexIndex]
+						.pBoneWeight[insertIndex] =
+						weight;
+
 					break;
 				}
 			}
-
 		}
 	}
 
-	//ボーンを生成
-	pBoneArray_ = new FbxParts::Bone[numBone_];
-	for (int i = 0; i < numBone_; i++)
-	{
-		// ボーンのデフォルト位置を取得する
-		FbxAMatrix  matrix;
-		ppCluster_[i]->GetTransformLinkMatrix(matrix);
+	// ============================================================
+	// 全ボーンの登録が完了してからウェイトを正規化
+	// ============================================================
+	const int maxInfluence =
+		(numBone_ < 4) ? numBone_ : 4;
 
-		// 行列コピー（Fbx形式からDirectXへの変換）
-		XMFLOAT4X4 pose;
-		for (DWORD x = 0; x < 4; x++)
+	for (DWORD vertexIndex = 0;
+		vertexIndex < vertexCount_;
+		vertexIndex++)
+	{
+		float totalWeight = 0.0f;
+
+		for (int influence = 0;
+			influence < maxInfluence;
+			influence++)
 		{
-			for (DWORD y = 0; y < 4; y++)
+			const int boneIndex =
+				pWeightArray_[vertexIndex]
+				.pBoneIndex[influence];
+
+			if (boneIndex < 0)
 			{
-				pose(x,y) = (float)matrix.Get(x, y);
+				continue;
+			}
+
+			totalWeight +=
+				pWeightArray_[vertexIndex]
+				.pBoneWeight[influence];
+		}
+
+		if (totalWeight > 0.000001f)
+		{
+			for (int influence = 0;
+				influence < maxInfluence;
+				influence++)
+			{
+				const int boneIndex =
+					pWeightArray_[vertexIndex]
+					.pBoneIndex[influence];
+
+				if (boneIndex < 0)
+				{
+					continue;
+				}
+
+				pWeightArray_[vertexIndex]
+					.pBoneWeight[influence] /=
+					totalWeight;
 			}
 		}
-		pBoneArray_[i].bindPose = XMLoadFloat4x4(&pose);
 	}
 
-	// 一時的なメモリ領域を解放する
-	for (DWORD i = 0; i < vertexCount_; i++)
+	// ============================================================
+	// ボーンのバインド姿勢を取得
+	// ============================================================
+	pBoneArray_ = new FbxParts::Bone[numBone_];
+
+	for (int boneIndex = 0;
+		boneIndex < numBone_;
+		boneIndex++)
 	{
-		SAFE_DELETE_ARRAY(polyTable[i].polyIndex);
-		SAFE_DELETE_ARRAY(polyTable[i].vertexIndex);
+		FbxAMatrix bindMatrix;
+
+		ppCluster_[boneIndex]
+			->GetTransformLinkMatrix(bindMatrix);
+
+		XMFLOAT4X4 pose{};
+
+		for (DWORD row = 0; row < 4; row++)
+		{
+			for (DWORD column = 0;
+				column < 4;
+				column++)
+			{
+				pose(row, column) =
+					static_cast<float>(
+						bindMatrix.Get(row, column)
+						);
+			}
+		}
+
+		pBoneArray_[boneIndex].bindPose =
+			XMLoadFloat4x4(&pose);
+
+		pBoneArray_[boneIndex].newPose =
+			XMMatrixIdentity();
+
+		pBoneArray_[boneIndex].diffPose =
+			XMMatrixIdentity();
 	}
+
+	// 一時メモリを解放
+	for (DWORD vertexIndex = 0;
+		vertexIndex < vertexCount_;
+		vertexIndex++)
+	{
+		SAFE_DELETE_ARRAY(
+			polyTable[vertexIndex].polyIndex
+		);
+
+		SAFE_DELETE_ARRAY(
+			polyTable[vertexIndex].vertexIndex
+		);
+	}
+
 	SAFE_DELETE_ARRAY(polyTable);
-
 }
-
 //コンスタントバッファ（シェーダーに情報を送るやつ）準備
 void FbxParts::IntConstantBuffer()
 {
@@ -479,66 +682,152 @@ void FbxParts::Draw(Transform& transform)
 //ボーン有りのモデルを描画
 void FbxParts::DrawSkinAnime(Transform& transform, FbxTime time)
 {
-	// ボーンごとの現在の行列を取得する
+	// 現在フレームのボーン行列を作成
 	for (int i = 0; i < numBone_; i++)
 	{
-		FbxAnimEvaluator * evaluator = ppCluster_[i]->GetLink()->GetScene()->GetAnimationEvaluator();
-		FbxMatrix mCurrentOrentation = evaluator->GetNodeGlobalTransform(ppCluster_[i]->GetLink(), time);
+		FbxAnimEvaluator* evaluator =
+			ppCluster_[i]->GetLink()->GetScene()->GetAnimationEvaluator();
 
-		// 行列コピー（Fbx形式からDirectXへの変換）
-		XMFLOAT4X4 pose;
-		for (DWORD x = 0; x < 4; x++)
+		FbxMatrix currentMatrix =
+			evaluator->GetNodeGlobalTransform(
+				ppCluster_[i]->GetLink(),
+				time
+			);
+
+		XMFLOAT4X4 pose{};
+
+		for (DWORD row = 0; row < 4; row++)
 		{
-			for (DWORD y = 0; y < 4; y++)
+			for (DWORD column = 0; column < 4; column++)
 			{
-				pose(x, y) = (float)mCurrentOrentation.Get(x, y);
+				pose(row, column) =
+					static_cast<float>(
+						currentMatrix.Get(row, column)
+						);
 			}
 		}
 
-		// オフセット時のポーズの差分を計算する
 		pBoneArray_[i].newPose = XMLoadFloat4x4(&pose);
-		pBoneArray_[i].diffPose = XMMatrixInverse(nullptr, pBoneArray_[i].bindPose);
-		pBoneArray_[i].diffPose *= pBoneArray_[i].newPose;
+
+		pBoneArray_[i].diffPose =
+			XMMatrixInverse(
+				nullptr,
+				pBoneArray_[i].bindPose
+			);
+
+		pBoneArray_[i].diffPose *=
+			pBoneArray_[i].newPose;
 	}
 
-	// 各ボーンに対応した頂点の変形制御
-	for (DWORD i = 0; i < vertexCount_; i++)
+	// 各頂点をボーンで変形
+	for (DWORD vertexIndex = 0;
+		vertexIndex < vertexCount_;
+		vertexIndex++)
 	{
-		// 各頂点ごとに、「影響するボーン×ウェイト値」を反映させた関節行列を作成する
-		XMMATRIX  matrix;
-		ZeroMemory(&matrix, sizeof(matrix));
-		for (int m = 0; m < numBone_; m++)
+		XMMATRIX skinMatrix = XMMatrixSet(
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f
+		);
+		float totalWeight = 0.0f;
+
+		// 最大4ボーンだけ使用する
+		for (int influence = 0;
+			influence < 4 && influence < numBone_;
+			influence++)
 		{
-			if (pWeightArray_[i].pBoneIndex[m] < 0)
+			int boneIndex =
+				pWeightArray_[vertexIndex]
+				.pBoneIndex[influence];
+
+			if (boneIndex < 0)
 			{
 				break;
 			}
-			matrix += pBoneArray_[pWeightArray_[i].pBoneIndex[m]].diffPose * pWeightArray_[i].pBoneWeight[m];
 
+			float weight =
+				pWeightArray_[vertexIndex]
+				.pBoneWeight[influence];
+
+			skinMatrix +=
+				pBoneArray_[boneIndex].diffPose * weight;
+
+			totalWeight += weight;
 		}
 
-		// 作成された関節行列を使って、頂点を変形する
-		XMVECTOR Pos = XMLoadFloat3(&pWeightArray_[i].posOrigin);
-		XMVECTOR Normal = XMLoadFloat3(&pWeightArray_[i].normalOrigin);
-		XMStoreFloat3(&pVertexData_[i].position,XMVector3TransformCoord(Pos, matrix));
-		XMStoreFloat3(&pVertexData_[i].normal, XMVector3TransformCoord(Normal, matrix));
+		// ボーンが設定されていない頂点は元の位置を維持
+		if (totalWeight > 0.000001f)
+		{
+			// 合計が1ではない場合にも形が縮まないようにする
+			skinMatrix *= 1.0f / totalWeight;
+		}
+		else
+		{
+			// ボーンが割り当てられていない頂点は元の位置を使う
+			skinMatrix = XMMatrixIdentity();
+		}
+		XMVECTOR position =
+			XMLoadFloat3(
+				&pWeightArray_[vertexIndex].posOrigin
+			);
 
+		XMVECTOR normal =
+			XMLoadFloat3(
+				&pWeightArray_[vertexIndex].normalOrigin
+			);
+
+		position =
+			XMVector3TransformCoord(
+				position,
+				skinMatrix
+			);
+
+		// 法線には平行移動を適用しない
+		normal =
+			XMVector3TransformNormal(
+				normal,
+				skinMatrix
+			);
+
+		normal = XMVector3Normalize(normal);
+
+		XMStoreFloat3(
+			&pVertexData_[vertexIndex].position,
+			position
+		);
+
+		XMStoreFloat3(
+			&pVertexData_[vertexIndex].normal,
+			normal
+		);
 	}
 
-	// 頂点バッファをロックして、変形させた後の頂点情報で上書きする
-	D3D11_MAPPED_SUBRESOURCE msr = {};
-	Direct3D::pContext_->Map(pVertexBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
-	if (msr.pData)
+	D3D11_MAPPED_SUBRESOURCE mapped{};
+
+	if (SUCCEEDED(
+		Direct3D::pContext_->Map(
+			pVertexBuffer_,
+			0,
+			D3D11_MAP_WRITE_DISCARD,
+			0,
+			&mapped
+		)))
 	{
-		memcpy_s(msr.pData, msr.RowPitch, pVertexData_, sizeof(VERTEX) * vertexCount_);
-		Direct3D::pContext_->Unmap(pVertexBuffer_, 0);
-	}
+		memcpy(
+			mapped.pData,
+			pVertexData_,
+			sizeof(VERTEX) * vertexCount_
+		);
 
+		Direct3D::pContext_->Unmap(
+			pVertexBuffer_,
+			0
+		);
+	}
 
 	Draw(transform);
-
 }
-
 void FbxParts::DrawMeshAnime(Transform& transform, FbxTime time, FbxScene * scene)
 {
 	//// その瞬間の自分の姿勢行列を得る
