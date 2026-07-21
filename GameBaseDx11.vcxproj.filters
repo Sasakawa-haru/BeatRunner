@@ -20,13 +20,6 @@
       <UniqueIdentifier>{47a6a3f5-8cfd-436b-8d58-beccd108f3f3}</UniqueIdentifier>
       <Extensions>hlsl</Extensions>
     </Filter>
-    <Filter Include="Notes">
-      <UniqueIdentifier>{cf5fc5ac-15e7-44fc-b824-1894115707ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameData">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\BoxCollider.cpp">
@@ -98,54 +91,39 @@
     <ClCompile Include="Engine\VFX.cpp">
       <Filter>01Engine\ResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Lane.cpp" />
-    <ClCompile Include="Notes.cpp">
-      <Filter>Notes</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameCsvReader.cpp">
       <Filter>01Engine\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Time.cpp">
       <Filter>01Engine\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="BeatmapJsonLoader.cpp">
-      <Filter>Notes</Filter>
-    </ClCompile>
-    <ClCompile Include="BeatmapCatalog.cpp">
-      <Filter>Notes</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleScene.cpp" />
-    <ClCompile Include="JsonToCsvConverter.cpp" />
-    <ClCompile Include="Music.cpp" />
-    <ClCompile Include="Combo.cpp">
-      <Filter>Notes</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreSystem.cpp" />
-    <ClCompile Include="JudgeSystem.cpp" />
-    <ClCompile Include="NoteBase.cpp">
-      <Filter>Notes</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectScene.cpp" />
-    <ClCompile Include="ClearScene.cpp" />
-    <ClCompile Include="SelectedMusic.cpp" />
-    <ClCompile Include="Result.cpp" />
-    <ClCompile Include="Option.cpp" />
-    <ClCompile Include="RhythmNote.cpp">
-      <Filter>Notes</Filter>
-    </ClCompile>
-    <ClCompile Include="JudgeLine.cpp" />
-    <ClCompile Include="SideObject.cpp" />
-    <ClCompile Include="OptionData.cpp">
-      <Filter>GameData</Filter>
-    </ClCompile>
-    <ClCompile Include="ResultData.cpp">
-      <Filter>GameData</Filter>
-    </ClCompile>
-    <ClCompile Include="GameConfig.cpp">
-      <Filter>GameData</Filter>
-    </ClCompile>
+    <ClCompile Include="Game\Config\GameConfig.cpp" />
+    <ClCompile Include="Game\Config\OptionData.cpp" />
+    <ClCompile Include="Game\Player\Player.cpp" />
+    <ClCompile Include="Game\Result\ResultData.cpp" />
+    <ClCompile Include="Game\Rhythm\Judge\JudgeLine.cpp" />
+    <ClCompile Include="Game\Rhythm\Judge\JudgeSystem.cpp" />
+    <ClCompile Include="Game\Rhythm\Lane\Lane.cpp" />
+    <ClCompile Include="Game\Rhythm\Music\Music.cpp" />
+    <ClCompile Include="Game\Rhythm\Music\SelectedMusic.cpp" />
+    <ClCompile Include="Game\Rhythm\Note\NoteBase.cpp" />
+    <ClCompile Include="Game\Rhythm\Note\Notes.cpp" />
+    <ClCompile Include="Game\Rhythm\Score\Combo.cpp" />
+    <ClCompile Include="Game\Rhythm\Score\ScoreSystem.cpp" />
+    <ClCompile Include="Game\Scene\ClearScene.cpp" />
+    <ClCompile Include="Game\Scene\GameOverScene.cpp" />
+    <ClCompile Include="Game\Scene\PlayScene.cpp" />
+    <ClCompile Include="Game\Scene\SelectScene.cpp" />
+    <ClCompile Include="Game\Scene\TitleScene.cpp" />
+    <ClCompile Include="Game\Stage\BesideBeam.cpp" />
+    <ClCompile Include="Game\Stage\SideObject.cpp" />
+    <ClCompile Include="Game\Stage\VerticalBeam.cpp" />
+    <ClCompile Include="Game\UI\Option.cpp" />
+    <ClCompile Include="Game\UI\Result.cpp" />
+    <ClCompile Include="Data\Beatmap\BeatmapCatalog.cpp" />
+    <ClCompile Include="Data\Beatmap\BeatmapJsonLoader.cpp" />
+    <ClCompile Include="Data\Converter\JsonToCsvConverter.cpp" />
+    <ClCompile Include="Game\Rhythm\Note\RhythmNote.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -217,70 +195,47 @@
     <ClInclude Include="Engine\VFX.h">
       <Filter>01Engine\ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Lane.h" />
-    <ClInclude Include="Notes.h">
-      <Filter>Notes</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GameCsvReader.h">
       <Filter>01Engine\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Time.h">
       <Filter>01Engine\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Config\CsvConfig.h" />
+    <ClInclude Include="Game\Config\GameConfig.h" />
+    <ClInclude Include="Game\Config\OptionData.h" />
+    <ClInclude Include="Game\Player\Player.h" />
+    <ClInclude Include="Game\Result\ResultData.h" />
+    <ClInclude Include="Game\Rhythm\Judge\JudgeConfig.h" />
+    <ClInclude Include="Game\Rhythm\Judge\JudgeLine.h" />
+    <ClInclude Include="Game\Rhythm\Judge\JudgeSystem.h" />
+    <ClInclude Include="Game\Rhythm\Lane\Lane.h" />
+    <ClInclude Include="Game\Rhythm\Lane\RhythmLayout.h" />
+    <ClInclude Include="Game\Rhythm\Music\Music.h" />
+    <ClInclude Include="Game\Rhythm\Music\SelectedMusic.h" />
+    <ClInclude Include="Game\Rhythm\Note\NoteBase.h" />
+    <ClInclude Include="Game\Rhythm\Note\Notes.h" />
+    <ClInclude Include="Game\Rhythm\Score\Combo.h" />
+    <ClInclude Include="Game\Rhythm\Score\ScoreSystem.h" />
+    <ClInclude Include="Game\Scene\ClearScene.h" />
+    <ClInclude Include="Game\Scene\GameOverScene.h" />
+    <ClInclude Include="Game\Scene\PlayScene.h" />
+    <ClInclude Include="Game\Scene\SelectScene.h" />
+    <ClInclude Include="Game\Scene\TitleScene.h" />
+    <ClInclude Include="Game\Stage\BesideBeam.h" />
+    <ClInclude Include="Game\Stage\SideObject.h" />
+    <ClInclude Include="Game\Stage\VerticalBeam.h" />
+    <ClInclude Include="Game\UI\Option.h" />
+    <ClInclude Include="Game\UI\Result.h" />
     <ClInclude Include="Engine\nlohmann\json.hpp">
-      <Filter>Notes</Filter>
+      <Filter>01Engine</Filter>
     </ClInclude>
-    <ClInclude Include="BeatmapMeta.h">
-      <Filter>Notes</Filter>
-    </ClInclude>
-    <ClInclude Include="BeatMap.h">
-      <Filter>Notes</Filter>
-    </ClInclude>
-    <ClInclude Include="BeatmapJsonLoader.h">
-      <Filter>Notes</Filter>
-    </ClInclude>
-    <ClInclude Include="BeatmapCatalog.h">
-      <Filter>Notes</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="JsonToCsvConverter.h" />
-    <ClInclude Include="Music.h" />
-    <ClInclude Include="Combo.h">
-      <Filter>Notes</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreSystem.h" />
-    <ClInclude Include="JudgeSystem.h" />
-    <ClInclude Include="NoteBase.h">
-      <Filter>Notes</Filter>
-    </ClInclude>
-    <ClInclude Include="SelectScene.h" />
-    <ClInclude Include="ClearScene.h" />
-    <ClInclude Include="SelectedMusic.h" />
-    <ClInclude Include="Result.h" />
-    <ClInclude Include="Option.h" />
-    <ClInclude Include="RhythmNote.h">
-      <Filter>Notes</Filter>
-    </ClInclude>
-    <ClInclude Include="RhythmLayout.h" />
-    <ClInclude Include="JudgeLine.h" />
-    <ClInclude Include="SideObject.h" />
-    <ClInclude Include="OptionData.h">
-      <Filter>GameData</Filter>
-    </ClInclude>
-    <ClInclude Include="ResultData.h">
-      <Filter>GameData</Filter>
-    </ClInclude>
-    <ClInclude Include="GameConfig.h">
-      <Filter>GameData</Filter>
-    </ClInclude>
-    <ClInclude Include="CsvConfig.h">
-      <Filter>GameData</Filter>
-    </ClInclude>
-    <ClInclude Include="JudgeConfig.h">
-      <Filter>GameData</Filter>
-    </ClInclude>
+    <ClInclude Include="Data\Beatmap\BeatMap.h" />
+    <ClInclude Include="Data\Beatmap\BeatmapCatalog.h" />
+    <ClInclude Include="Data\Beatmap\BeatmapJsonLoader.h" />
+    <ClInclude Include="Data\Beatmap\BeatmapMeta.h" />
+    <ClInclude Include="Data\Converter\JsonToCsvConverter.h" />
+    <ClInclude Include="Game\Rhythm\Note\RhythmNote.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

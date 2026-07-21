@@ -1,0 +1,252 @@
+﻿#include "Game/Rhythm/Note/Notes.h"
+
+#include "Engine/Time.h"
+#include "Engine/GameCsvReader.h"
+#include"Game/Rhythm/Lane/Lane.h"
+#include "RhythmNote.h"
+#include "Game/Rhythm/Music/Music.h"
+#include "Game/Rhythm/Music/SelectedMusic.h"
+#include "Game/Config/OptionData.h"
+#include"Game/Rhythm/Lane/RhythmLayout.h"
+
+#include <algorithm>
+#include <cmath>
+#include <memory>
+#include <string>
+#include <vector>
+
+namespace
+{
+
+    // 速度が0以下になると計算が壊れるので最低速度を決める
+    constexpr float kMinNotesSpeed = 0.1f;
+
+    // lane6 / lane7 を上下にずらす量
+    constexpr float kSplitY = 0.3f;
+
+}
+
+
+Notes::Notes(GameObject* parent)
+    : GameObject(parent, "Notes")
+{
+}
+
+Notes::~Notes()
+{
+}
+
+void Notes::Initialize()
+{
+    std::string musicLevelPath =
+        "Csv/Notes/" + gSelectedMusicName + "_" + gSelectedMusicLevel + ".csv";
+
+    notesCsv_ = std::make_unique<GameCsvReader>(musicLevelPath.c_str());
+
+    nowSec_ = 0.0;
+    nextLine_ = 1;
+
+    laneCount_ = 0;
+
+    if (notesCsv_ && notesCsv_->GetLines() > 0)
+    {
+        // 0列目は時間なので、それ以外がレーン数
+        laneCount_ = notesCsv_->GetColumns(0) - 1;
+
+        if (laneCount_ < 0)
+        {
+            laneCount_ = 0;
+        }
+    }
+
+    BuildGroupsFromCsv();
+}
+
+void Notes::Update()
+{
+    Music* music = (Music*)FindObject("Music");
+
+    if (!music || !music->IsStarted())
+    {
+        return;
+    }
+
+    if (!notesCsv_)
+    {
+        return;
+    }
+
+    // Optionで設定した判定調整を反映
+    nowSec_ = music->GetNowSec() + gOptionData.JudgeTiming;
+
+    const int lines = notesCsv_->GetLines();
+
+    if (nextLine_ >= lines)
+    {
+        return;
+    }
+
+    // Optionで設定したノーツ速度を反映
+    float notesSpeed = GetActualNotesSpeed();
+
+    if (notesSpeed < kMinNotesSpeed)
+    {
+        notesSpeed = kMinNotesSpeed;
+    }
+
+    // ノーツが SpawnZ から JudgeZ まで来るのに必要な時間
+    const double leadTimeSec 
+        = (RhythmLayout::SpawnZ - RhythmLayout::JudgeLineZ) / notesSpeed;
+
+    while (nextLine_ < lines)
+    {
+        const float hitTimeSec = notesCsv_->GetFloat(nextLine_, 0);
+
+        // まだ出す時間ではないなら終了
+        if (nowSec_ < hitTimeSec - leadTimeSec)
+        {
+            break;
+        }
+
+        for (int lane = 0; lane < laneCount_; lane++)
+        {
+            const int noteFlag = notesCsv_->GetInt(nextLine_, 1 + lane);
+
+            if (noteFlag != 1)
+            {
+                continue;
+            }
+
+            bool isJumpNote = false;
+            int baseLane = lane;
+            float yOff = 0.0f;
+
+            if (lane == 5 )
+            {
+                isJumpNote = true;
+                baseLane =2;
+                yOff = 1.0f;
+            }
+
+            // 画面上にあるレーンは lane1～lane5 
+            if (baseLane < 0 || baseLane >= 5)
+            {
+                continue;
+            }
+
+            Lane* ln = Lane::FindByName("lane" + std::to_string(baseLane + 1));
+
+            if (!ln)
+            {
+                continue;
+            }
+
+            XMFLOAT3 pos = ln->GetCenterPosition();
+
+            if (isJumpNote)
+            {
+                pos.y += 1.0f; // ジャンプノーツ用の高さ
+            }
+            else
+            {
+                pos.y += 2.0f; // 通常ノーツ用の高さ
+            }           
+            pos.z = RhythmLayout::JudgeLineZ+(hitTimeSec-nowSec_)*notesSpeed;
+
+            auto* note = Instantiate<RhythmNote>(this);
+
+            if (isJumpNote)
+            {
+                note->Setup(NotesType::JumpNote);
+            }
+            else
+            {
+                note->Setup(NotesType::VerticalNote);
+            }
+
+            note->SetPosition(pos);
+            note->SetLane(baseLane);
+            note->SetHitTimeSec(hitTimeSec);
+
+			// 同じ時間のノーツを同グループにする
+			const int tms = static_cast<int>(hitTimeSec * 1000.0f + 0.5f);
+			note->SetGroupId(GetGroupIdByTimeMs(tms));
+        }
+
+        nextLine_++;
+    }
+}
+
+void Notes::Draw()
+{
+}
+
+void Notes::Release()
+{
+}
+
+int Notes::GetGroupIdByTimeMs(int tms) const
+{
+    auto it = timeMsToGroupId_.find(tms);
+
+    if (it == timeMsToGroupId_.end())
+    {
+        return -1;
+    }
+
+    return it->second;
+}
+
+int Notes::GetAllNotesCount() const
+{
+    if (!notesCsv_)
+    {
+        return 1;
+    }
+	const int lines = notesCsv_->GetLines();
+    const int notesCount = lines - 1;//ヘッダー分を引く
+    if (notesCount < 0)
+    {
+        return 1;
+    }
+    return notesCount;
+}
+
+void Notes::BuildGroupsFromCsv()
+{
+    groupTimesMs_.clear();
+    timeMsToGroupId_.clear();
+
+    if (!notesCsv_)
+    {
+        return;
+    }
+
+    const int lines = notesCsv_->GetLines();
+
+    if (lines <= 1)
+    {
+        return;
+    }
+
+    for (int line = 1; line < lines; ++line)
+    {
+        const float hitTimeSec = notesCsv_->GetFloat(line, 0);
+
+        const int tms = static_cast<int>(hitTimeSec * 1000.0f + 0.5f);
+
+        groupTimesMs_.push_back(tms);
+    }
+
+    std::sort(groupTimesMs_.begin(), groupTimesMs_.end());
+
+    groupTimesMs_.erase(
+        std::unique(groupTimesMs_.begin(), groupTimesMs_.end()),
+        groupTimesMs_.end()
+    );
+
+    for (int i = 0; i < static_cast<int>(groupTimesMs_.size()); ++i)
+    {
+        timeMsToGroupId_[groupTimesMs_[i]] = i;
+    }
+}

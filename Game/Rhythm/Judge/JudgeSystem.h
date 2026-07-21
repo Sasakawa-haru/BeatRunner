@@ -1,0 +1,37 @@
+#pragma once
+#include "Engine/GameObject.h"
+#include "Game/Rhythm/Score/ScoreSystem.h"
+#include<unordered_set>
+
+class Notes;
+class ScoreSystem;
+
+class JudgeSystem : public GameObject
+{
+public:
+	JudgeSystem(GameObject* parent);
+	~JudgeSystem() override;
+
+	void Initialize() override;
+	void Update() override;
+	void Draw() override;
+	void Release() override;
+
+private:
+	void TryHitLane(int lane, double nowSec, Notes* notes, ScoreSystem* score);
+	void UpdateDodgeSuccess(Notes* notes, ScoreSystem* score);
+
+	void KillGroupNotes(Notes* notes, int groupId);
+	bool IsGroupJudged(int groupId) const;
+
+	ScoreSystem::JudgeResult CalcJudge(double diffSec) const;
+
+	std::unordered_set<int> judgedGroups_;
+
+	static constexpr int kLaneCount_ = 5;
+
+	static constexpr double kPerfect_ = 0.030;
+	static constexpr double kGreat_ = 0.060;
+	static constexpr double kGood_ = 0.100;
+	static constexpr double kNormal_ = 0.150;
+};

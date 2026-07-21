@@ -1,7 +1,7 @@
 #include <xaudio2.h>
 #include <vector>
 #include "Audio.h"
-#include"../OptionData.h"
+#include"Game/Config/OptionData.h"
 #define SAFE_DELETE_ARRAY(p) if(p){delete[] p; p = nullptr;}
 
 namespace Audio
