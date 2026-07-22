@@ -28,6 +28,14 @@ public:
     bool UpdateClearPerformance(float dt);
 
 private:
+    enum class AnimationState
+    {
+        None,
+        Run,
+        Jump,
+	};
+    void ChangeAnimation(AnimationState nextState);
+	AnimationState currentAnimation_ = AnimationState::None;
     int   hPlayerModel_;
     int   hColliderModel_;
     int   hMoveSound_;

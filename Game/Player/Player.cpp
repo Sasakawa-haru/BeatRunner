@@ -21,10 +21,12 @@ namespace {
     float kGroundHItOffsetY = 0.05f; // 地面判定用のRayがヒットしたときのY座標補正
 	float kClearMoveSpeed = 5.0f; // クリア演出時の前進速度
 
+    float AnimationStart;
+	float AnimationEnd;
     float RunMotionStartFrame = 1.0f;
-	float RunMotionEndFrame = 19.0f;
-	float JumpMotionStartFrame = 20.0f;
-	float JumpMotionEndFrame = 30.0f;
+	float RunMotionEndFrame = 16.0f;
+	float JumpMotionStartFrame = 17.0f;
+	float JumpMotionEndFrame = 47.0f;
 	float MotionFrameRate = 0.5f; // モーションのフレームレート
 }
 
@@ -122,9 +124,18 @@ void Player::Initialize()
 
     // モデル
     hPlayerModel_ = Model::Load("Models/PlayerMotion.fbx");
+    if (hPlayerModel_ < 0)
+    {
+        OutputDebugStringA(
+            "[Player] PlayerMotion.fbx load failed.\n"
+        );
+        assert(false);
+        return;
+    }
+
+    ChangeAnimation(AnimationState::Run);
     assert(hPlayerModel_ >= 0);
-    Model::SetAnimFrame(hPlayerModel_, RunMotionStartFrame, RunMotionEndFrame, MotionFrameRate);
-	transform_.scale_ = XMFLOAT3(0.001f, 0.001f, 0.001f);
+
 
     hColliderModel_ = Model::Load("DebugCollision/BoxCollider.fbx");
 
@@ -156,8 +167,10 @@ void Player::Initialize()
 
 void Player::Update()
 {
-
+	AnimationStart = RunMotionStartFrame;
+	AnimationEnd = RunMotionEndFrame;
     rhythmActionTriggered_ = false;
+
 
     if (isClearPerformance_)
     { 
@@ -212,9 +225,11 @@ void Player::Update()
     // --- ジャンプ開始 ---
     if (isJumping_ == false && Input::IsKeyDown(DIK_SPACE))
     {
+        ChangeAnimation(AnimationState::Jump);
         isJumping_ = true;
         jumpVelocity_ = jumpSpeed;
         rhythmActionTriggered_ = true;
+
     }
 
     // --- 重力・縦移動 ---
@@ -225,6 +240,7 @@ void Player::Update()
         transform_.position_.y += jumpVelocity_ * dt;
         
     }
+   
 
     // --- 地面との接地判定 ---
     XMFLOAT3 rayStart(
@@ -271,6 +287,7 @@ void Player::Update()
 
             isJumping_ = false;
             jumpVelocity_ = 0.0f;
+			ChangeAnimation(AnimationState::Run);
         }
     }
 
@@ -300,8 +317,6 @@ void Player::Update()
 void Player::Draw()
 {
     Transform modelTf = transform_;
-	modelTf.scale_ = XMFLOAT3(0.001f, 0.002f, 0.001f);
-    modelTf.position_.y += 1.7f;
     Model::SetTransform(hPlayerModel_, modelTf);
     Model::Draw(hPlayerModel_);
 
@@ -382,4 +397,22 @@ bool Player::UpdateClearPerformance(float dt)
     Camera::SetTarget(camTarget);
 
     return clearTimer_ >= clearPerformanceTime_;
+}
+
+void Player::ChangeAnimation(AnimationState nextState) {
+    if (hPlayerModel_ < 0)return;
+    if (currentAnimation_ == nextState)return;
+	currentAnimation_ = nextState;
+    switch (currentAnimation_)
+    {
+    case AnimationState::Run:
+		Model::SetAnimFrame(hPlayerModel_, RunMotionStartFrame, RunMotionEndFrame, MotionFrameRate);
+        break;
+	case AnimationState::Jump:
+		Model::SetAnimFrame(hPlayerModel_, JumpMotionStartFrame, JumpMotionEndFrame, MotionFrameRate);
+        break;
+	case AnimationState::None:
+    default:
+        break;
+    }
 }
