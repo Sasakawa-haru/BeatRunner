@@ -109,6 +109,7 @@ void PlayScene::Update()
 	if (player) {
 		int hp = player->GetHP();
 		if (hp <= 0) {
+			SaveResultData();
 			pSceneManager->ChangeScene(SCENE_ID_RESULT);
 		}
 	}
@@ -140,6 +141,10 @@ void PlayScene::SaveResultData()
 		gResultData.good = scoreSystem->GetGood();
 		gResultData.normal = scoreSystem->GetNormal();
 		gResultData.miss = scoreSystem->GetMiss();
+	}
+	if (player)
+	{
+		gResultData.hp = player->GetHP();
 	}
 
 }

@@ -8,5 +8,7 @@ ResultData gResultData =
 	0,//great
 	0,//good
 	0,//normal
-	0//miss
+	0,//miss
+	0//HP
 };
+

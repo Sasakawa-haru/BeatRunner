@@ -8,5 +8,6 @@ struct ResultData
 	int good;
 	int normal;
 	int miss;
+	int hp;
 };
 extern ResultData gResultData;

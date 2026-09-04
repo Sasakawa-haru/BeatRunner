@@ -17,6 +17,8 @@
 using namespace DirectX;
 
 namespace {
+    constexpr int COLLISION_DAMAGE = 10;//衝突時のダメージ
+
 	float kGroundRayStartY = 100.0f; // 地面判定用のRayの開始位置
     float kGroundHItOffsetY = 0.05f; // 地面判定用のRayがヒットしたときのY座標補正
 	float kClearMoveSpeed = 5.0f; // クリア演出時の前進速度
@@ -346,7 +348,7 @@ void Player::OnCollision(GameObject* pTarget)
     if (pTarget->GetObjectName()=="RhythmNote")
     {
         Hit = true;
-        PlayerHP -= 10;
+        PlayerHP -= COLLISION_DAMAGE;
 
 
         auto* score = (ScoreSystem*)FindObject("ScoreSystem");
