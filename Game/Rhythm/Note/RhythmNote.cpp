@@ -14,10 +14,10 @@ namespace
 	// 当たり判定のZサイズ
 	constexpr float kColliderSizeZ = 0.3f;
 
-	// 当たり判定のサイズ
+	//縦ノーツの判定
 	constexpr float kVerticalColliderSizeX = 1.0f;
 	constexpr float kVerticalColliderSizeY = 20.0f;
-
+	//横ノーツの判定
 	constexpr float kBesideColliderSizeX = 10.0f;
 	constexpr float kBesideColliderSizeY = 1.0f;
 }
@@ -69,21 +69,38 @@ void RhythmNote::CreateCollider()
 	if (beamType_ == NotesType::VerticalNote)
 	{
 		BoxCollider* collision = new BoxCollider(
-			XMFLOAT3(0.0f, 0.0f, 0.0f),
-			XMFLOAT3(1.0f, 20.0f, 1.0f)
+			XMFLOAT3(
+				0.0f,
+				0.0f,
+				kColliderOffsetZ
+			),
+			XMFLOAT3(
+				kVerticalColliderSizeX,
+				kVerticalColliderSizeY,
+				kColliderSizeZ
+			)
 		);
+
 		AddCollider(collision);
 	}
 	else
 	{
 		BoxCollider* collision = new BoxCollider(
-			XMFLOAT3(0.0f, 0.0f, 0.0f),
-			XMFLOAT3(3.0f, 1.0f, 1.0f)
+			XMFLOAT3(
+				0.0f,
+				0.0f,
+				kColliderOffsetZ
+			),
+			XMFLOAT3(
+				kBesideColliderSizeX,
+				kBesideColliderSizeY,
+				kColliderSizeZ
+			)
 		);
+
 		AddCollider(collision);
 	}
 }
-
 void RhythmNote::Update()
 {
 	float dt = Time::DeltaTime();
