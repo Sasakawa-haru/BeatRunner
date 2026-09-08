@@ -1,6 +1,6 @@
 #include <fbxsdk.h>
 
-#include "BRModelFormat.h"
+#include "Common/BRModelFormat.h"
 
 #include <Windows.h>
 

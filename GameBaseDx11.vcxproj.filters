@@ -20,6 +20,9 @@
       <UniqueIdentifier>{47a6a3f5-8cfd-436b-8d58-beccd108f3f3}</UniqueIdentifier>
       <Extensions>hlsl</Extensions>
     </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{f889e4f3-205a-4617-b505-f13555dcc9fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\BoxCollider.cpp">
@@ -124,6 +127,10 @@
     <ClCompile Include="Data\Beatmap\BeatmapJsonLoader.cpp" />
     <ClCompile Include="Data\Converter\JsonToCsvConverter.cpp" />
     <ClCompile Include="Game\Rhythm\Note\RhythmNote.cpp" />
+    <ClCompile Include="Engine\BRModel.cpp">
+      <Filter>01Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="BRModelTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -239,6 +246,10 @@
     <ClInclude Include="Engine\BRModel.h">
       <Filter>01Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Common\BRModelFormat.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="BRModelTest.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

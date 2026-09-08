@@ -17,6 +17,8 @@
 #include"Game/Config/GameConfig.h"
 #include <iostream>
 
+#include"BRModelTest.h"
+
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
@@ -27,6 +29,8 @@ PlayScene::PlayScene(GameObject* parent)
 //初期化
 void PlayScene::Initialize()
 {
+	Instantiate<BRModelTest>(this);
+
 	const bool loaded = gameConfig_.LoadFromCsv("Assets/Csv/game_config.csv");
 	if (!loaded)
 	{

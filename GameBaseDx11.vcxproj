@@ -96,7 +96,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories);../Beat_Runner\Beat_Runner\Engine\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ShowIncludes>false</ShowIncludes>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -139,9 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BRModelTest.cpp" />
     <ClCompile Include="Data\Beatmap\BeatmapCatalog.cpp" />
     <ClCompile Include="Data\Beatmap\BeatmapJsonLoader.cpp" />
     <ClCompile Include="Data\Converter\JsonToCsvConverter.cpp" />
+    <ClCompile Include="Engine\BRModel.cpp" />
     <ClCompile Include="Game\Config\GameConfig.cpp" />
     <ClCompile Include="Game\Config\OptionData.cpp" />
     <ClCompile Include="Game\Player\Player.cpp" />
@@ -193,6 +195,8 @@
     <ClCompile Include="Engine\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BRModelTest.h" />
+    <ClInclude Include="Common\BRModelFormat.h" />
     <ClInclude Include="Data\Beatmap\BeatMap.h" />
     <ClInclude Include="Data\Beatmap\BeatmapCatalog.h" />
     <ClInclude Include="Data\Beatmap\BeatmapJsonLoader.h" />
