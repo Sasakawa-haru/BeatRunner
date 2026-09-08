@@ -236,6 +236,9 @@
     <ClInclude Include="Data\Beatmap\BeatmapMeta.h" />
     <ClInclude Include="Data\Converter\JsonToCsvConverter.h" />
     <ClInclude Include="Game\Rhythm\Note\RhythmNote.h" />
+    <ClInclude Include="Engine\BRModel.h">
+      <Filter>01Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

@@ -2,11 +2,70 @@
 
 #include "BRModelFormat.h"
 
+#include <Windows.h>
+
+#include <cstdint>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cstdint>
+
+
+// ============================================
+// UTF-8に
+// ============================================
+
+std::string WideToUtf8(const std::wstring& text)
+{
+    if (text.empty())
+    {
+        return {};
+    }
+
+    const int requiredSize =
+        WideCharToMultiByte(
+            CP_UTF8,
+            0,
+            text.c_str(),
+            -1,
+            nullptr,
+            0,
+            nullptr,
+            nullptr
+        );
+
+    if (requiredSize <= 0)
+    {
+        return {};
+    }
+
+    // WideCharToMultiByte() は終端\0を含むサイズを返す
+    std::string utf8(
+        static_cast<size_t>(requiredSize),
+        '\0'
+    );
+
+    WideCharToMultiByte(
+        CP_UTF8,
+        0,
+        text.c_str(),
+        -1,
+        utf8.data(),
+        requiredSize,
+        nullptr,
+        nullptr
+    );
+
+    // std::string自身が終端を持つため、
+    // 変換結果末尾の\0を削除
+    if (!utf8.empty() && utf8.back() == '\0')
+    {
+        utf8.pop_back();
+    }
+
+    return utf8;
+}
 
 
 // ============================================
@@ -26,9 +85,10 @@ bool ConvertMesh(
     const int polygonCount =
         mesh->GetPolygonCount();
 
-    // ----------------------------------------
+
+    // ========================================
     // UVセット名取得
-    // ----------------------------------------
+    // ========================================
 
     FbxStringList uvSetNames;
 
@@ -43,9 +103,9 @@ bool ConvertMesh(
     }
 
 
-    // ----------------------------------------
-    // ポリゴンを読む
-    // ----------------------------------------
+    // ========================================
+    // Polygon読み込み
+    // ========================================
 
     for (int polygon = 0;
         polygon < polygonCount;
@@ -63,11 +123,13 @@ bool ConvertMesh(
             continue;
         }
 
+
         for (int polygonVertex = 0;
             polygonVertex < 3;
             ++polygonVertex)
         {
             BRVertex vertex{};
+
 
             // =================================
             // Position
@@ -76,20 +138,28 @@ bool ConvertMesh(
             const int controlPointIndex =
                 mesh->GetPolygonVertex(
                     polygon,
-                    polygonVertex);
+                    polygonVertex
+                );
 
             const FbxVector4 position =
                 mesh->GetControlPointAt(
-                    controlPointIndex);
+                    controlPointIndex
+                );
 
             vertex.px =
-                static_cast<float>(position[0]);
+                static_cast<float>(
+                    position[0]
+                    );
 
             vertex.py =
-                static_cast<float>(position[1]);
+                static_cast<float>(
+                    position[1]
+                    );
 
             vertex.pz =
-                static_cast<float>(position[2]);
+                static_cast<float>(
+                    position[2]
+                    );
 
 
             // =================================
@@ -106,13 +176,19 @@ bool ConvertMesh(
                 normal.Normalize();
 
                 vertex.nx =
-                    static_cast<float>(normal[0]);
+                    static_cast<float>(
+                        normal[0]
+                        );
 
                 vertex.ny =
-                    static_cast<float>(normal[1]);
+                    static_cast<float>(
+                        normal[1]
+                        );
 
                 vertex.nz =
-                    static_cast<float>(normal[2]);
+                    static_cast<float>(
+                        normal[2]
+                        );
             }
 
 
@@ -134,23 +210,28 @@ bool ConvertMesh(
                     unmapped))
                 {
                     vertex.u =
-                        static_cast<float>(uv[0]);
+                        static_cast<float>(
+                            uv[0]
+                            );
 
                     // DirectX用にV反転
                     vertex.v =
                         1.0f -
-                        static_cast<float>(uv[1]);
+                        static_cast<float>(
+                            uv[1]
+                            );
                 }
             }
 
 
             // =================================
-            // 頂点追加
+            // 頂点・Index追加
             // =================================
 
             const uint32_t index =
                 static_cast<uint32_t>(
-                    vertices.size());
+                    vertices.size()
+                    );
 
             vertices.push_back(vertex);
 
@@ -163,7 +244,7 @@ bool ConvertMesh(
 
 
 // ============================================
-// ノードを再帰的に検索
+// Sceneのノードを再帰検索
 // ============================================
 
 void ReadNode(
@@ -175,6 +256,7 @@ void ReadNode(
     {
         return;
     }
+
 
     FbxNodeAttribute* attribute =
         node->GetNodeAttribute();
@@ -190,7 +272,8 @@ void ReadNode(
             ConvertMesh(
                 mesh,
                 vertices,
-                indices);
+                indices
+            );
         }
     }
 
@@ -206,7 +289,8 @@ void ReadNode(
         ReadNode(
             node->GetChild(i),
             vertices,
-            indices);
+            indices
+        );
     }
 }
 
@@ -216,22 +300,54 @@ void ReadNode(
 // ============================================
 
 bool SaveBRModel(
-    const std::string& fileName,
+    const std::filesystem::path& filePath,
     const std::vector<BRVertex>& vertices,
     const std::vector<uint32_t>& indices)
 {
+    // 出力先フォルダが無ければ作る
+    const std::filesystem::path parent =
+        filePath.parent_path();
+
+    if (!parent.empty())
+    {
+        std::error_code ec;
+
+        std::filesystem::create_directories(
+            parent,
+            ec
+        );
+
+        if (ec)
+        {
+            std::wcerr
+                << L"出力フォルダを作成できません: "
+                << parent.wstring()
+                << L"\n";
+
+            return false;
+        }
+    }
+
+
     std::ofstream file(
-        fileName,
-        std::ios::binary);
+        filePath,
+        std::ios::binary
+    );
 
     if (!file)
     {
-        std::cerr
-            << "出力ファイルを作成できません\n";
+        std::wcerr
+            << L"出力ファイルを作成できません: "
+            << filePath.wstring()
+            << L"\n";
 
         return false;
     }
 
+
+    // ========================================
+    // Header
+    // ========================================
 
     BRModelHeader header{};
 
@@ -244,38 +360,61 @@ bool SaveBRModel(
 
     header.vertexCount =
         static_cast<uint32_t>(
-            vertices.size());
+            vertices.size()
+            );
 
     header.indexCount =
         static_cast<uint32_t>(
-            indices.size());
+            indices.size()
+            );
 
 
-    // Header
     file.write(
-        reinterpret_cast<const char*>(&header),
-        sizeof(header));
+        reinterpret_cast<const char*>(
+            &header
+            ),
+        sizeof(header)
+    );
 
 
+    // ========================================
     // Vertex
+    // ========================================
+
     if (!vertices.empty())
     {
         file.write(
             reinterpret_cast<const char*>(
-                vertices.data()),
+                vertices.data()
+                ),
             sizeof(BRVertex)
-            * vertices.size());
+            * vertices.size()
+        );
     }
 
 
+    // ========================================
     // Index
+    // ========================================
+
     if (!indices.empty())
     {
         file.write(
             reinterpret_cast<const char*>(
-                indices.data()),
+                indices.data()
+                ),
             sizeof(uint32_t)
-            * indices.size());
+            * indices.size()
+        );
+    }
+
+
+    if (!file)
+    {
+        std::cerr
+            << "BRM書き込み中にエラーが発生しました\n";
+
+        return false;
     }
 
 
@@ -287,23 +426,84 @@ bool SaveBRModel(
 // main
 // ============================================
 
-int main(int argc, char* argv[])
+int wmain(
+    int argc,
+    wchar_t* argv[])
 {
+    // コンソール出力をUTF-8にする
+    SetConsoleOutputCP(CP_UTF8);
+
+
     if (argc < 3)
     {
-        std::cout
-            << "Usage:\n"
-            << "BeatRunnerModelConverter.exe input.fbx output.brm\n";
+        std::wcout
+            << L"Usage:\n"
+            << L"BeatRunnerModelConverter.exe input.fbx output.brm\n";
 
         return 0;
     }
 
 
-    const std::string inputPath =
+    // ========================================
+    // Windows側ではUTF-16でパスを保持
+    // ========================================
+
+    const std::wstring inputPathW =
         argv[1];
 
-    const std::string outputPath =
+    const std::wstring outputPathW =
         argv[2];
+
+
+    std::wcout
+        << L"Input : "
+        << inputPathW
+        << L"\n";
+
+    std::wcout
+        << L"Output: "
+        << outputPathW
+        << L"\n";
+
+
+    // ========================================
+    // 入力ファイル確認
+    // ========================================
+
+    const std::filesystem::path inputPath(
+        inputPathW
+    );
+
+    const std::filesystem::path outputPath(
+        outputPathW
+    );
+
+
+    if (!std::filesystem::exists(inputPath))
+    {
+        std::wcerr
+            << L"入力FBXが存在しません:\n"
+            << inputPathW
+            << L"\n";
+
+        return 1;
+    }
+
+
+    // ========================================
+    // FBX SDK用にUTF-8へ変換
+    // ========================================
+
+    const std::string inputPathUtf8 =
+        WideToUtf8(inputPathW);
+
+    if (inputPathUtf8.empty())
+    {
+        std::cerr
+            << "入力パスのUTF-8変換に失敗しました\n";
+
+        return 1;
+    }
 
 
     // ========================================
@@ -322,14 +522,30 @@ int main(int argc, char* argv[])
     }
 
 
-    // IOSettings
+    // ========================================
+    // IO Settings
+    // ========================================
+
     FbxIOSettings* ioSettings =
         FbxIOSettings::Create(
             manager,
-            IOSROOT);
+            IOSROOT
+        );
+
+    if (!ioSettings)
+    {
+        std::cerr
+            << "FbxIOSettings作成失敗\n";
+
+        manager->Destroy();
+
+        return 1;
+    }
+
 
     manager->SetIOSettings(
-        ioSettings);
+        ioSettings
+    );
 
 
     // ========================================
@@ -339,7 +555,18 @@ int main(int argc, char* argv[])
     FbxScene* scene =
         FbxScene::Create(
             manager,
-            "Scene");
+            "Scene"
+        );
+
+    if (!scene)
+    {
+        std::cerr
+            << "FbxScene作成失敗\n";
+
+        manager->Destroy();
+
+        return 1;
+    }
 
 
     // ========================================
@@ -349,10 +576,23 @@ int main(int argc, char* argv[])
     FbxImporter* importer =
         FbxImporter::Create(
             manager,
-            "Importer");
+            "Importer"
+        );
 
+    if (!importer)
+    {
+        std::cerr
+            << "FbxImporter作成失敗\n";
+
+        manager->Destroy();
+
+        return 1;
+    }
+
+
+    // FBX SDKはUTF-8文字列を使用する
     if (!importer->Initialize(
-        inputPath.c_str(),
+        inputPathUtf8.c_str(),
         -1,
         manager->GetIOSettings()))
     {
@@ -366,22 +606,35 @@ int main(int argc, char* argv[])
             << "\n";
 
         importer->Destroy();
+
         manager->Destroy();
 
         return 1;
     }
 
+
+    // ========================================
+    // Import
+    // ========================================
 
     if (!importer->Import(scene))
     {
         std::cerr
             << "FBX Import失敗\n";
 
+        std::cerr
+            << importer
+            ->GetStatus()
+            .GetErrorString()
+            << "\n";
+
         importer->Destroy();
+
         manager->Destroy();
 
         return 1;
     }
+
 
     importer->Destroy();
 
@@ -391,11 +644,20 @@ int main(int argc, char* argv[])
     // ========================================
 
     FbxGeometryConverter converter(
-        manager);
+        manager
+    );
 
-    converter.Triangulate(
+    if (!converter.Triangulate(
         scene,
-        true);
+        true))
+    {
+        std::cerr
+            << "三角形化に失敗しました\n";
+
+        manager->Destroy();
+
+        return 1;
+    }
 
 
     // ========================================
@@ -415,9 +677,14 @@ int main(int argc, char* argv[])
         ReadNode(
             root,
             vertices,
-            indices);
+            indices
+        );
     }
 
+
+    // ========================================
+    // 結果表示
+    // ========================================
 
     std::cout
         << "Vertex : "
@@ -430,8 +697,19 @@ int main(int argc, char* argv[])
         << "\n";
 
 
+    if (vertices.empty())
+    {
+        std::cerr
+            << "Meshが見つかりませんでした\n";
+
+        manager->Destroy();
+
+        return 1;
+    }
+
+
     // ========================================
-    // 保存
+    // BRM保存
     // ========================================
 
     if (!SaveBRModel(
@@ -445,14 +723,14 @@ int main(int argc, char* argv[])
     }
 
 
-    std::cout
-        << "Convert成功\n";
+    std::wcout
+        << L"Convert成功\n";
 
-    std::cout
-        << inputPath
-        << "\n -> "
-        << outputPath
-        << "\n";
+    std::wcout
+        << inputPathW
+        << L"\n -> "
+        << outputPathW
+        << L"\n";
 
 
     manager->Destroy();
