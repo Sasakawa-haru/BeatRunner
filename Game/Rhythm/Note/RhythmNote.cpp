@@ -19,7 +19,7 @@ namespace
 	constexpr float kVerticalColliderSizeY = 20.0f;
 	//横ノーツの判定
 	constexpr float kBesideColliderSizeX = 10.0f;
-	constexpr float kBesideColliderSizeY = 1.0f;
+	constexpr float kBesideColliderSizeY = 0.5f;
 }
 
 RhythmNote::RhythmNote(GameObject* parent)

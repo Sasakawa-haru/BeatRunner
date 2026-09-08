@@ -29,7 +29,17 @@ public:
 
     bool IsMusicFinished()const { return finished_; }
 
+    bool IsWaiting()const {
+        return !started_ && startWaitTimer_ < startWaitTime_;
+    }
 
+    float GetStartWaitRemaining()const {
+        float remaining = startWaitTime_ - startWaitTimer_;
+        if (remaining < 0.0f) {
+            remaining=0.0f;
+        }
+        return remaining;
+    }
 private:
     int hSound_;
     bool started_;
@@ -37,5 +47,6 @@ private:
     double nowSec_;
     std::string musicName;
 
-
+    float startWaitTimer_ = 0.0f;
+    float startWaitTime_ = 5.0f;
 };

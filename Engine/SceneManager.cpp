@@ -48,7 +48,7 @@ void SceneManager::Update()
 		case SCENE_ID_TITLE: Instantiate<TitleScene>(this); break;
 		case SCENE_ID_SELECT:Instantiate<SelectScene>(this);break;
 		case SCENE_ID_PLAY: Instantiate<PlayScene>(this); break;
-		case SCENE_ID_CLEAR: Instantiate<ClearSene>(this); break;
+		case SCENE_ID_CLEAR: Instantiate<ClearScene>(this); break;
 		case SCENE_ID_RESULT: Instantiate<Result>(this); break;
 		}
 		Audio::Initialize();

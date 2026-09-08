@@ -1,4 +1,4 @@
-#include "ClearScene.h"
+#include "Game/Scene/ClearScene.h"
 #include "Game/Result/ResultData.h"
 
 namespace
@@ -31,8 +31,25 @@ namespace
             + static_cast<int>(row) * RESULT_LINE_HEIGHT;
     }
 }
+ClearScene::ClearScene(GameObject* parent)
+    : GameObject(parent, "ClearScene")
+{
+}
 
-void ClearSene::Draw()
+void ClearScene::Initialize()
+{
+    text_.Initialize();
+}
+
+void ClearScene::Update()
+{
+}
+
+void ClearScene::Release()
+{
+}
+
+void ClearScene::Draw()
 {
     text_.Draw(
         RESULT_TITLE_X,

@@ -27,6 +27,8 @@ void Music::Initialize()
     started_ = false;
     finished_ = false;
     nowSec_ = 0.0f;
+
+    startWaitTimer_ = 0.0f;
     
 
 }
@@ -35,11 +37,16 @@ void Music::Initialize()
 void Music::Update()
 {
     if (!started_) {
+        startWaitTimer_ += Time::DeltaTime();
+        if (startWaitTimer_ < startWaitTime_) {
+            return;
+        }
         Audio::Play(hSound_);
         started_ = true;
         nowSec_=0.0f;
         return;
     }
+
 
     nowSec_ += Time::DeltaTime();
 
@@ -62,7 +69,7 @@ void Music::Release()
 void Music::LoadSelectedMusic()
 {
     musicName = gSelectedMusicName;
-    std::string MusicPath = "Sound/Music/" + musicName + ".wav";
+    std::string MusicPath = "Sound/Musics/" + musicName + ".wav";
     hSound_ = Audio::Load(MusicPath.c_str());
     if (hSound_ < 0) {
         started_ = true;

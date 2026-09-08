@@ -30,6 +30,6 @@ private:
 	int hColliderModel_;
 	NotesType beamType_;
 	bool PlayerHit;
-	bool showCollider_ = false;// 当たり判定の視覚化
+	bool showCollider_ = true;// 当たり判定の視覚化
 
 };
