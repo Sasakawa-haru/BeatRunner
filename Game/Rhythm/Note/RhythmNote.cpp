@@ -41,7 +41,7 @@ void RhythmNote::Initialize()
 	beamType_ = NotesType::VerticalNote;
 	PlayerHit = false;
 
-	hColliderModel_ = Model::Load("DebugCollision/BoxCollider.fbx");
+	hColliderModel_ = Model::Load("DebugCollision/BoxCollider.brm");
 	assert(hColliderModel_ >= 0);
 
 	Enter();
@@ -54,11 +54,11 @@ void RhythmNote::Setup(NotesType type)
 
 	if (beamType_ == NotesType::VerticalNote)
 	{
-		hNoteModel_ = Model::Load("Models/VerticalBeam.fbx");
+		hNoteModel_ = Model::Load("Models/VerticalBeam.brm");
 	}
 	else
 	{
-		hNoteModel_ = Model::Load("Models/BesideBeam.fbx");
+		hNoteModel_ = Model::Load("Models/BesideBeam.brm");
 	}
 
 	CreateCollider();

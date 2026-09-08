@@ -250,6 +250,9 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="BRModelTest.h" />
+    <ClInclude Include="Engine\RayCastData.h">
+      <Filter>01Engine\ResourceManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

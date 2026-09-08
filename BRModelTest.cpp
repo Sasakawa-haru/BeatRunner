@@ -8,8 +8,8 @@ BRModelTest::BRModelTest(GameObject* parent)
 void BRModelTest::Initialize()
 {
     const bool result =
-        model_.Load(
-            "Assets/Models/Object_A.brm"
+        model_.Load( 
+            "Models/Object_A.brm"
         );
 
     if (!result)
@@ -26,7 +26,7 @@ void BRModelTest::Update()
 
 void BRModelTest::Draw()
 {
-    model_.Draw();
+    model_.Draw(transform_);
 }
 
 void BRModelTest::Release()

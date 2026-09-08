@@ -41,7 +41,7 @@ Lane::~Lane()
 
 void Lane::Initialize()
 {
-    hLaneModel_ = Model::Load("Models/Lane.fbx");
+    hLaneModel_ = Model::Load("Models/Lane.brm");
     assert(hLaneModel_ >= 0);
 
     float centerIndex = (Lane::laneCount - 1) * 0.5f;

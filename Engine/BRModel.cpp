@@ -1,11 +1,13 @@
 #include "BRModel.h"
 
 #include "Engine/Direct3D.h"
+#include "Engine/Camera.h"
 
 #include <fstream>
 #include <vector>
 #include <cstring>
 
+using namespace DirectX;
 
 BRModel::BRModel()
 {
@@ -243,7 +245,8 @@ bool BRModel::Load(const std::string& filePath)
 }
 
 
-void BRModel::Draw()
+void BRModel::Draw(
+    Transform& transform)
 {
     if (!isLoaded_)
     {
@@ -251,7 +254,8 @@ void BRModel::Draw()
     }
 
     if (!vertexBuffer_
-        || !indexBuffer_)
+        || !indexBuffer_
+        || !constantBuffer_)
     {
         return;
     }
@@ -263,7 +267,7 @@ void BRModel::Draw()
 
 
     // =========================================
-    // 3D Shader設定
+    // 3D Shader
     // =========================================
 
     Direct3D::SetShader(
@@ -272,7 +276,7 @@ void BRModel::Draw()
 
 
     // =========================================
-    // VertexBuffer設定
+    // VertexBuffer
     // =========================================
 
     UINT stride =
@@ -280,8 +284,8 @@ void BRModel::Draw()
 
     UINT offset = 0;
 
-    Direct3D::pContext_->
-        IASetVertexBuffers(
+    Direct3D::pContext_
+        ->IASetVertexBuffers(
             0,
             1,
             &vertexBuffer_,
@@ -291,39 +295,188 @@ void BRModel::Draw()
 
 
     // =========================================
-    // IndexBuffer設定
+    // IndexBuffer
     // =========================================
 
-    Direct3D::pContext_->
-        IASetIndexBuffer(
+    Direct3D::pContext_
+        ->IASetIndexBuffer(
             indexBuffer_,
             DXGI_FORMAT_R32_UINT,
             0
         );
 
 
-    // =========================================
-    // TriangleList
-    // =========================================
-
-    Direct3D::pContext_->
-        IASetPrimitiveTopology(
+    Direct3D::pContext_
+        ->IASetPrimitiveTopology(
             D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
         );
 
 
     // =========================================
-    // 描画
+    // ConstantBuffer更新
     // =========================================
 
-    Direct3D::pContext_->
-        DrawIndexed(
+    CONSTANT_BUFFER cb{};
+
+
+    const XMMATRIX world =
+        transform.GetWorldMatrix();
+
+    const XMMATRIX view =
+        Camera::GetViewMatrix();
+
+    const XMMATRIX projection =
+        Camera::GetProjectionMatrix();
+
+
+    cb.worldVewProj =
+        XMMatrixTranspose(
+            world
+            * view
+            * projection
+        );
+
+
+    cb.world =
+        XMMatrixTranspose(
+            world
+        );
+
+
+    cb.normalTrans =
+        XMMatrixTranspose(
+            transform.matRotate_
+            * XMMatrixInverse(
+                nullptr,
+                transform.matScale_
+            )
+        );
+
+
+    // =========================================
+    // 仮マテリアル
+    // =========================================
+
+    cb.ambient =
+        XMFLOAT4(
+            0.3f,
+            0.3f,
+            0.3f,
+            1.0f
+        );
+
+    cb.diffuse =
+        XMFLOAT4(
+            1.0f,
+            1.0f,
+            1.0f,
+            1.0f
+        );
+
+    cb.speculer =
+        XMFLOAT4(
+            0.0f,
+            0.0f,
+            0.0f,
+            1.0f
+        );
+
+    cb.shininess = 0.0f;
+
+
+    const XMFLOAT3 cameraPos =
+        Camera::GetPosition();
+
+
+    cb.cameraPosition =
+        XMFLOAT4(
+            cameraPos.x,
+            cameraPos.y,
+            cameraPos.z,
+            0.0f
+        );
+
+
+    cb.lightDirection =
+        XMFLOAT4(
+            1.0f,
+            -1.0f,
+            1.0f,
+            0.0f
+        );
+
+
+    // まだBRMにTexture情報が無い
+    cb.isTexture = 0;
+
+
+    // =========================================
+    // GPUへ送る
+    // =========================================
+
+    D3D11_MAPPED_SUBRESOURCE mapped{};
+
+
+    HRESULT hr =
+        Direct3D::pContext_->Map(
+            constantBuffer_,
+            0,
+            D3D11_MAP_WRITE_DISCARD,
+            0,
+            &mapped
+        );
+
+
+    if (FAILED(hr))
+    {
+        return;
+    }
+
+
+    memcpy(
+        mapped.pData,
+        &cb,
+        sizeof(cb)
+    );
+
+
+    Direct3D::pContext_->Unmap(
+        constantBuffer_,
+        0
+    );
+
+
+    // =========================================
+    // ShaderへConstantBuffer設定
+    // =========================================
+
+    Direct3D::pContext_
+        ->VSSetConstantBuffers(
+            0,
+            1,
+            &constantBuffer_
+        );
+
+
+    Direct3D::pContext_
+        ->PSSetConstantBuffers(
+            0,
+            1,
+            &constantBuffer_
+        );
+
+
+    // =========================================
+    // Draw
+    // =========================================
+
+    Direct3D::pContext_
+        ->DrawIndexed(
             indexCount_,
             0,
             0
         );
 }
-
 
 void BRModel::Release()
 {
@@ -332,6 +485,11 @@ void BRModel::Release()
         indexBuffer_->Release();
 
         indexBuffer_ = nullptr;
+    }
+
+    if (constantBuffer_) {
+        constantBuffer_->Release();
+        constantBuffer_ = nullptr;
     }
 
     if (vertexBuffer_)

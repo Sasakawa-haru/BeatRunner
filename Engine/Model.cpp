@@ -26,7 +26,7 @@ namespace Model
 				//すでに開いている場合
 				if (_datas[i] != nullptr && _datas[i]->fileName == fileName)
 				{
-					pData->pFbx = _datas[i]->pFbx;
+					pData->pModel = _datas[i]->pModel;
 					isExist = true;
 					break;
 				}
@@ -35,11 +35,11 @@ namespace Model
 			//新たにファイルを開く
 			if (isExist == false)
 			{
-				pData->pFbx = new Fbx;
-				if (FAILED(pData->pFbx->Load(fileName)))
+				pData->pModel = new BRModel;
+				if (!pData->pModel->Load(fileName))
 				{
 					//開けなかった
-					SAFE_DELETE(pData->pFbx);
+					SAFE_DELETE(pData->pModel);
 					SAFE_DELETE(pData);
 					return -1;
 				}
@@ -83,9 +83,9 @@ namespace Model
 
 
 
-		if (_datas[handle]->pFbx)
+		if (_datas[handle]->pModel)
 		{
-			_datas[handle]->pFbx->Draw(_datas[handle]->transform, (int)_datas[handle]->nowFrame);
+			_datas[handle]->pModel->Draw(_datas[handle]->transform);
 		}
 	}
 
@@ -103,7 +103,7 @@ namespace Model
 		for (int i = 0; i < _datas.size(); i++)
 		{
 			//すでに開いている場合
-			if (_datas[i] != nullptr && i != handle && _datas[i]->pFbx == _datas[handle]->pFbx)
+			if (_datas[i] != nullptr && i != handle && _datas[i]->pModel == _datas[handle]->pModel)
 			{
 				isExist = true;
 				break;
@@ -113,7 +113,7 @@ namespace Model
 		//使ってなければモデル解放
 		if (isExist == false )
 		{
-			SAFE_DELETE(_datas[handle]->pFbx);
+			SAFE_DELETE(_datas[handle]->pModel);
 		}
 
 
@@ -152,10 +152,9 @@ namespace Model
 	//任意のボーンの位置を取得
 	XMFLOAT3 GetBonePosition(int handle, std::string boneName)
 	{
-		XMFLOAT3 pos = _datas[handle]->pFbx->GetBonePosition(boneName);
-		XMVECTOR vec = XMVector3TransformCoord(XMLoadFloat3(&pos), _datas[handle]->transform.GetWorldMatrix());
-		XMStoreFloat3(&pos, vec);
-		return pos;
+		return XMFLOAT3(
+			0.0f, 0.0f, 0.0f
+		);
 	}
 
 
@@ -179,17 +178,14 @@ namespace Model
 
 
 	//レイキャスト（レイを飛ばして当たり判定）
-	void RayCast(int handle, RayCastData *data)
+	void RayCast(
+		int handle,
+		RayCastData* data)
 	{
-			XMFLOAT3 target = Transform::Float3Add(data->start, data->dir);
-			XMMATRIX matInv = XMMatrixInverse(nullptr, _datas[handle]->transform.GetWorldMatrix());
-			XMVECTOR vecStart = XMVector3TransformCoord(XMLoadFloat3(&data->start), matInv);
-			XMVECTOR vecTarget = XMVector3TransformCoord(XMLoadFloat3(&target), matInv);
-			XMVECTOR vecDir = vecTarget - vecStart;
+		if (!data)
+		{
+			return;
+		}
 
-			XMStoreFloat3(&data->start, vecStart);
-			XMStoreFloat3(&data->dir, vecDir);
-
-			_datas[handle]->pFbx->RayCast(data); 
-	}
-}
+		data->hit = FALSE;
+	}}

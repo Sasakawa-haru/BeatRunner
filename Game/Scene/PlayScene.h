@@ -39,4 +39,5 @@ private:
 	int hClearImage_ = -1;
 	Transform clearImageTransform_;
 	float clearShowTime_ = 1.2f;
+
 };

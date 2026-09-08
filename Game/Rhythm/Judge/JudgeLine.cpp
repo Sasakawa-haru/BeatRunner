@@ -40,7 +40,7 @@ void JudgeLine::Initialize()
 
 	transform_.scale_ = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
-	hJudgeLine_ = Model::Load("Models/JudgeLine.fbx");
+	hJudgeLine_ = Model::Load("Models/JudgeLine.brm");
 	assert(hJudgeLine_ >= 0);
 
 	Enter();

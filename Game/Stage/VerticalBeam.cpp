@@ -23,7 +23,7 @@ VerticalBeam::~VerticalBeam()
 
 void VerticalBeam::Initialize()
 {
-	hVerticalBeamModel_ = Model::Load("Models/VerticalBeam.fbx");
+	hVerticalBeamModel_ = Model::Load("Models/VerticalBeam.brm");
 	Enter();
 	Visible();
 

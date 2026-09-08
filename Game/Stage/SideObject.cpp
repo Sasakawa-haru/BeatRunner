@@ -14,9 +14,9 @@ SideObject::~SideObject()
 
 void SideObject::Initialize()
 {
-	hBuildingModels_[0] = Model::Load("Models/Object_A.fbx");
-	hBuildingModels_[1] = Model::Load("Models/Object_B.fbx");
-	hBuildingModels_[2] = Model::Load("Models/Object_C.fbx");
+	hBuildingModels_[0] = Model::Load("Models/Object_A.brm");
+	hBuildingModels_[1] = Model::Load("Models/Object_B.brm");
+	hBuildingModels_[2] = Model::Load("Models/Object_C.brm");
 
     SetupSidePositions();
 

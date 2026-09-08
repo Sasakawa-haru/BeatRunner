@@ -18,7 +18,7 @@ BesideBeam::~BesideBeam()
 
 void BesideBeam::Initialize()
 {
-	hBesideBeamModel_ = Model::Load("Models/BesideBeam.fbx");
+	hBesideBeamModel_ = Model::Load("Models/BesideBeam.brm");
 	Enter();
 	Visible();
 	Lane* lane = (Lane*)FindObject("Lane");

@@ -139,7 +139,7 @@ void Player::Initialize()
     assert(hPlayerModel_ >= 0);
 
 
-    hColliderModel_ = Model::Load("DebugCollision/BoxCollider.fbx");
+    hColliderModel_ = Model::Load("DebugCollision/BoxCollider.brm");
 
     // SE
     hMoveSound_ = Audio::Load("Sound/SE/move.wav");

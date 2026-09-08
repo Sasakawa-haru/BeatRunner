@@ -17,6 +17,7 @@
 #include"Game/Config/GameConfig.h"
 #include <iostream>
 
+#include"Engine/BRModel.h"
 #include"BRModelTest.h"
 
 

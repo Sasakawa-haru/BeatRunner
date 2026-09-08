@@ -3,8 +3,9 @@
 #include <assert.h>
 #include <vector>
 #include <string>
-#include "Fbx.h"
+#include "BRModel.h"
 #include "Transform.h"
+#include"RayCastData.h"
 
 //-----------------------------------------------------------
 //3Dモデル（FBXファイル）を管理する
@@ -18,7 +19,7 @@ namespace Model
 		std::string fileName;
 
 		//ロードしたモデルデータのアドレス
-		Fbx*		pFbx;
+		BRModel*		pModel;
 
 		//行列
 		Transform 	transform;
@@ -29,7 +30,7 @@ namespace Model
 
 
 		//初期化
-		ModelData() : pFbx(nullptr), nowFrame(0), startFrame(0), endFrame(0), animSpeed(0)
+		ModelData() : pModel(nullptr), nowFrame(0), startFrame(0), endFrame(0), animSpeed(0)
 		{
 		}
 

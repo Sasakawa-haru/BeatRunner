@@ -203,6 +203,7 @@
     <ClInclude Include="Data\Beatmap\BeatmapMeta.h" />
     <ClInclude Include="Data\Converter\JsonToCsvConverter.h" />
     <ClInclude Include="Engine\BRModel.h" />
+    <ClInclude Include="Engine\RayCastData.h" />
     <ClInclude Include="Game\Config\CsvConfig.h" />
     <ClInclude Include="Game\Config\GameConfig.h" />
     <ClInclude Include="Game\Config\OptionData.h" />
