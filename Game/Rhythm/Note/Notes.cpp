@@ -150,7 +150,8 @@ void Notes::Update()
     Music* music =
         (Music*)FindObject("Music");
 
-    if (!music || !music->IsStarted())
+    if (!music->IsStarted()
+        && music->GetStartWaitRemaining() > NOTE_START_ADVANCE_SEC)
     {
         return;
     }
@@ -161,9 +162,20 @@ void Notes::Update()
     }
 
     // Optionで設定した判定タイミング調整を反映する
-    nowSec_ =
-        music->GetNowSec()
-        + gOptionData.JudgeTiming;
+    if (music->IsStarted())
+    {
+        nowSec_ =
+            music->GetNowSec()
+            + gOptionData.JudgeTiming;
+    }
+    else
+    {
+        nowSec_ =
+            -music->GetStartWaitRemaining()
+            + gOptionData.JudgeTiming;
+    }
+
+    UpdateNearestGroup();
 
     const int lines =
         notesCsv_->GetLines();
@@ -446,5 +458,36 @@ void Notes::BuildGroupsFromCsv()
         timeMsToGroupId_[
             groupTimesMs_[groupId]
         ] = groupId;
+    }
+}
+
+void Notes::UpdateNearestGroup()
+{
+    nearestGroupId_ = kInvalidGroupId;
+
+    const int currentTimeMs =
+        static_cast<int>(
+            nowSec_
+            * kMillisecondsPerSecond
+            + kRoundOffset
+            );
+
+    for (int groupId = 0;
+        groupId < static_cast<int>(groupTimesMs_.size());
+        ++groupId)
+    {
+        const int hitTimeMs =
+            groupTimesMs_[groupId];
+
+        // すでに通過したグループは無視
+        if (hitTimeMs < currentTimeMs)
+        {
+            continue;
+        }
+
+        // groupTimesMs_ は時間順なので
+        // 最初に見つかったものが次のノーツ
+        nearestGroupId_ = groupId;
+        break;
     }
 }

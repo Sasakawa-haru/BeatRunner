@@ -40,6 +40,11 @@ public:
         }
         return remaining;
     }
+
+    double GetStartWaitTime()const {
+        return startWaitTime_;
+    }
+
 private:
     int hSound_;
     bool started_;
@@ -47,6 +52,7 @@ private:
     double nowSec_;
     std::string musicName;
 
-    float startWaitTimer_ = 0.0f;
-    float startWaitTime_ = 5.0f;
+    double startWaitTimer_ = 0.0;
+    double startWaitTime_ = 3.0;
+
 };

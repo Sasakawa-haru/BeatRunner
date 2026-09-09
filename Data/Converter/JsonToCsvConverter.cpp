@@ -166,7 +166,7 @@ void ConvertAllJsonInDir_IfJsonNewer(const std::string& inDir)
 
         //  出力先：Assets/Csv/Meta と Assets/Csv/Notes
         const fs::path metaCsv = outMetaDir / (stem + "_meta.csv");
-        const fs::path notesCsv = outNotesDir / (stem + "_notes.csv");
+        const fs::path notesCsv = outNotesDir / (stem + ".csv");
 
         // 更新日時チェック
         if (!ShouldConvert(jsonPath, metaCsv, notesCsv)) continue;

@@ -1,5 +1,6 @@
 #include "RhythmNote.h"
 #include "Game/Config/OptionData.h"
+#include"Notes.h"
 #include "Engine/Model.h"
 #include "Engine/Time.h"
 #include "Engine/BoxCollider.h"
@@ -25,9 +26,11 @@ namespace
 RhythmNote::RhythmNote(GameObject* parent)
 	: NoteBase(parent, "RhythmNote")
 	, hNoteModel_(-1)
+	, hHighlightModel_(-1)
 	, hColliderModel_(-1)
 	, beamType_(NotesType::VerticalNote)
 	, PlayerHit(false)
+	,highlighted_(false)
 {
 }
 
@@ -38,8 +41,11 @@ RhythmNote::~RhythmNote()
 void RhythmNote::Initialize()
 {
 	hNoteModel_ = -1;
+	hHighlightModel_ = -1;
+
 	beamType_ = NotesType::VerticalNote;
 	PlayerHit = false;
+	highlighted_ = false;
 
 	hColliderModel_ = Model::Load("DebugCollision/BoxCollider.fbx");
 	assert(hColliderModel_ >= 0);
@@ -55,10 +61,12 @@ void RhythmNote::Setup(NotesType type)
 	if (beamType_ == NotesType::VerticalNote)
 	{
 		hNoteModel_ = Model::Load("Models/VerticalBeam.fbx");
+		hHighlightModel_ = Model::Load("Models/VerticalBeamNext.fbx");
 	}
 	else
 	{
 		hNoteModel_ = Model::Load("Models/BesideBeam.fbx");
+		hHighlightModel_ = Model::Load("Models/BesideBeamNext.fbx");
 	}
 
 	CreateCollider();
@@ -115,17 +123,49 @@ void RhythmNote::Update()
 
 void RhythmNote::Draw()
 {
-	if (hNoteModel_ < 0) {
+	if (hNoteModel_ < 0)
+	{
 		return;
 	}
-	Model::SetTransform(hNoteModel_, transform_);
-	Model::Draw(hNoteModel_);
+
+	Notes* notes =
+		static_cast<Notes*>(
+			FindObject("Notes")
+			);
+
+	bool isNearest = false;
+
+	if (notes)
+	{
+		isNearest =
+			GetGroupId()
+			== notes->GetNearestGroupId();
+	}
+
+	int drawModel = hNoteModel_;
+
+	if (isNearest && hHighlightModel_ >= 0)
+	{
+		drawModel = hHighlightModel_;
+	}
+
+	Model::SetTransform(
+		drawModel,
+		transform_
+	);
+
+	Model::Draw(drawModel);
+
+	// ========================================
+	// コライダー表示
+	// ========================================
 
 	if (showCollider_ && hColliderModel_ >= 0)
 	{
 		Transform colTf = transform_;
 
-		colTf.position_.z += kColliderOffsetZ;
+		colTf.position_.z +=
+			kColliderOffsetZ;
 
 		if (beamType_ == NotesType::VerticalNote)
 		{
@@ -144,12 +184,14 @@ void RhythmNote::Draw()
 			);
 		}
 
-		Model::SetTransform(hColliderModel_, colTf);
+		Model::SetTransform(
+			hColliderModel_,
+			colTf
+		);
+
 		Model::Draw(hColliderModel_);
 	}
-}
-
-void RhythmNote::Release()
+}void RhythmNote::Release()
 {
 }
 

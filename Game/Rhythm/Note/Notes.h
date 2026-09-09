@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Engine/GameObject.h"
-#include<unordered_map>
+
+#include <unordered_map>
 #include <memory>
-#include<string>
+#include <string>
+#include <vector>
 
 class GameCsvReader;
 
@@ -18,25 +20,55 @@ public:
     void Draw() override;
     void Release() override;
 
-    const std::vector<double>& GetGroupTimes()const { return groupTimes_; }
-    int GetGroupId(double hitTime)const { return timeToGroup_.at(hitTime); }
-    const std::vector<int>& GetGroupTimesMs()const { return groupTimesMs_; }
-    int GetGroupIdByTimeMs(int tms)const;
-    int GetAllNotesCount()const; //全ノーツ数
+    const std::vector<double>& GetGroupTimes() const
+    {
+        return groupTimes_;
+    }
+
+    int GetGroupId(double hitTime) const
+    {
+        return timeToGroup_.at(hitTime);
+    }
+
+    const std::vector<int>& GetGroupTimesMs() const
+    {
+        return groupTimesMs_;
+    }
+
+    int GetGroupIdByTimeMs(int tms) const;
+    int GetAllNotesCount() const;
+
+    // 現在、次に判定されるグループID
+    int GetNearestGroupId() const
+    {
+        return nearestGroupId_;
+    }
 
 private:
     void BuildGroupsFromCsv();
-    std::vector<int>groupTimesMs_;
-    std::unordered_map<int, int>timeMsToGroupId_;
+    void UpdateNearestGroup();
+
+private:
+    std::vector<int> groupTimesMs_;
+    std::unordered_map<int, int> timeMsToGroupId_;
 
     std::unique_ptr<GameCsvReader> notesCsv_;
-    std::vector<double>groupTimes_;
-    std::unordered_map<double, int> timeToGroup_;
-    std::string musicLevel;
-    int nextLine_ = 1;    //csvヘッダー分の1
-    int laneCount_ = 0;   // CSV列数-1
-    double nowSec_ = 0.0; // 曲の経過秒
-    int comboCount = 0;  //コンボ数
-    int maxCombo;        //最大コンボ数
 
+    std::vector<double> groupTimes_;
+    std::unordered_map<double, int> timeToGroup_;
+
+    std::string musicLevel;
+
+    int nextLine_ = 1;
+    int laneCount_ = 0;
+
+    double nowSec_ = 0.0;
+
+    int comboCount = 0;
+    int maxCombo = 0;
+
+    static constexpr double NOTE_START_ADVANCE_SEC = 1.0;
+
+    // 次に来るノーツグループ
+    int nearestGroupId_ = -1;
 };

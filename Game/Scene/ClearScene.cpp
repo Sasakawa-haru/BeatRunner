@@ -1,5 +1,7 @@
 #include "Game/Scene/ClearScene.h"
 #include "Game/Result/ResultData.h"
+#include"Engine/SceneManager.h"
+#include"Engine/Input.h"
 
 namespace
 {
@@ -43,6 +45,15 @@ void ClearScene::Initialize()
 
 void ClearScene::Update()
 {
+    if (Input::IsKeyDown(DIK_SPACE))
+    {
+        SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
+
+        if (pSceneManager)
+        {
+            pSceneManager->ChangeScene(SCENE_ID_SELECT);
+        }
+    }
 }
 
 void ClearScene::Release()
