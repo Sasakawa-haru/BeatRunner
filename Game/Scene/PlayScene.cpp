@@ -8,6 +8,7 @@
 #include"Game/Rhythm/Judge/JudgeSystem.h"
 #include"Game/Rhythm/Score/ScoreSystem.h"
 #include"Game/Result/ResultData.h"
+#include"Game/UI/HPBar.h"
 #include"Engine/Input.h"
 #include"Engine/Audio.h"
 #include"Engine/Time.h"
@@ -46,7 +47,7 @@ void PlayScene::Initialize()
 	Notes*notes=Instantiate<Notes>(this);
 	Instantiate<Player>(this);
 	Instantiate<SideObject>(this);
-
+	Instantiate<HPBar>(this);
 	Instantiate<JudgeSystem>(this);
 	ScoreSystem* scoreSystem=Instantiate<ScoreSystem>(this);
 	if (notes && scoreSystem) {

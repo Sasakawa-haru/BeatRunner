@@ -21,6 +21,7 @@ public:
     void OnCollision(GameObject* pTarget)override;
 
     int GetHP()const { return PlayerHP; }
+	int GetMaxHP()const { return MaxHP; }
     int GetLaneIndex()const { return PlayerPosition; }
     bool IsRhythmActionTriggered()const { return rhythmActionTriggered_; }
 
@@ -53,6 +54,7 @@ private:
     float diveGravity;
     float jumpSpeed;
     int PlayerHP;
+    int MaxHP;
 
     float cameraHeight;
     float cameraBackDistance;

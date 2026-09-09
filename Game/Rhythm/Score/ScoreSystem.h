@@ -71,4 +71,23 @@ private:
 	int hMissImage_ = -1;
 	int missEffectTimer_ = 0;
 	Transform missEffectTransform_;
+
+	//スコア表示位置
+	static constexpr int SCORE_LABEL_X = 900;
+	static constexpr int SCORE_VALUE_X = 1020;
+	static constexpr int SCORE_Y = 20;
+
+	static constexpr int COMBO_LABEL_X = 900;
+	static constexpr int COMBO_VALUE_X = 1020;
+	static constexpr int COMBO_Y = 60;
+
+	static constexpr int JUDGE_TEXT_X = 900;
+	static constexpr int JUDGE_TEXT_Y = 100;
+
+	static constexpr int DIFF_LABEL_X = 900;
+	static constexpr int DIFF_VALUE_X = 1060;
+	static constexpr int DIFF_Y = 140;
+
+	// 秒 → ミリ秒変換
+	static constexpr double SEC_TO_MILLISEC = 1000.0;
 };

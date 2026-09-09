@@ -162,6 +162,7 @@
     <ClCompile Include="Game\Stage\BesideBeam.cpp" />
     <ClCompile Include="Game\Stage\SideObject.cpp" />
     <ClCompile Include="Game\Stage\VerticalBeam.cpp" />
+    <ClCompile Include="Game\UI\HPBar.cpp" />
     <ClCompile Include="Game\UI\Option.cpp" />
     <ClCompile Include="Game\UI\Result.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Game\Stage\BesideBeam.h" />
     <ClInclude Include="Game\Stage\SideObject.h" />
     <ClInclude Include="Game\Stage\VerticalBeam.h" />
+    <ClInclude Include="Game\UI\HPBar.h" />
     <ClInclude Include="Game\UI\Option.h" />
     <ClInclude Include="Game\UI\Result.h" />
     <ClInclude Include="Engine\Audio.h" />

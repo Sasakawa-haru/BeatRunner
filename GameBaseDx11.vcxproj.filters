@@ -124,6 +124,7 @@
     <ClCompile Include="Data\Beatmap\BeatmapJsonLoader.cpp" />
     <ClCompile Include="Data\Converter\JsonToCsvConverter.cpp" />
     <ClCompile Include="Game\Rhythm\Note\RhythmNote.cpp" />
+    <ClCompile Include="Game\UI\HPBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -236,6 +237,7 @@
     <ClInclude Include="Data\Beatmap\BeatmapMeta.h" />
     <ClInclude Include="Data\Converter\JsonToCsvConverter.h" />
     <ClInclude Include="Game\Rhythm\Note\RhythmNote.h" />
+    <ClInclude Include="Game\UI\HPBar.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

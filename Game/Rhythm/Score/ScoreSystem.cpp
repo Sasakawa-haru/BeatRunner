@@ -55,31 +55,84 @@ void ScoreSystem::Update()
 
 void ScoreSystem::Draw()
 {
-	text_.Draw(20, 20, "SCORE:");
-	text_.Draw(140, 20, score_);
+	// =========================
+	// スコア
+	// =========================
+	text_.Draw(
+		SCORE_LABEL_X,
+		SCORE_Y,
+		"SCORE:"
+	);
 
-	text_.Draw(20, 60, "COMBO:");
-	text_.Draw(140, 60, combo_);
+	text_.Draw(
+		SCORE_VALUE_X,
+		SCORE_Y,
+		score_
+	);
 
+	// =========================
+	// コンボ
+	// =========================
+	text_.Draw(
+		COMBO_LABEL_X,
+		COMBO_Y,
+		"COMBO:"
+	);
+
+	text_.Draw(
+		COMBO_VALUE_X,
+		COMBO_Y,
+		combo_
+	);
+
+	// =========================
+	// 判定表示
+	// =========================
 	if (judgeTimer_ > 0)
 	{
-		text_.Draw(20, 100, judgeText_.c_str());
+		text_.Draw(
+			JUDGE_TEXT_X,
+			JUDGE_TEXT_Y,
+			judgeText_.c_str()
+		);
 	}
+
+	// =========================
+	// タイミング差表示
+	// =========================
 	if (hasLastDiff_)
 	{
-		int diffMs = (int)(lastDiffSec_ * 1000.0);
+		const int diffMs =
+			static_cast<int>(
+				lastDiffSec_ * SEC_TO_MILLISEC
+				);
 
-		text_.Draw(20, 140, "DIFF(ms):");
-		text_.Draw(180, 140, diffMs);
+		text_.Draw(
+			DIFF_LABEL_X,
+			DIFF_Y,
+			"DIFF(ms):"
+		);
+
+		text_.Draw(
+			DIFF_VALUE_X,
+			DIFF_Y,
+			diffMs
+		);
 	}
 
+	// =========================
+	// MISS演出
+	// =========================
 	if (missEffectTimer_ > 0)
 	{
-		Image::SetTransform(hMissImage_, missEffectTransform_);
+		Image::SetTransform(
+			hMissImage_,
+			missEffectTransform_
+		);
+
 		Image::Draw(hMissImage_);
 	}
 }
-
 void ScoreSystem::Release()
 {
 }

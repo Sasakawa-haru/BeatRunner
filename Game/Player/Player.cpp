@@ -68,6 +68,7 @@ Player::Player(GameObject* parent)
         if (tag == "PlayerHP")
         {
             PlayerHP = Player->GetInt(i, 1);
+            MaxHP = PlayerHP;
         }
         if (tag == "cameraHeight")
         {
