@@ -125,7 +125,7 @@ void Player::Initialize()
     );
 
     // モデル
-    hPlayerModel_ = Model::Load("Models/PlayerMotion.fbx");
+    hPlayerModel_ = Model::Load("Models/PlayerMotion.brm");
     if (hPlayerModel_ < 0)
     {
         OutputDebugStringA(

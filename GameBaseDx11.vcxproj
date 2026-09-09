@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BRModelTest.cpp" />
     <ClCompile Include="Data\Beatmap\BeatmapCatalog.cpp" />
     <ClCompile Include="Data\Beatmap\BeatmapJsonLoader.cpp" />
     <ClCompile Include="Data\Converter\JsonToCsvConverter.cpp" />
@@ -195,7 +194,6 @@
     <ClCompile Include="Engine\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BRModelTest.h" />
     <ClInclude Include="Common\BRModelFormat.h" />
     <ClInclude Include="Data\Beatmap\BeatMap.h" />
     <ClInclude Include="Data\Beatmap\BeatmapCatalog.h" />

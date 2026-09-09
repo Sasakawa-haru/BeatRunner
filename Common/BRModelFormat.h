@@ -99,3 +99,18 @@ struct BRBoneTransform
 {
     float matrix[16];
 };
+
+constexpr uint32_t BRM_TEXTURE_PATH_LENGTH = 256;
+
+struct BRMaterial
+{
+    float diffuse[4];
+    float ambient[4];
+    float specular[4];
+
+    float shininess;
+
+    int32_t hasTexture;
+
+    char texturePath[BRM_TEXTURE_PATH_LENGTH];
+};

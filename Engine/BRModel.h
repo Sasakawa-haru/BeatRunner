@@ -1,66 +1,124 @@
 #pragma once
 
-#include<d3d11.h>
-#include<cstdint>
-#include<string>
+#include <d3d11.h>
+#include <cstdint>
+#include <string>
+#include <vector>
 
-#include"Common/BRModelFormat.h"
-#include"Transform.h"
+#include <DirectXMath.h>
+
+#include "Common/BRModelFormat.h"
+#include "Transform.h"
+
 
 class BRModel
 {
 public:
-	BRModel();
-	~BRModel();
+    BRModel();
+    ~BRModel();
 
-	bool Load(const std::string& filePath);
+    // BRM読み込み
+    bool Load(const std::string& filePath);
 
-	void Draw(Transform& transform);
+    // 描画
+    void Draw(
+        Transform& transform,
+        int frame
+    );
 
-	void Release();
+    // 解放
+    void Release();
 
-	bool IsLoaded()const
-	{
-		return isLoaded_;
-	}
+    bool IsLoaded() const
+    {
+        return isLoaded_;
+    }
 
-	uint32_t GetIndexCount() const 
-	{
-		return indexCount_;
-	}
+    uint32_t GetBoneCount() const
+    {
+        return static_cast<uint32_t>(
+            bones_.size()
+            );
+    }
 
-private:
-	struct CONSTANT_BUFFER
-	{
-		DirectX::XMMATRIX worldVewProj;
-		DirectX::XMMATRIX world;
-		DirectX::XMMATRIX normalTrans;
+    uint32_t GetFrameCount() const
+    {
+        return frameCount_;
+    }
 
-		DirectX::XMFLOAT4 ambient;
-		DirectX::XMFLOAT4 diffuse;
-		DirectX::XMFLOAT4 speculer;
-
-		float shininess;
-
-		// 16byte境界合わせ
-		float padding[3];
-
-		DirectX::XMFLOAT4 cameraPosition;
-		DirectX::XMFLOAT4 lightDirection;
-
-		int isTexture;
-
-		float padding2[3];
-	};
 
 private:
-	ID3D11Buffer* vertexBuffer_ = nullptr;
-	ID3D11Buffer* indexBuffer_ = nullptr;
+    // CPUスキニング
+    void UpdateSkinning(int frame);
 
-	ID3D11Buffer* constantBuffer_ = nullptr;
 
-	uint32_t vertexCount_ = 0;
-	uint32_t indexCount_ = 0;
+private:
 
-	bool isLoaded_ = false;
+    // =========================================
+    // Simple3D.hlsl用 ConstantBuffer
+    //
+    // FbxParts::CONSTANT_BUFFERと同じ並び
+    // =========================================
+
+    struct CONSTANT_BUFFER
+    {
+        DirectX::XMMATRIX worldVewProj;
+
+        DirectX::XMMATRIX normalTrans;
+
+        DirectX::XMMATRIX world;
+
+        DirectX::XMFLOAT4 lightDirection;
+
+        DirectX::XMFLOAT4 diffuse;
+
+        DirectX::XMFLOAT4 ambient;
+
+        DirectX::XMFLOAT4 speculer;
+
+        DirectX::XMFLOAT4 cameraPosition;
+
+        FLOAT shininess;
+
+        BOOL isTexture;
+    };
+
+
+private:
+
+    ID3D11Buffer* constantBuffer_ = nullptr;
+
+    ID3D11Buffer* vertexBuffer_ = nullptr;
+
+    ID3D11Buffer* indexBuffer_ = nullptr;
+
+
+    uint32_t vertexCount_ = 0;
+
+    uint32_t indexCount_ = 0;
+
+    uint32_t frameCount_ = 0;
+
+
+    // 元頂点
+    std::vector<BRVertex>
+        originalVertices_;
+
+
+    // CPUスキニング後の頂点
+    std::vector<BRVertex>
+        skinnedVertices_;
+
+
+    // Bone
+    std::vector<BRBone>
+        bones_;
+
+
+    // frameCount × boneCount
+    std::vector<BRBoneTransform>
+        animation_;
+
+
+    bool isLoaded_ = false;
 };
